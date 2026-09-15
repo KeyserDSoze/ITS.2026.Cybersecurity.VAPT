@@ -1,0 +1,13 @@
+SIMULATED TESTER NOTES — intentionally messy
+
+alice account -> order 1001
+bob account -> order 1002
+changed alice request from 1001 to 1002
+server returned 200
+response body had Bob's fictional order data
+UI did not show any link to Bob order
+same Alice token used before/after changing ID
+no attempt to enumerate other orders
+stopped after one cross-user object
+probably authz problem, not authentication
+need explain server-side ownership check
