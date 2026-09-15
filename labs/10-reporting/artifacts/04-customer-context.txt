@@ -1,0 +1,10 @@
+SIMULATED CUSTOMER CONTEXT
+
+UmbraMarket stores only fictional training data in this course environment.
+
+In the imagined production scenario, an order record would contain customer identity, purchased items, delivery information and order value.
+
+The customer states that ordinary users must only be able to view their own orders. Support staff have a separate role and workflow.
+
+Reporting question:
+How does this business rule change the way you describe impact and remediation compared with merely saying "ID parameter can be changed"?
