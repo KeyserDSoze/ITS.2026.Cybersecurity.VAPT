@@ -105,7 +105,7 @@ function Home({ course, progress }) {
         <div>
           <span className="eyebrow">Vulnerability Assessment & Penetration Testing</span>
           <h1>Impara il metodo.<br />Poi scegli gli strumenti.</h1>
-          <p>Teoria essenziale, laboratorio, challenge progressive e reporting. Il tuo avanzamento rimane salvato sul dispositivo.</p>
+          <p>Missioni guidate, teoria applicata, laboratorio, autonomia progressiva e reporting. Il tuo avanzamento rimane salvato sul dispositivo.</p>
           {resume && <button className="primary" onClick={() => navigate(`lesson/${resume.slug}`)}>Riprendi da {resume.title} →</button>}
         </div>
         <div className="progress-card">
@@ -119,7 +119,7 @@ function Home({ course, progress }) {
       <section className="container section-block">
         <div className="section-heading">
           <div><span className="eyebrow">Percorso</span><h2>Lezioni</h2></div>
-          <p>Puoi seguire l'ordine suggerito o aprire direttamente un modulo.</p>
+          <p>Segui l'ordine suggerito: all'inizio sarai molto guidato, poi le indicazioni diminuiranno fino al capstone.</p>
         </div>
         <div className="lesson-grid">
           {course.lessons.map((lesson) => (
@@ -143,7 +143,8 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
   const previous = course.lessons[index - 1];
   const next = course.lessons[index + 1];
   const checklist = progress.checklist[lesson.slug] || {};
-  const notes = progress.notes[lesson.slug] || '';
+  const storedNotes = progress.notes[lesson.slug];
+  const notebook = typeof storedNotes === 'string' ? { free: storedNotes } : (storedNotes || {});
   const entryQuiz = (lesson.quiz || []).filter((question) => question.phase === 'entry');
   const exitQuiz = (lesson.quiz || []).filter((question) => question.phase !== 'entry');
 
@@ -159,10 +160,17 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
     },
   }));
 
-  const setNotes = (value) => updateProgress((current) => ({
-    ...current,
-    notes: { ...current.notes, [lesson.slug]: value },
-  }));
+  const setNotebookField = (field, value) => updateProgress((current) => {
+    const existing = current.notes[lesson.slug];
+    const currentNotebook = typeof existing === 'string' ? { free: existing } : (existing || {});
+    return {
+      ...current,
+      notes: {
+        ...current.notes,
+        [lesson.slug]: { ...currentNotebook, [field]: value },
+      },
+    };
+  });
 
   const toggleComplete = () => updateProgress((current) => ({
     ...current,
@@ -202,7 +210,7 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
             updateProgress={updateProgress}
             eyebrow="Test di ingresso"
             title="Parti da qui: quanto ne sai già?"
-            intro="10 domande, circa 5 minuti. Non è un voto: rispondi senza cercare le soluzioni e usa il risultato per capire quali fondamentali devi consolidare."
+            intro={`${entryQuiz.length} domande rapide. Non è un voto: rispondi senza cercare le soluzioni e usa il risultato per capire cosa devi consolidare.`}
           />
         )}
 
@@ -215,18 +223,14 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
             progress={progress}
             updateProgress={updateProgress}
             eyebrow="Autoverifica finale"
-            title="Ora riprova con domande applicate"
-            intro="Queste domande verificano se riesci ad applicare il metodo appena visto a piccoli scenari di assessment."
+            title="Ora applica il metodo"
+            intro={`${exitQuiz.length} domande applicate per controllare se sai usare i concetti della lezione, non soltanto riconoscerne le definizioni.`}
           />
         )}
 
         <ProgressPanel checklist={checklist} setChecklist={setChecklist} />
 
-        <section className="notes-card">
-          <div><span className="eyebrow">Appunti personali</span><h2>Le tue note</h2></div>
-          <p>Restano soltanto su questo browser e non vengono inviate al docente.</p>
-          <textarea value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Annota dubbi, comandi da ricordare, ipotesi da verificare…" rows="8" />
-        </section>
+        <Notebook notebook={notebook} setField={setNotebookField} />
 
         <nav className="lesson-nav">
           {previous ? <button onClick={() => navigate(`lesson/${previous.slug}`)}>← {previous.title.replace(/^\d+\s*[—-]\s*/, '')}</button> : <span />}
@@ -239,10 +243,10 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
 
 function ProgressPanel({ checklist, setChecklist }) {
   const items = [
-    ['theory', 'Ho letto e compreso i concetti della lezione'],
-    ['core', 'Ho completato il percorso CORE'],
-    ['evidence', 'Ho raccolto e ordinato le evidenze utili'],
-    ['report', 'Ho aggiornato note, finding o deliverable'],
+    ['theory', 'Ho completato la lettura guidata e gli esempi'],
+    ['guided', 'Ho completato l’attività GUIDED della lezione'],
+    ['independent', 'Ho provato almeno un passaggio in autonomia'],
+    ['evidence', 'Ho ordinato evidenze, note o deliverable prodotti'],
   ];
   const done = items.filter(([key]) => checklist[key]).length;
   return (
@@ -253,6 +257,36 @@ function ProgressPanel({ checklist, setChecklist }) {
           <label key={key}><input type="checkbox" checked={Boolean(checklist[key])} onChange={(event) => setChecklist(key, event.target.checked)} /><span>{label}</span></label>
         ))}
       </div>
+    </section>
+  );
+}
+
+function Notebook({ notebook, setField }) {
+  const fields = [
+    ['facts', 'Fatti osservati', 'Che cosa hai verificato direttamente?'],
+    ['hypotheses', 'Ipotesi', 'Quali spiegazioni o rischi vuoi ancora verificare?'],
+    ['tests', 'Test da eseguire', 'Qual è il prossimo test minimo e perché?'],
+    ['evidence', 'Evidenze', 'Request, response, output o risultati che supportano le conclusioni.'],
+    ['findings', 'Possibili finding', 'Problemi che potrebbero diventare finding dopo validazione.'],
+    ['free', 'Appunti liberi', 'Dubbi, comandi, riferimenti o note personali.'],
+  ];
+
+  return (
+    <section className="notes-card">
+      <div><span className="eyebrow">Taccuino del pentester</span><h2>Costruisci il ragionamento mentre lavori</h2></div>
+      <p>Rimane soltanto su questo browser. Tieni separati fatti, ipotesi, test ed evidenze: è la stessa disciplina che userai nel report.</p>
+      {fields.map(([key, label, placeholder]) => (
+        <div key={key} style={{ marginTop: 16 }}>
+          <strong>{label}</strong>
+          <textarea
+            value={notebook[key] || ''}
+            onChange={(event) => setField(key, event.target.value)}
+            placeholder={placeholder}
+            rows={key === 'free' ? 5 : 4}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ))}
     </section>
   );
 }
