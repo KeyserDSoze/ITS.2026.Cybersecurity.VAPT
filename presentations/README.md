@@ -4,6 +4,14 @@ Questa cartella contiene le presentazioni da proiezione per le otto giornate del
 
 La regola editoriale è una sola: **facciamo il percorso insieme alla classe**. Le slide evitano formule come “gli studenti devono…” e usano un linguaggio condiviso: cosa sappiamo, cosa stiamo ipotizzando, quale evidenza ci manca, quale test minimo ci serve e dove dobbiamo fermarci.
 
+## Release stabile
+
+La prima versione congelata delle presentazioni è disponibile come GitHub Release:
+
+- [`presentations-v1.0.0`](https://github.com/KeyserDSoze/ITS.2026.Cybersecurity.VAPT/releases/tag/presentations-v1.0.0)
+
+La release contiene gli otto deck PowerPoint, un bundle ZIP unico e `SHA256SUMS.txt` per la verifica di integrità. La cartella `premium/` su `main` può continuare a evolvere; la release resta invece immutata come riferimento della versione distribuita.
+
 ## Deck
 
 | Giornata | Focus | PowerPoint | Runbook docente |
@@ -36,5 +44,7 @@ Le slide marcate `APPROFONDIMENTO · SE SERVE` sono opzionali: non sono material
 ## Rigenerazione
 
 Il generatore è [`generate_premium_decks.py`](generate_premium_decks.py). La GitHub Action [`../.github/workflows/presentations.yml`](../.github/workflows/presentations.yml) rigenera i PowerPoint quando il generatore cambia.
+
+La GitHub Action [`../.github/workflows/release-presentations.yml`](../.github/workflows/release-presentations.yml) permette invece di creare release versionate delle presentazioni indicando versione e commit/tag/branch da congelare.
 
 Il design usa sfondo bianco, una sola idea dominante per slide, esempi tecnici concreti e poco testo per blocco.
