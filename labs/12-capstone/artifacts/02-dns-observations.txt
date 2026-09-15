@@ -1,0 +1,15 @@
+SIMULATED DNS / HOST OBSERVATIONS
+
+shop.umbramarket.lab   -> 10.20.30.10
+api.umbramarket.lab    -> 10.20.30.10
+admin.umbramarket.lab  -> 10.20.30.10
+files.umbramarket.lab  -> 10.20.30.11
+
+Observed from the fictional lab resolver.
+
+Questions:
+
+1. Which names are inside the authorized scope?
+2. Which names are only discoveries?
+3. Does sharing an IP automatically place every hostname in scope?
+4. How would you record admin.umbramarket.lab and files.umbramarket.lab without testing them?
