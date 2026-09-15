@@ -1,87 +1,87 @@
 # Labs
 
-Questa cartella contiene i laboratori pubblici del corso.
+Questa cartella contiene i laboratori pubblici del corso VAPT.
 
-## Obiettivo
+## Filosofia
 
-I laboratori devono allenare il processo di lavoro, non la sola esecuzione di comandi. Ogni laboratorio dovrebbe partire da un obiettivo e da uno scope chiaro e richiedere agli studenti di raccogliere evidenze.
-
-## Struttura consigliata di un laboratorio
-
-Ogni laboratorio può seguire questo formato:
+I laboratori non sono liste di comandi. Ogni attività deve far passare lo studente attraverso:
 
 ```text
-labs/<numero>-<nome>/
-├── README.md            # consegna pubblica
-├── setup/               # docker compose, config e asset necessari
-├── starter/             # eventuale materiale iniziale
-└── references/          # riferimenti pubblici utili
+obiettivo → osservazione → ipotesi → test → evidenza → conclusione
 ```
 
-Non inserire nella cartella pubblica materiale riservato d'esame o soluzioni che si desidera mantenere segrete.
+La progressione usata è:
 
-## Template README del laboratorio
+```text
+GUIDED      = passaggi e checkpoint espliciti
+INDEPENDENT = obiettivo chiaro, meno indicazioni
+CHALLENGE   = obiettivo e vincoli, metodo a scelta dello studente
+```
 
-Ogni laboratorio dovrebbe indicare almeno:
+All'inizio del corso prevale GUIDED; procedendo verso il capstone aumenta l'autonomia.
 
-### Scenario
+## Ambiente comune
 
-Contesto sintetico e realistico.
+I laboratori 00-07 possono usare [`platform/`](platform/), che contiene:
 
-### Scope
+- UmbraMarket Guided Lab;
+- OWASP Juice Shop;
+- Admin Portal statico;
+- File Service;
+- setup Docker Compose e procedura di reset.
 
-Asset che possono essere testati e limiti dell'attività.
+Per exploitation e post-exploitation viene usata una VM isolata separata, documentata nei relativi laboratori.
 
-### Obiettivi didattici
+## Struttura
 
-Cosa lo studente dovrebbe imparare.
+```text
+labs/
+├── platform/                     # stack locale comune
+├── 00-baseline-and-mindset/
+├── 01-vapt-engagement/
+├── ...
+└── 12-capstone/
+```
 
-### Prerequisiti
+Ogni laboratorio dovrebbe contenere:
 
-Software, VM/container e conoscenze richieste.
+- scenario;
+- scope;
+- obiettivi;
+- setup;
+- attività GUIDED;
+- attività INDEPENDENT;
+- CHALLENGE;
+- hint progressivi quando utili;
+- deliverable;
+- cleanup/reset.
 
-### CORE
+## Evidenze
 
-Obiettivo minimo del laboratorio.
+Gli studenti devono raccogliere almeno le evidenze necessarie a sostenere le proprie conclusioni. Quando applicabile:
 
-### CHALLENGE
+```text
+assessment-notes/
+├── scope.md
+├── recon/
+├── requests/
+├── screenshots/
+├── findings/
+└── report/
+```
 
-Estensione per chi completa rapidamente il CORE.
-
-### HARD MODE
-
-Obiettivo con pochi o nessun hint.
-
-### Deliverable
-
-Che cosa deve produrre lo studente, ad esempio:
-
-- note di enumeration;
-- request/response rilevanti;
-- screenshot o output;
-- uno o più finding compilati;
-- breve riflessione sul percorso seguito.
-
-### Cleanup
-
-Come ripristinare l'ambiente e rimuovere eventuali artefatti prodotti dal test.
+Questa cartella di lavoro è locale allo studente e non va necessariamente committata.
 
 ## Regole di sicurezza
 
-- Eseguire i test solo su target esplicitamente indicati nel laboratorio.
-- Non usare l'infrastruttura ITS o servizi Internet come target impliciti.
-- Non riutilizzare credenziali reali nei laboratori.
-- Non inserire dati personali nei target didattici.
-- Preferire ambienti isolati, container o VM volutamente vulnerabili.
+- Testare solo i target esplicitamente indicati.
+- Non estendere automaticamente lo scope a porte o host scoperti.
+- Non usare infrastruttura ITS, LAN dell'aula o servizi Internet come target impliciti.
+- Non inserire dati personali o credenziali reali.
+- Preferire PoC minime e reversibili.
+- Resettare i target dopo attività che modificano stato o dati.
+- Le applicazioni volutamente vulnerabili non devono essere esposte pubblicamente.
 
-## Ambienti candidati
+## Materiale d'esame
 
-In base al modulo potranno essere utilizzati, tra gli altri:
-
-- OWASP Juice Shop;
-- laboratori PortSwigger Web Security Academy;
-- applicazioni/API volutamente vulnerabili;
-- Kali Linux come workstation di test;
-- VM dedicate per scenari di network exploitation e post-exploitation.
-
-La scelta definitiva di ogni target sarà documentata nel relativo laboratorio.
+La repository è pubblica: nessun target, flag, credenziale, soluzione o configurazione riservata di una futura prova d'esame deve essere inserito qui.
