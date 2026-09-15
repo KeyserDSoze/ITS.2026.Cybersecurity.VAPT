@@ -22,7 +22,7 @@ All'inizio del corso prevale GUIDED; procedendo verso il capstone aumenta l'auto
 
 ## Simulazioni guidate
 
-I primi laboratori possono essere svolti anche senza eseguire realmente tool: vengono forniti **output, request, response, note cliente e risultati completamente fittizi**. Lo studente deve interpretarli come se stesse lavorando a un vero assessment.
+I laboratori possono essere svolti anche senza eseguire realmente tool: vengono forniti **output, request, response, note cliente e risultati completamente fittizi**. Lo studente deve interpretarli come se stesse lavorando a un vero assessment.
 
 Questo permette di allenare soprattutto:
 
@@ -52,8 +52,11 @@ Simulazioni già disponibili:
 | [`05-web-pentesting-foundations/`](05-web-pentesting-foundations/) | Map Before You Attack | attack surface web |
 | [`06-web-injection/`](06-web-injection/) | Input Changes Behaviour | input handling e PoC minima |
 | [`07-auth-api-security/`](07-auth-api-security/) | Two Users, One Order | authentication vs authorization |
+| [`08-controlled-exploitation/`](08-controlled-exploitation/) | From Finding to Controlled Proof | prerequisiti, exploitability e stop condition |
+| [`09-post-exploitation/`](09-post-exploitation/) | After Initial Access | privilege boundary e attack path |
+| [`10-reporting/`](10-reporting/) | From Raw Evidence to Professional Finding | evidenza, impatto e remediation |
 
-Ogni cartella contiene un `README.md` e una directory `artifacts/` con gli output inventati da analizzare.
+Ogni cartella contiene un `README.md` e, quando utile, una directory `artifacts/` con gli output inventati da analizzare.
 
 ## Ambiente comune
 
@@ -67,7 +70,7 @@ I laboratori 00-07 possono inoltre usare [`platform/`](platform/), che contiene:
 
 Le simulazioni testuali restano però utilizzabili anche senza avviare la piattaforma.
 
-Per exploitation e post-exploitation viene usata una VM isolata separata, documentata nei relativi laboratori.
+I laboratori 08-10 sono progettati prima di tutto come dossier narrativi: exploitation, post-exploitation e reporting vengono rappresentati con output fittizi e prove controllate, così il focus rimane sulle decisioni del tester.
 
 ## Struttura
 
