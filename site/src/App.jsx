@@ -6,6 +6,7 @@ const BASE = import.meta.env.BASE_URL;
 function routeFromHash() {
   const hash = window.location.hash.replace(/^#\/?/, '');
   if (hash.startsWith('lesson/')) return { page: 'lesson', slug: hash.slice('lesson/'.length) };
+  if (hash.startsWith('lab/')) return { page: 'lab', slug: hash.slice('lab/'.length) };
   return { page: 'home' };
 }
 
@@ -56,7 +57,7 @@ function App() {
   if (error) return <Status title="Impossibile caricare il corso" detail={error} />;
   if (!course) return <Status title="Caricamento materiale…" />;
 
-  const lesson = route.page === 'lesson'
+  const lesson = (route.page === 'lesson' || route.page === 'lab')
     ? course.lessons.find((item) => item.slug === route.slug)
     : null;
 
@@ -65,8 +66,10 @@ function App() {
       <Header theme={theme} setTheme={setTheme} completed={Object.keys(progress.completed).length} total={course.lessons.length} />
       {route.page === 'lesson' && lesson ? (
         <LessonPage course={course} lesson={lesson} progress={progress} updateProgress={updateProgress} />
-      ) : route.page === 'lesson' ? (
-        <Status title="Lezione non trovata" detail="Il collegamento potrebbe essere cambiato." />
+      ) : route.page === 'lab' && lesson?.lab ? (
+        <LabPage lesson={lesson} progress={progress} updateProgress={updateProgress} />
+      ) : route.page === 'lesson' || route.page === 'lab' ? (
+        <Status title={route.page === 'lab' ? 'Laboratorio non trovato' : 'Lezione non trovata'} detail="Il collegamento potrebbe essere cambiato." />
       ) : (
         <Home course={course} progress={progress} />
       )}
@@ -129,7 +132,7 @@ function Home({ course, progress }) {
                 <h3>{lesson.title.replace(/^\d+\s*[—-]\s*/, '')}</h3>
                 <p>{lesson.summary}</p>
               </div>
-              <span className="card-status">{progress.completed[lesson.slug] ? '✓ Completata' : 'Apri →'}</span>
+              <span className="card-status">{progress.completed[lesson.slug] ? '✓ Completata' : lesson.lab ? 'Lezione + lab →' : 'Apri →'}</span>
             </button>
           ))}
         </div>
@@ -160,17 +163,7 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
     },
   }));
 
-  const setNotebookField = (field, value) => updateProgress((current) => {
-    const existing = current.notes[lesson.slug];
-    const currentNotebook = typeof existing === 'string' ? { free: existing } : (existing || {});
-    return {
-      ...current,
-      notes: {
-        ...current.notes,
-        [lesson.slug]: { ...currentNotebook, [field]: value },
-      },
-    };
-  });
+  const setNotebookField = makeNotebookUpdater(lesson, updateProgress);
 
   const toggleComplete = () => updateProgress((current) => ({
     ...current,
@@ -195,6 +188,7 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
           <h1>{lesson.title.replace(/^\d+\s*[—-]\s*/, '')}</h1>
           <p>{lesson.summary}</p>
           <div className="lesson-actions">
+            {lesson.lab && <button className="primary" onClick={() => navigate(`lab/${lesson.slug}`)}>Apri laboratorio →</button>}
             <a className="secondary" href={`${BASE}${lesson.pdf}`} download>↓ Scarica PDF</a>
             <button className={progress.completed[lesson.slug] ? 'complete active' : 'complete'} onClick={toggleComplete}>
               {progress.completed[lesson.slug] ? '✓ Lezione completata' : 'Segna come completata'}
@@ -229,7 +223,6 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
         )}
 
         <ProgressPanel checklist={checklist} setChecklist={setChecklist} />
-
         <Notebook notebook={notebook} setField={setNotebookField} />
 
         <nav className="lesson-nav">
@@ -239,6 +232,79 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
       </div>
     </main>
   );
+}
+
+function LabPage({ lesson, progress, updateProgress }) {
+  const checklist = progress.checklist[lesson.slug] || {};
+  const storedNotes = progress.notes[lesson.slug];
+  const notebook = typeof storedNotes === 'string' ? { free: storedNotes } : (storedNotes || {});
+  const setNotebookField = makeNotebookUpdater(lesson, updateProgress);
+  const setChecklist = (key, value) => updateProgress((current) => ({
+    ...current,
+    checklist: {
+      ...current.checklist,
+      [lesson.slug]: { ...(current.checklist[lesson.slug] || {}), [key]: value },
+    },
+  }));
+
+  useEffect(() => {
+    updateProgress((current) => ({ ...current, lastLesson: lesson.slug }));
+  }, [lesson.slug]);
+
+  return (
+    <main className="lesson-layout container">
+      <aside className="lesson-sidebar">
+        <button className="back-link" onClick={() => navigate(`lesson/${lesson.slug}`)}>← Torna alla lezione</button>
+        <div className="toc-card">
+          <strong>Nel laboratorio</strong>
+          {lesson.lab.headings.map((heading) => (
+            <button key={heading.id} onClick={() => document.getElementById(heading.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{heading.text}</button>
+          ))}
+        </div>
+      </aside>
+
+      <div className="lesson-main">
+        <header className="lesson-hero">
+          <span className="eyebrow">Laboratorio {String(lesson.number).padStart(2, '0')}</span>
+          <h1>{lesson.lab.title.replace(/^Lab\s+\d+\s*[—-]\s*/i, '')}</h1>
+          <p>{lesson.lab.summary}</p>
+          <div className="lesson-actions">
+            <button className="secondary" onClick={() => navigate(`lesson/${lesson.slug}`)}>← Teoria e test</button>
+            <a className="secondary" href={`https://github.com/KeyserDSoze/ITS.2026.Cybersecurity.VAPT/blob/main/${lesson.lab.repoPath}`} target="_blank" rel="noreferrer">Sorgente lab ↗</a>
+          </div>
+        </header>
+
+        <section className="activity-card">
+          <span className="eyebrow">Regola del laboratorio</span>
+          <h2>Prima di eseguire un comando</h2>
+          <p>Devi sapere qual è il target autorizzato, perché stai eseguendo quel test, quale risultato cerchi e quando fermarti.</p>
+        </section>
+
+        <article className="markdown-card lesson-markdown" dangerouslySetInnerHTML={{ __html: lesson.lab.html }} />
+        <ProgressPanel checklist={checklist} setChecklist={setChecklist} />
+        <Notebook notebook={notebook} setField={setNotebookField} />
+
+        <nav className="lesson-nav">
+          <button onClick={() => navigate(`lesson/${lesson.slug}`)}>← Torna alla lezione</button>
+          <button onClick={() => navigate('')}>Torna al percorso →</button>
+        </nav>
+      </div>
+    </main>
+  );
+}
+
+function makeNotebookUpdater(lesson, updateProgress) {
+  return (field, value) => updateProgress((current) => {
+    const existing = current.notes[lesson.slug];
+    const currentNotebook = typeof existing === 'string' ? { free: existing } : (existing || {});
+    return {
+      ...current,
+      notes: {
+        ...current.notes,
+        [lesson.slug]: { ...currentNotebook, [field]: value },
+      },
+    };
+  });
 }
 
 function ProgressPanel({ checklist, setChecklist }) {
