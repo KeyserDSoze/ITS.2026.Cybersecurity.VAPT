@@ -34,10 +34,16 @@ function section(markdown, heading) {
 }
 
 function summaryFrom(markdown) {
-  const source = section(markdown, 'Obiettivi');
+  const candidateSections = ['Missione di oggi', 'La missione finale', 'Scopo', 'Obiettivi', 'Cosa imparerai'];
+  const source = candidateSections.map((heading) => section(markdown, heading)).find(Boolean) || '';
   const paragraphs = source.split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean);
-  const paragraph = paragraphs.find((item) => !item.startsWith('-') && !item.startsWith('```'));
-  return paragraph ? stripInlineMarkdown(paragraph.replace(/\n/g, ' ')) : 'Materiale della lezione, laboratorio e attività progressive.';
+  const paragraph = paragraphs.find((item) => !item.startsWith('-') && !item.startsWith('```') && !item.startsWith('>'));
+  const fallbackQuote = paragraphs.find((item) => item.startsWith('>'));
+  const selected = paragraph || fallbackQuote;
+  if (!selected) return 'Materiale della lezione, laboratorio e attività progressive.';
+  const cleaned = selected.replace(/^>\s*/gm, '').replace(/\n/g, ' ');
+  const summary = stripInlineMarkdown(cleaned);
+  return summary.length > 220 ? `${summary.slice(0, 217).trim()}…` : summary;
 }
 
 function headingsFrom(markdown) {
