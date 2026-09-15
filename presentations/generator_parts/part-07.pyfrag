@@ -1,0 +1,88 @@
+    cards(prs,D,M,'Quando ci accorgiamo che stiamo perdendo tempo',[
+        {'title':'NO SIGNAL','body':['3 test coerenti senza nuova informazione','cambiamo ipotesi']},
+        {'title':'OUT OF SCOPE','body':['la pista esce dal perimetro','annotiamo e basta'],'color':RED},
+        {'title':'ENOUGH EVIDENCE','body':['abbiamo già la prova minima','passiamo al report'],'color':GREEN}],
+        'Saper abbandonare una pista è una competenza',section='approfondimento',backup=True)
+    matrix(prs,D,M,'Budget mentale del capstone',['Blocco','Domanda'],[
+        ['Primi 30 min','abbiamo scope, asset e priorità chiare?'],['Blocco centrale','stiamo raccogliendo nuova evidenza o solo rumore?'],['Ultimi 45 min','abbiamo già almeno un finding difendibile?'],['Chiusura','cosa possiamo sostenere senza aggiungere nulla?']],
+        'Il timebox ci obbliga a scegliere: è parte dell’esercizio.',section='approfondimento',backup=True)
+    return prs
+
+
+def build_day8():
+    prs=Presentation();set_wide(prs);D='DAY 08';M='12 · wrap-up'
+    cover(prs,D,'Dal finding alla conversazione col cliente','Chiudiamo il capstone: puliamo il report, facciamo peer review e impariamo a raccontare priorità e limiti.',M,['ripuliamo','revisioniamo','presentiamo','chiudiamo il percorso'])
+    journey_slide(prs,D,M,[('cleanup','evidence e note'),('peer review','un altro gruppo legge'),('client talk','2 minuti chiari'),('debrief','cosa sappiamo fare adesso')],['mini report','executive summary','client presentation'])
+    big_question(prs,D,M,'Un report è buono se chi lo riceve sa cosa fare domani mattina.','Non basta essere tecnicamente corretti: dobbiamo essere leggibili, prioritizzati e azionabili.','Rileggiamo tutto dalla prospettiva del cliente.',section='reporting')
+    process(prs,D,M,'Dalle note al messaggio',['raw notes','facts','finding','priority','executive summary','presentation'],'Ogni passaggio elimina rumore senza perdere precisione',section='reporting')
+    cards(prs,D,M,'Executive summary e finding tecnico',[
+        {'title':'EXECUTIVE','body':['cosa abbiamo testato','rischi principali','priorità e limiti']},
+        {'title':'TECHNICAL','body':['causa','evidenza','riproduzione','remediation'],'color':BLUE},
+        {'title':'COERENZA','body':['stessa realtà tecnica','livello di dettaglio diverso'],'color':AMBER}],
+        'Due lettori diversi, nessuna contraddizione',section='reporting')
+    matrix(prs,D,M,'Peer review: leggiamo il finding di un altro gruppo',['Domanda','Sì / No'],[
+        ['Il titolo descrive il problema, non il tool?',''],
+        ['La causa è chiara?',''],
+        ['L’evidenza sostiene esattamente la conclusione?',''],
+        ['L’impatto è dimostrato o marcato come ipotesi?',''],
+        ['La remediation agisce sulla causa?','']],
+        'Se una risposta è “no”, sappiamo dove migliorare',section='peer review')
+    compare(prs,D,M,'Due minuti davanti al cliente','DICIAMO',[
+        'perimetro testato','rischio principale','perché conta','priorità di correzione','limiti dell’assessment'],
+        'EVITIAMO',[
+        'leggere il report','citare 12 tool','spiegare dettagli irrilevanti','sovrastimare l’impatto','nascondere le incertezze'],
+        'La chiarezza non rende il messaggio meno tecnico.',section='client presentation')
+    cards(prs,D,M,'Quando il cliente ci fa domande',[
+        {'title':'“È sfruttabile?”','body':['rispondiamo con la prova che abbiamo','se non sappiamo, lo diciamo']},
+        {'title':'“Quanto è urgente?”','body':['colleghiamo tecnica e contesto business','spieghiamo le assunzioni'],'color':BLUE},
+        {'title':'“Come lo correggiamo?”','body':['remediation concreta','verifica dopo la fix'],'color':AMBER}],
+        'Non improvvisiamo: torniamo sempre alle evidenze',section='client presentation')
+    statement(prs,D,M,'Essere professionali significa anche dire “non l’abbiamo dimostrato”.','L’incertezza dichiarata bene vale più di una conclusione sicura ma inventata.',section='client presentation',accent=AMBER)
+    lab_handoff(prs,D,M,'Ultimo giro — peer review e presentazione','Ogni gruppo scambia il finding, riceve feedback e prepara un pitch di due minuti come se UmbraMarket fosse davanti a noi.',[
+        'revisioniamo il testo','tagliamo gli overclaim','prioritizziamo','presentiamo e rispondiamo'],
+        'Mini report finale + 2 minuti di client presentation')
+    takeaways(prs,D,M,['trasformare evidenze tecniche in un finding leggibile','scrivere una executive summary coerente con il report','presentare rischio e priorità senza perdersi nei tool','dichiarare chiaramente limiti, assunzioni e ciò che non abbiamo dimostrato'],title_text='Alla fine del percorso dobbiamo riuscire a…')
+    statement(prs,D,M,'Ci danno un target autorizzato che non conosciamo. Sappiamo come partire, cosa osservare, come formulare ipotesi, come verificarle e come spiegare il rischio.','Questo era l’obiettivo del corso. Ora abbiamo un metodo da riutilizzare fuori da UmbraMarket.',section='chiusura',accent=TEAL)
+    # backup
+    cards(prs,D,M,'Frasi che rendono un report più preciso',[
+        {'title':'OSSERVATO','body':['“Abbiamo osservato…”','“La risposta restituisce…”']},
+        {'title':'INFERITO','body':['“Il comportamento è coerente con…”','“Questo suggerisce…”'],'color':BLUE},
+        {'title':'NON DIMOSTRATO','body':['“Non è stato verificato…”','“Non abbiamo testato…”'],'color':AMBER}],
+        'Il linguaggio può mostrare il livello di certezza',section='approfondimento',backup=True)
+    compare(prs,D,M,'Stessa realtà, due modi di scriverla','TROPPO FORTE',[
+        '“L’attaccante può compromettere l’intero server.”','conclusione più ampia delle evidenze'],
+        'PRECISO',[
+        '“Un utente autenticato può leggere un ordine appartenente a un altro utente.”','la frase coincide con ciò che abbiamo dimostrato'],
+        'La precisione aumenta la credibilità del report.',section='approfondimento',backup=True)
+    return prs
+
+
+def save_deck(prs, filename):
+    path=os.path.join(OUT,filename)
+    prs.save(path)
+    return path
+
+builders=[
+    ('day-01-mindset-scope-premium.pptx',build_day1),
+    ('day-02-foundations-recon-premium.pptx',build_day2),
+    ('day-03-va-web-mapping-premium.pptx',build_day3),
+    ('day-04-input-handling-injection-premium.pptx',build_day4),
+    ('day-05-auth-api-security-premium.pptx',build_day5),
+    ('day-06-exploitation-postex-reporting-ai-premium.pptx',build_day6),
+    ('day-07-capstone-premium.pptx',build_day7),
+    ('day-08-closing-report-presentation-premium.pptx',build_day8),
+]
+paths=[]
+for fn,b in builders:
+    p=save_deck(b(),fn);paths.append(p);print('saved',p)
+
+# README
+readme=os.path.join(OUT,'README.md')
+with open(readme,'w',encoding='utf-8') as f:
+    f.write('# Presentazioni VAPT — versione reworked\n\n')
+    f.write('Una presentazione per ogni giornata del corso. Linguaggio in prima persona plurale: il docente fa il percorso **insieme** alla classe.\n\n')
+    f.write('Ogni deck contiene un flusso principale più alcune slide finali marcate **approfondimento · se serve**, da usare solo quando il tempo e il livello della classe lo permettono.\n\n')
+    for p in paths:
+        f.write(f'- `{os.path.basename(p)}`\n')
+    f.write('\nPrincipi di design: sfondo bianco, una idea dominante per slide, esempi tecnici concreti, poco testo per blocco, niente linguaggio del tipo “gli studenti devono…”.\n')
+
