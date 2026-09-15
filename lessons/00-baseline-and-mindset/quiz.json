@@ -1,0 +1,38 @@
+[
+  {
+    "id": "facts-vs-hypotheses",
+    "question": "Durante la recon osservi che la porta 443 è aperta. Quale affermazione è un fatto e non un'ipotesi?",
+    "options": [
+      "Il server usa sicuramente Nginx",
+      "Il target espone un servizio raggiungibile sulla porta TCP 443",
+      "L'applicazione contiene una vulnerabilità TLS",
+      "Il server è Linux"
+    ],
+    "correct": 1,
+    "explanation": "L'apertura della porta è un dato osservabile. Tecnologia, sistema operativo e vulnerabilità richiedono ulteriori evidenze."
+  },
+  {
+    "id": "authorization",
+    "question": "Perché prima di testare un target serve definire esplicitamente lo scope?",
+    "options": [
+      "Per scegliere il colore del report",
+      "Per sapere quali sistemi e attività sono autorizzati e quali no",
+      "Per evitare di prendere appunti",
+      "Per poter usare qualunque tecnica senza limiti"
+    ],
+    "correct": 1,
+    "explanation": "Lo scope delimita sistemi, attività, vincoli e autorizzazioni del test."
+  },
+  {
+    "id": "pentest-thinking",
+    "question": "Qual è la sequenza che useremo come modello mentale durante il corso?",
+    "options": [
+      "Tool → exploit → screenshot → fine",
+      "CVE → Metasploit → shell → report",
+      "Osservazione → ipotesi → test → evidenza → conclusione",
+      "Scanner → severity → remediation automatica"
+    ],
+    "correct": 2,
+    "explanation": "Il corso privilegia il ragionamento verificabile: partire dai fatti, formulare ipotesi e sostenerle con evidenze."
+  }
+]

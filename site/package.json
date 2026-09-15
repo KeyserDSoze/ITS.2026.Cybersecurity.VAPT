@@ -1,0 +1,22 @@
+{
+  "name": "its-umbria-vapt-student-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "content": "node scripts/build-content.mjs",
+    "pdf": "node scripts/build-pdfs.mjs",
+    "dev": "npm run content && vite",
+    "build": "npm run content && npm run pdf && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "marked": "18.0.13",
+    "puppeteer": "25.10.0",
+    "vite": "latest"
+  }
+}

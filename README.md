@@ -18,16 +18,27 @@ Il corso non è pensato come una semplice raccolta di tool o comandi. L'obiettiv
 
 Il percorso è costruito attorno a teoria essenziale, demo, laboratorio e challenge progressive.
 
+## Materiale studente online
+
+Il materiale destinato agli studenti viene pubblicato anche come web app React tramite GitHub Pages:
+
+**https://keyserdsoze.github.io/ITS.2026.Cybersecurity.VAPT/**
+
+La piattaforma offre tema chiaro/scuro, avanzamento persistente sul dispositivo, ripresa dell'ultima lezione, checklist, note personali, autoverifiche e download PDF della singola lezione. I contenuti web e i PDF vengono generati dalla stessa sorgente Markdown presente in `lessons/`.
+
+Il frontend è in [`site/`](site/README.md) e viene pubblicato dalla GitHub Action [`pages.yml`](.github/workflows/pages.yml).
+
 ## Struttura della repository
 
 ```text
 .
 ├── docs/          # impostazione del corso, syllabus e metodologia
-├── lessons/       # materiale delle singole lezioni
+├── lessons/       # sorgente Markdown delle singole lezioni
 ├── labs/          # laboratori, setup e challenge pubbliche
 ├── templates/     # template per finding e report
 ├── resources/     # riferimenti e risorse esterne
-└── assets/        # immagini e materiale statico riutilizzabile
+├── assets/        # immagini e materiale statico riutilizzabile
+└── site/          # web app React per gli studenti + generazione PDF
 ```
 
 La struttura potrà evolvere durante la preparazione del corso.
