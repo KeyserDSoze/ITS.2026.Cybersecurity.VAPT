@@ -105,7 +105,7 @@ function Home({ course, progress }) {
         <div>
           <span className="eyebrow">Vulnerability Assessment & Penetration Testing</span>
           <h1>Impara il metodo.<br />Poi scegli gli strumenti.</h1>
-          <p>Missioni guidate, teoria applicata, laboratorio, autonomia progressiva e reporting. Il tuo avanzamento rimane salvato sul dispositivo.</p>
+          <p>Missioni guidate, teoria applicata, dossier simulati, autonomia progressiva e reporting. Il tuo avanzamento rimane salvato sul dispositivo.</p>
           {resume && <button className="primary" onClick={() => navigate(`lesson/${resume.slug}`)}>Riprendi da {resume.title} →</button>}
         </div>
         <div className="progress-card">
@@ -128,6 +128,7 @@ function Home({ course, progress }) {
               <div>
                 <h3>{lesson.title.replace(/^\d+\s*[—-]\s*/, '')}</h3>
                 <p>{lesson.summary}</p>
+                {lesson.lab && <span className="lab-badge">Dossier simulato incluso</span>}
               </div>
               <span className="card-status">{progress.completed[lesson.slug] ? '✓ Completata' : 'Apri →'}</span>
             </button>
@@ -186,6 +187,7 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
           {lesson.headings.map((heading) => (
             <button key={heading.id} onClick={() => document.getElementById(heading.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>{heading.text}</button>
           ))}
+          {lesson.lab && <button onClick={() => document.getElementById('lab-simulation')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>Dossier di laboratorio</button>}
         </div>
       </aside>
 
@@ -216,6 +218,8 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
 
         <article className="markdown-card lesson-markdown" dangerouslySetInnerHTML={{ __html: lesson.html }} />
 
+        {lesson.lab && <LabDossier lab={lesson.lab} />}
+
         {exitQuiz.length > 0 && (
           <Quiz
             lesson={lesson}
@@ -228,8 +232,7 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
           />
         )}
 
-        <ProgressPanel checklist={checklist} setChecklist={setChecklist} />
-
+        <ProgressPanel checklist={checklist} setChecklist={setChecklist} hasLab={Boolean(lesson.lab)} />
         <Notebook notebook={notebook} setField={setNotebookField} />
 
         <nav className="lesson-nav">
@@ -241,9 +244,52 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
   );
 }
 
-function ProgressPanel({ checklist, setChecklist }) {
+function LabDossier({ lab }) {
+  return (
+    <section className="lab-card" id="lab-simulation">
+      <div className="lab-heading">
+        <div>
+          <span className="eyebrow">Simulazione guidata</span>
+          <h2>{lab.title.replace(/^Lab\s+\d+\s*[—-]\s*/i, '')}</h2>
+          <p>{lab.summary}</p>
+        </div>
+        <span className="fiction-badge">Dati fittizi</span>
+      </div>
+
+      <div className="lab-flow" aria-label="Metodo di analisi">
+        <span>Osserva</span><b>→</b><span>Interpreta</span><b>→</b><span>Formula ipotesi</span><b>→</b><span>Scegli il prossimo test</span><b>→</b><span>Raccogli evidenza</span>
+      </div>
+
+      <article className="lab-markdown lesson-markdown" dangerouslySetInnerHTML={{ __html: lab.html }} />
+
+      {lab.artifacts?.length > 0 && (
+        <div className="artifact-section">
+          <div className="artifact-heading">
+            <span className="eyebrow">Artefatti simulati</span>
+            <h3>Aprili uno alla volta, come se arrivassero durante l'assessment</h3>
+            <p>Non cercare subito la “vulnerabilità”. Per ogni output scrivi prima ciò che puoi affermare e ciò che rimane da verificare.</p>
+          </div>
+          <div className="artifact-list">
+            {lab.artifacts.map((artifact, index) => (
+              <details className="artifact" key={artifact.name} open={index === 0}>
+                <summary>
+                  <span className="artifact-number">{String(index + 1).padStart(2, '0')}</span>
+                  <span>{artifact.name}</span>
+                </summary>
+                <pre><code>{artifact.content}</code></pre>
+              </details>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function ProgressPanel({ checklist, setChecklist, hasLab }) {
   const items = [
     ['theory', 'Ho completato la lettura guidata e gli esempi'],
+    ...(hasLab ? [['lab', 'Ho analizzato il dossier simulato senza saltare direttamente alle conclusioni']] : []),
     ['guided', 'Ho completato l’attività GUIDED della lezione'],
     ['independent', 'Ho provato almeno un passaggio in autonomia'],
     ['evidence', 'Ho ordinato evidenze, note o deliverable prodotti'],
@@ -276,14 +322,13 @@ function Notebook({ notebook, setField }) {
       <div><span className="eyebrow">Taccuino del pentester</span><h2>Costruisci il ragionamento mentre lavori</h2></div>
       <p>Rimane soltanto su questo browser. Tieni separati fatti, ipotesi, test ed evidenze: è la stessa disciplina che userai nel report.</p>
       {fields.map(([key, label, placeholder]) => (
-        <div key={key} style={{ marginTop: 16 }}>
+        <div key={key} className="notebook-field">
           <strong>{label}</strong>
           <textarea
             value={notebook[key] || ''}
             onChange={(event) => setField(key, event.target.value)}
             placeholder={placeholder}
             rows={key === 'free' ? 5 : 4}
-            style={{ marginTop: 8 }}
           />
         </div>
       ))}
