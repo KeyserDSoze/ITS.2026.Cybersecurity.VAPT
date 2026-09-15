@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loadProgress, loadTheme, saveProgress, saveTheme } from './storage.js';
 
 const BASE = import.meta.env.BASE_URL;
@@ -144,6 +144,8 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
   const next = course.lessons[index + 1];
   const checklist = progress.checklist[lesson.slug] || {};
   const notes = progress.notes[lesson.slug] || '';
+  const entryQuiz = (lesson.quiz || []).filter((question) => question.phase === 'entry');
+  const exitQuiz = (lesson.quiz || []).filter((question) => question.phase !== 'entry');
 
   useEffect(() => {
     updateProgress((current) => ({ ...current, lastLesson: lesson.slug }));
@@ -192,11 +194,33 @@ function LessonPage({ course, lesson, progress, updateProgress }) {
           </div>
         </header>
 
-        <ProgressPanel checklist={checklist} setChecklist={setChecklist} />
+        {entryQuiz.length > 0 && (
+          <Quiz
+            lesson={lesson}
+            questions={entryQuiz}
+            progress={progress}
+            updateProgress={updateProgress}
+            eyebrow="Test di ingresso"
+            title="Parti da qui: quanto ne sai già?"
+            intro="10 domande, circa 5 minuti. Non è un voto: rispondi senza cercare le soluzioni e usa il risultato per capire quali fondamentali devi consolidare."
+          />
+        )}
 
         <article className="markdown-card lesson-markdown" dangerouslySetInnerHTML={{ __html: lesson.html }} />
 
-        {lesson.quiz?.length > 0 && <Quiz lesson={lesson} progress={progress} updateProgress={updateProgress} />}
+        {exitQuiz.length > 0 && (
+          <Quiz
+            lesson={lesson}
+            questions={exitQuiz}
+            progress={progress}
+            updateProgress={updateProgress}
+            eyebrow="Autoverifica finale"
+            title="Ora riprova con domande applicate"
+            intro="Queste domande verificano se riesci ad applicare il metodo appena visto a piccoli scenari di assessment."
+          />
+        )}
+
+        <ProgressPanel checklist={checklist} setChecklist={setChecklist} />
 
         <section className="notes-card">
           <div><span className="eyebrow">Appunti personali</span><h2>Le tue note</h2></div>
@@ -233,8 +257,11 @@ function ProgressPanel({ checklist, setChecklist }) {
   );
 }
 
-function Quiz({ lesson, progress, updateProgress }) {
+function Quiz({ lesson, questions, progress, updateProgress, eyebrow = 'Autoverifica', title = 'Controlla se il concetto è chiaro', intro }) {
   const saved = progress.quiz[lesson.slug] || {};
+  const answeredCount = questions.filter((question) => Number.isInteger(saved[question.id])).length;
+  const correctCount = questions.filter((question) => saved[question.id] === question.correct).length;
+
   const answer = (questionId, optionIndex) => updateProgress((current) => ({
     ...current,
     quiz: { ...current.quiz, [lesson.slug]: { ...(current.quiz[lesson.slug] || {}), [questionId]: optionIndex } },
@@ -242,9 +269,13 @@ function Quiz({ lesson, progress, updateProgress }) {
 
   return (
     <section className="quiz-card">
-      <span className="eyebrow">Autoverifica</span>
-      <h2>Controlla se il concetto è chiaro</h2>
-      {lesson.quiz.map((question, qIndex) => {
+      <div className="activity-head">
+        <div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2></div>
+        <strong>{correctCount}/{questions.length}</strong>
+      </div>
+      {intro && <p className="quiz-intro">{intro}</p>}
+      <p className="quiz-progress">Risposte date: {answeredCount}/{questions.length}</p>
+      {questions.map((question, qIndex) => {
         const selected = saved[question.id];
         const answered = Number.isInteger(selected);
         const correct = answered && selected === question.correct;
