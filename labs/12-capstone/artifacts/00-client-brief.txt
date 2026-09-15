@@ -1,0 +1,19 @@
+UMBRAMARKET S.R.L. — FORMATIVE CLIENT BRIEF
+
+UmbraMarket is preparing the public release of a fictional e-commerce platform.
+
+The client asks:
+
+"We want to understand whether an Internet user or a normal customer account could access information that should belong to another customer, or reach functionality that should not be exposed. We also want a short list of the risks that should be fixed before launch."
+
+The client does NOT ask for maximum compromise. The goal is to identify and demonstrate meaningful risk with minimal impact.
+
+Expected outputs:
+
+- concise attack-surface inventory;
+- validated findings only;
+- evidence sufficient to reproduce the issue;
+- prioritized remediation;
+- executive summary for a non-technical stakeholder.
+
+Before doing anything else, write what you still need to know about scope, credentials, limitations and stop conditions.
