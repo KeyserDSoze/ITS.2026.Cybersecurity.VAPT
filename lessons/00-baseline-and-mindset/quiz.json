@@ -1,38 +1,197 @@
 [
   {
-    "id": "facts-vs-hypotheses",
-    "question": "Durante la recon osservi che la porta 443 è aperta. Quale affermazione è un fatto e non un'ipotesi?",
+    "id": "entry-ip-domain",
+    "phase": "entry",
+    "question": "Quale affermazione descrive meglio la differenza tra un indirizzo IP e un nome di dominio?",
     "options": [
-      "Il server usa sicuramente Nginx",
-      "Il target espone un servizio raggiungibile sulla porta TCP 443",
-      "L'applicazione contiene una vulnerabilità TLS",
-      "Il server è Linux"
+      "Sono la stessa cosa scritta in due modi diversi",
+      "Il dominio è un nome che può essere risolto verso uno o più indirizzi IP",
+      "Un indirizzo IP identifica sempre un singolo sito web",
+      "Il dominio esiste solo quando viene usato HTTPS"
     ],
     "correct": 1,
-    "explanation": "L'apertura della porta è un dato osservabile. Tecnologia, sistema operativo e vulnerabilità richiedono ulteriori evidenze."
+    "explanation": "Un nome di dominio è un identificatore leggibile che, tramite DNS, può essere associato a uno o più indirizzi IP."
   },
   {
-    "id": "authorization",
-    "question": "Perché prima di testare un target serve definire esplicitamente lo scope?",
+    "id": "entry-port",
+    "phase": "entry",
+    "question": "Scopri che la porta TCP 443 di un target è raggiungibile. Cosa puoi affermare con certezza?",
     "options": [
-      "Per scegliere il colore del report",
-      "Per sapere quali sistemi e attività sono autorizzati e quali no",
-      "Per evitare di prendere appunti",
-      "Per poter usare qualunque tecnica senza limiti"
-    ],
-    "correct": 1,
-    "explanation": "Lo scope delimita sistemi, attività, vincoli e autorizzazioni del test."
-  },
-  {
-    "id": "pentest-thinking",
-    "question": "Qual è la sequenza che useremo come modello mentale durante il corso?",
-    "options": [
-      "Tool → exploit → screenshot → fine",
-      "CVE → Metasploit → shell → report",
-      "Osservazione → ipotesi → test → evidenza → conclusione",
-      "Scanner → severity → remediation automatica"
+      "Il server usa Nginx",
+      "Il server è Linux",
+      "Un servizio TCP risponde sulla porta 443",
+      "Il servizio contiene una vulnerabilità TLS"
     ],
     "correct": 2,
-    "explanation": "Il corso privilegia il ragionamento verificabile: partire dai fatti, formulare ipotesi e sostenerle con evidenze."
+    "explanation": "La raggiungibilità della porta è un fatto osservato. Tecnologia, sistema operativo e vulnerabilità richiedono ulteriori verifiche."
+  },
+  {
+    "id": "entry-https",
+    "phase": "entry",
+    "question": "Quale sequenza rappresenta meglio, in modo semplificato, l'apertura di un sito HTTPS?",
+    "options": [
+      "HTTP → DNS → TLS → IP",
+      "DNS → connessione TCP → TLS → HTTP",
+      "TLS → DNS → HTTP → TCP",
+      "DNS → SQL → HTTP → TLS"
+    ],
+    "correct": 1,
+    "explanation": "In modo semplificato: il nome viene risolto, viene stabilita la connessione, viene negoziato TLS e poi viaggia HTTP."
+  },
+  {
+    "id": "entry-auth",
+    "phase": "entry",
+    "question": "Qual è la differenza principale tra autenticazione e autorizzazione?",
+    "options": [
+      "L'autenticazione stabilisce chi sei; l'autorizzazione stabilisce cosa puoi fare",
+      "L'autorizzazione stabilisce chi sei; l'autenticazione assegna un IP",
+      "Sono sinonimi",
+      "L'autenticazione riguarda solo gli amministratori"
+    ],
+    "correct": 0,
+    "explanation": "L'autenticazione verifica l'identità; l'autorizzazione decide quali risorse e operazioni sono consentite a quell'identità."
+  },
+  {
+    "id": "entry-cve",
+    "phase": "entry",
+    "question": "Trovi una CVE associata alla versione dichiarata da un servizio. Cosa significa?",
+    "options": [
+      "Il target è sicuramente vulnerabile",
+      "Hai trovato una possibile vulnerabilità da verificare nel contesto reale",
+      "Puoi sfruttarla senza ulteriori controlli",
+      "Il sistema è già compromesso"
+    ],
+    "correct": 1,
+    "explanation": "La compatibilità con una CVE genera un'ipotesi. Prodotto, versione, patch, configurazione e condizioni di sfruttamento devono essere verificati."
+  },
+  {
+    "id": "entry-va-pt",
+    "phase": "entry",
+    "question": "Quale frase distingue meglio Vulnerability Assessment e Penetration Test?",
+    "options": [
+      "Il VA usa Linux e il PT usa Windows",
+      "Il VA identifica e prioritizza debolezze; il PT prova anche a dimostrarne l'impatto nei limiti autorizzati",
+      "Il VA è automatico e il PT è sempre manuale",
+      "Non esiste alcuna differenza"
+    ],
+    "correct": 1,
+    "explanation": "Il VA cerca e valuta debolezze; il PT aggiunge una verifica controllata di ciò che un attaccante potrebbe realmente ottenere."
+  },
+  {
+    "id": "entry-scope",
+    "phase": "entry",
+    "question": "Durante la ricognizione scopri un host del cliente che non compare nello scope. Qual è la scelta corretta?",
+    "options": [
+      "Testarlo subito perché appartiene al cliente",
+      "Ignorare per sempre l'informazione",
+      "Documentarlo e chiedere conferma prima di eseguire test sul nuovo host",
+      "Provare solo gli exploit non distruttivi"
+    ],
+    "correct": 2,
+    "explanation": "La proprietà del sistema non equivale all'autorizzazione a testarlo. Un nuovo asset va segnalato e lo scope va chiarito."
+  },
+  {
+    "id": "entry-evidence",
+    "phase": "entry",
+    "question": "Quale tra queste è l'evidenza migliore per un finding web?",
+    "options": [
+      "Mi sembra vulnerabile",
+      "Uno screenshot senza contesto",
+      "Richiesta, risposta, target, timestamp e descrizione dei passaggi eseguiti",
+      "Il nome del tool utilizzato"
+    ],
+    "correct": 2,
+    "explanation": "Una buona evidenza deve spiegare cosa è stato fatto, su quale target e quale risultato è stato realmente osservato."
+  },
+  {
+    "id": "entry-fact-hypothesis",
+    "phase": "entry",
+    "question": "Osservi l'header `Server: nginx/1.24.0`. Quale frase è formulata correttamente?",
+    "options": [
+      "Il server è certamente Nginx 1.24.0",
+      "La risposta contiene un header che dichiara nginx/1.24.0; la tecnologia effettiva va verificata",
+      "Nginx 1.24.0 è sicuramente vulnerabile",
+      "Il sistema operativo è sicuramente Linux"
+    ],
+    "correct": 1,
+    "explanation": "L'header è un fatto osservato; interpretarlo come prova definitiva della tecnologia sarebbe una conclusione più forte delle evidenze disponibili."
+  },
+  {
+    "id": "entry-method",
+    "phase": "entry",
+    "question": "Quale sequenza descrive meglio il metodo che useremo nel corso?",
+    "options": [
+      "Tool → exploit → screenshot → fine",
+      "Scanner → CVE → shell → report",
+      "Osservazione → ipotesi → test → evidenza → conclusione",
+      "Payload → tentativi → tool diverso → exploit"
+    ],
+    "correct": 2,
+    "explanation": "Il percorso parte da ciò che sappiamo, formula domande verificabili e produce conclusioni supportate da evidenze."
+  },
+  {
+    "id": "exit-header",
+    "phase": "exit",
+    "question": "La risposta di UmbraMarket contiene `Server: nginx/1.24.0`. Qual è il modo professionale di riportare questa informazione?",
+    "options": [
+      "Il server è sicuramente Nginx 1.24.0 e vulnerabile",
+      "L'header Server dichiara nginx/1.24.0; la tecnologia e la versione effettive richiedono verifica",
+      "Il server è Linux",
+      "Non ha alcun valore come evidenza"
+    ],
+    "correct": 1,
+    "explanation": "Si documenta prima il dato osservato e si mantiene separata l'interpretazione che richiede ulteriori verifiche."
+  },
+  {
+    "id": "exit-new-host",
+    "phase": "exit",
+    "question": "Trovi `admin.umbramarket.lab`, ma lo scope autorizza solo `shop.umbramarket.lab`. Cosa fai?",
+    "options": [
+      "Lo scansioni perché è chiaramente correlato",
+      "Lo documenti come asset scoperto e chiedi se può essere incluso nello scope",
+      "Tenti solamente il login",
+      "Lo testi con tecniche passive e attive senza avvisare"
+    ],
+    "correct": 1,
+    "explanation": "Scoperta e autorizzazione sono due cose differenti. Il nuovo asset va segnalato prima di eseguire test su di esso."
+  },
+  {
+    "id": "exit-cookie",
+    "phase": "exit",
+    "question": "Osservi `Set-Cookie: session=ab12cd34; HttpOnly; Secure`. Quale sarebbe una buona domanda successiva?",
+    "options": [
+      "Posso dichiarare subito una vulnerabilità critica?",
+      "Il cookie cambia dopo il login e viene usato per rappresentare la sessione autenticata?",
+      "Posso cancellare il database?",
+      "Il server è sicuramente Windows?"
+    ],
+    "correct": 1,
+    "explanation": "Una buona ipotesi nasce dal dato osservato e porta a un test mirato e non distruttivo sul funzionamento della sessione."
+  },
+  {
+    "id": "exit-authorization",
+    "phase": "exit",
+    "question": "Alice è autenticata e può visualizzare `/api/orders/1001`, il proprio ordine. Cambiando l'ID in 1002 vede l'ordine di Bob. Quale controllo è probabilmente insufficiente?",
+    "options": [
+      "DNS",
+      "Autorizzazione",
+      "TLS",
+      "Risoluzione IP"
+    ],
+    "correct": 1,
+    "explanation": "Alice è già autenticata; il problema è che l'applicazione non limita correttamente l'accesso alla risorsa appartenente a Bob."
+  },
+  {
+    "id": "exit-first-step",
+    "phase": "exit",
+    "question": "Uno scanner segnala una possibile vulnerabilità High. Qual è il passo successivo più corretto?",
+    "options": [
+      "Copiarla direttamente nel report finale",
+      "Aumentarla a Critical per sicurezza",
+      "Verificare manualmente il finding, raccogliere evidenze e valutarne l'impatto reale",
+      "Ignorarla perché arriva da uno scanner"
+    ],
+    "correct": 2,
+    "explanation": "Il risultato automatico è un punto di partenza. Il tester deve validarlo e contestualizzarlo prima di trasformarlo in un finding."
   }
 ]
