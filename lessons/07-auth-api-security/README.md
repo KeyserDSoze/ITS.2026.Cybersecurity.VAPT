@@ -1,91 +1,204 @@
 # 07 — Authentication, Authorization & API Security
 
-## Obiettivi
+## Missione di oggi
 
-- distinguere chiaramente authentication, session management e authorization;
-- riconoscere controlli di accesso mancanti o inconsistenti;
-- comprendere IDOR/BOLA e function-level authorization;
-- analizzare API REST a partire dal traffico reale;
-- introdurre token e JWT senza ridurre il test alla sola crittografia del token.
+Alice e Bob sono due clienti UmbraMarket. Entrambi hanno fatto login correttamente. La domanda di oggi è:
 
-## Concetti chiave
+> "Il server sa davvero distinguere **chi sei** da **cosa puoi fare** e **quali oggetti puoi usare**?"
 
-### Authentication
+Questa distinzione è alla base di molti problemi API reali.
 
-Domande guida:
+## Prima di iniziare — test rapido
 
-- come dimostra l'utente la propria identità?
-- come viene gestito un login fallito?
-- esistono account recovery o reset password?
-- cosa avviene al logout?
+Il pre-test ti propone scenari con login, sessioni, object ID e ruoli. Devi capire quale controllo è coinvolto.
 
-### Authorization
+## Cosa imparerai
 
-Domande guida:
+- distinguere authentication, session management e authorization;
+- riconoscere controlli di accesso orizzontali e verticali;
+- capire IDOR/BOLA;
+- mappare una REST API dal traffico reale;
+- leggere un JWT a livello operativo;
+- testare differenze tra utenti/ruoli senza affidarti alla UI.
 
-- l'applicazione controlla che l'utente possa accedere proprio a quell'oggetto?
-- il controllo avviene lato server?
-- un ruolo standard può invocare funzioni amministrative?
+## 1. Authentication
 
-### API
+Risponde a:
 
-Elementi da osservare:
+> Chi sei?
 
-- metodi HTTP;
-- path e object ID;
-- request body;
-- status code;
-- token;
-- errori;
-- differenze tra utenti e ruoli.
+Esempi di aree da osservare:
 
-### JWT
+- login;
+- errori e rate limiting;
+- reset password;
+- MFA, se presente;
+- logout;
+- gestione delle credenziali.
 
-Comprendere struttura e uso operativo:
+Il fatto che un utente abbia superato il login non dice nulla su ciò che può fare dopo.
+
+## 2. Session management
+
+Dopo il login il sistema deve associare le richieste successive all'identità corretta.
+
+Può farlo tramite:
+
+- session cookie;
+- bearer token;
+- altri meccanismi applicativi.
+
+Domande utili:
+
+- il token cambia dopo il login?
+- scade?
+- il logout lo invalida?
+- può essere riutilizzato?
+- è associato correttamente all'utente?
+
+## 3. Authorization
+
+Risponde a:
+
+> Questo utente può eseguire **questa azione** su **questo oggetto**?
+
+### Orizzontale
+
+Alice e Bob hanno lo stesso ruolo, ma Alice accede all'oggetto di Bob.
+
+### Verticale
+
+Un utente standard esegue una funzione riservata ad admin/staff.
+
+Entrambi sono problemi di authorization.
+
+## 4. IDOR / BOLA
+
+Esempio:
+
+```http
+GET /api/orders/1001
+Cookie: session=alice
+```
+
+Se `1001` è l'ordine di Alice, prova concettuale:
+
+```text
+cambio object ID → osservo decisione server-side
+```
+
+Se sostituendo l'ID con quello di Bob il server restituisce i dati, il problema non è il fatto che l'ID sia "prevedibile": è la **mancanza di un controllo di autorizzazione sull'oggetto**.
+
+## 5. Function-level authorization
+
+Request:
+
+```http
+POST /api/admin/products
+Authorization: Bearer <standard-user-token>
+```
+
+La UI potrebbe non mostrare mai questo endpoint a un utente standard. Il server deve comunque rifiutare l'azione.
+
+## 6. Mappare una API
+
+Per ogni endpoint registra:
+
+| Metodo | Path | Auth | Oggetto | Ruolo | Effetto |
+|---|---|---|---|---|---|
+
+Poi confronta:
+
+- anonimo vs autenticato;
+- Alice vs Bob;
+- user vs admin;
+- GET vs PUT/DELETE;
+- UI vs request diretta.
+
+## 7. JWT
+
+Un JWT ha struttura:
 
 ```text
 header.payload.signature
 ```
 
-Il focus è capire come l'applicazione usa e valida il token, non imparare una lista di "JWT hacks".
+Header e payload sono normalmente leggibili: non vanno confusi con dati cifrati.
 
-## Demo — Two Users, One Object
+Il test importante non è "fare trucchi al token" in astratto, ma capire:
 
-1. Creare due identità nel target di laboratorio.
-2. Eseguire la stessa funzionalità con entrambe.
-3. Confrontare le request.
-4. Identificare l'object identifier.
-5. Formulare l'ipotesi di authorization testing.
-6. Verificare il comportamento server-side nel target autorizzato.
+- come viene emesso;
+- quali claim contiene;
+- cosa usa il server per autorizzare;
+- come valida integrità e scadenza;
+- cosa succede se cambiano ruolo o sessione.
 
-## Lab
+## Esempio svolto — Two Users, One Object
 
-### CORE
+Alice:
 
-Mappare almeno tre endpoint API indicando:
+```http
+GET /api/orders/1001
+Authorization: Bearer ALICE_TOKEN
+```
 
-| Endpoint | Metodo | Auth richiesta | Oggetto/ruolo | Test di autorizzazione |
-|---|---|---|---|---|
+Bob:
 
-Validare almeno un controllo di accesso significativo.
+```http
+GET /api/orders/1002
+Authorization: Bearer BOB_TOKEN
+```
+
+Test controllato nel laboratorio:
+
+```text
+ALICE_TOKEN + /api/orders/1002
+```
+
+Possibili risultati:
+
+- `403/404` coerente → controllo potenzialmente corretto, da contestualizzare;
+- `200` con dati di Bob → forte evidenza di broken object level authorization.
+
+## Laboratorio — Two Users, One Object
+
+### GUIDED
+
+1. accedi con Alice e Bob;
+2. cattura la stessa funzione per entrambi;
+3. confronta request e response;
+4. identifica token/sessione e object ID;
+5. formula esplicitamente l'ipotesi;
+6. esegui una sola variazione controllata;
+7. documenta la decisione server-side.
+
+### Se sei bloccato
+
+**Hint 1:** cerca request quasi identiche che differiscono per utente o object ID.
+
+**Hint 2:** chiediti quale dato rappresenta l'identità e quale rappresenta la risorsa.
+
+### INDEPENDENT
+
+Mappa almeno tre endpoint e definisci per ognuno un test di authorization appropriato.
 
 ### CHALLENGE
 
-Cercare incoerenze tra:
+Trova una differenza di controllo tra UI/API, metodi diversi o ruoli diversi. Se individui un difetto, costruisci la PoC minima necessaria.
 
-- UI e API;
-- due metodi HTTP;
-- due ruoli;
-- endpoint equivalenti.
+## Deliverable professionale
 
-### HARD MODE
+Finding di authentication/authorization/API oppure, se i controlli risultano corretti, una **test evidence sheet** che descriva cosa hai verificato e con quale risultato.
 
-Individuare un difetto di business logic o di authorization non suggerito dal nome dell'endpoint e costruire una PoC minima.
+## Prima di chiudere
 
-## Deliverable
+Dovresti saper spiegare:
 
-Finding completo relativo ad authentication, authorization o API security.
+- perché authentication e authorization non sono sinonimi;
+- perché un ID prevedibile non è da solo una vulnerabilità;
+- perché nascondere un endpoint nella UI non basta;
+- quali confronti sono più utili nel test API.
 
-## Messaggio chiave
+Completa l'autoverifica finale.
 
-> Nascondere un pulsante non è un controllo di autorizzazione. Il server deve decidere se quell'utente può eseguire quell'azione su quell'oggetto.
+> Il server deve decidere se quell'utente può eseguire quell'azione su quell'oggetto.
