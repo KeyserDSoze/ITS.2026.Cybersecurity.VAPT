@@ -1,0 +1,109 @@
+from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
+from pptx.dml.color import RGBColor
+from pptx.enum.dml import MSO_LINE_DASH_STYLE
+import os, zipfile, textwrap, math, json
+
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'premium')
+os.makedirs(OUT, exist_ok=True)
+os.makedirs(OUT, exist_ok=True)
+
+# ---------- Design system ----------
+W, H = 13.333, 7.5
+WHITE = RGBColor(255,255,255)
+INK = RGBColor(17,24,39)
+INK2 = RGBColor(55,65,81)
+MUTED = RGBColor(100,116,139)
+TEAL = RGBColor(8,111,120)
+BLUE = RGBColor(37,99,235)
+AMBER = RGBColor(217,119,6)
+VIOLET = RGBColor(109,40,217)
+RED = RGBColor(190,24,93)
+GREEN = RGBColor(21,128,61)
+SOFT = RGBColor(248,250,252)
+SOFT2 = RGBColor(241,245,249)
+BORDER = RGBColor(226,232,240)
+DARK = RGBColor(15,23,42)
+MONO_BG = RGBColor(15,23,42)
+MONO_FG = RGBColor(226,232,240)
+MONO_MUTED = RGBColor(148,163,184)
+
+FONT = 'Aptos'
+MONO = 'Cascadia Mono'
+
+
+def set_wide(prs):
+    prs.slide_width = Inches(W)
+    prs.slide_height = Inches(H)
+
+
+def add_text(slide, x, y, w, h, text='', size=18, color=INK, bold=False,
+             font=FONT, align=PP_ALIGN.LEFT, valign=MSO_ANCHOR.TOP,
+             margin=0, linesp=1.0):
+    tb = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
+    tf = tb.text_frame
+    tf.clear()
+    tf.word_wrap = True
+    tf.margin_left = Inches(margin); tf.margin_right = Inches(margin)
+    tf.margin_top = Inches(margin); tf.margin_bottom = Inches(margin)
+    tf.vertical_anchor = valign
+    p = tf.paragraphs[0]
+    p.text = text
+    p.font.name = font
+    p.font.size = Pt(size)
+    p.font.color.rgb = color
+    p.font.bold = bold
+    p.alignment = align
+    try: p.line_spacing = linesp
+    except Exception: pass
+    return tb
+
+
+def add_para(tf, text, size=14, color=INK, bold=False, bullet=False, level=0, font=FONT, space_after=4):
+    p = tf.add_paragraph()
+    p.text = text
+    p.font.name = font
+    p.font.size = Pt(size)
+    p.font.color.rgb = color
+    p.font.bold = bold
+    p.level = level
+    if bullet:
+        p.text = '• ' + text
+    try: p.space_after = Pt(space_after)
+    except Exception: pass
+    return p
+
+
+def rounded(slide, x, y, w, h, fill=SOFT, line=WHITE, radius=True):
+    shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE if radius else MSO_SHAPE.RECTANGLE,
+                                   Inches(x), Inches(y), Inches(w), Inches(h))
+    shape.fill.solid(); shape.fill.fore_color.rgb = fill
+    shape.line.color.rgb = line
+    return shape
+
+
+def chip(slide, x, y, text, color=TEAL, fill=SOFT2, w=None):
+    if w is None:
+        w = max(0.9, min(3.2, 0.11*len(text)+0.45))
+    rounded(slide,x,y,w,0.36,fill,fill)
+    add_text(slide,x+0.10,y+0.075,w-0.20,0.2,text.upper(),10.5,color,True)
+
+
+def topbar(slide, day, module, section=None, backup=False):
+    # clean top metadata
+    chip(slide,0.62,0.42,day,TEAL,SOFT2,w=1.0)
+    chip(slide,1.75,0.42,module,BLUE,SOFT2,w=max(1.05,0.11*len(module)+0.42))
+    if section:
+        chip(slide,3.25,0.42,section,VIOLET,SOFT2,w=max(1.2,0.11*len(section)+0.45))
+    if backup:
+        chip(slide,10.55,0.42,'approfondimento · se serve',AMBER,RGBColor(255,247,237),w=2.15)
+
+
+def footer(slide, n):
+    line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.62), Inches(6.82), Inches(12.05), Inches(0.012))
+    line.fill.solid(); line.fill.fore_color.rgb = BORDER; line.line.color.rgb = BORDER
+    add_text(slide,0.62,6.9,5.0,0.2,'ITS Umbria · Vulnerability Assessment & Penetration Testing',9.5,MUTED)
+    add_text(slide,12.12,6.87,0.45,0.22,str(n),10,TEAL,True,align=PP_ALIGN.RIGHT)
+
