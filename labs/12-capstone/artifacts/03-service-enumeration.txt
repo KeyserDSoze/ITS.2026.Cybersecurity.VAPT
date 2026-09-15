@@ -1,0 +1,29 @@
+SIMULATED SERVICE ENUMERATION
+
+Target: 10.20.30.10
+
+PORT     STATE  SERVICE
+80/tcp   open   http
+443/tcp  open   https
+8080/tcp open   http-alt
+
+HTTP observations using authorized hostnames:
+
+Host: shop.umbramarket.lab
+80  -> 301 redirect to HTTPS
+443 -> 200 application response
+
+Host: api.umbramarket.lab
+443 -> 404 at /
+443 -> JSON response on /api/health
+
+Banner-like response headers:
+
+Server: nginx/1.24.0
+X-Powered-By: demo-app/2.3
+
+IMPORTANT
+
+The output does not prove that nginx/1.24.0 is the final backend, that demo-app/2.3 is accurate, or that either component is vulnerable.
+
+Port 8080 was observed at the IP level. Before interacting with it, decide whether the current scope and hostname information are sufficient to attribute it to an authorized target.
