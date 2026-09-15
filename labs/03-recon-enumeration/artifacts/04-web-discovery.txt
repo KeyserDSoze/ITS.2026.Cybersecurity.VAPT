@@ -1,0 +1,19 @@
+[SIMULATED WEB DISCOVERY]
+GET /robots.txt -> 200
+
+User-agent: *
+Disallow: /preview/
+Disallow: /internal-docs/
+
+GET /sitemap.xml -> 200
+Observed paths:
+/
+/login
+/catalog
+/account
+/support
+
+Response header observed on /support:
+X-Backend-Node: web-a
+
+Nota: robots.txt indica percorsi che il sito chiede ai crawler di non visitare; non è un meccanismo di autorizzazione.

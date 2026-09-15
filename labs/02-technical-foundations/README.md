@@ -1,101 +1,50 @@
-# Lab 02 — Follow the HTTP Request
+# Lab 02 — Follow the Request
 
 ## Scenario
 
-Ora UmbraMarket ti ha dato accesso alla piccola applicazione Guided Lab. Devi capire **come una funzionalità viaggia dal browser al server** prima di provare a modificarla.
+Un utente visita il proprio profilo UmbraMarket. Il browser genera diverse richieste. Il vostro lavoro è ricostruire **che cosa sta succedendo**, non cercare vulnerabilità.
 
-## Scope
+## Dossier
 
-```text
-http://127.0.0.1:5005
-```
+1. `artifacts/01-anonymous-request.txt`
+2. `artifacts/02-login-response.txt`
+3. `artifacts/03-profile-request.txt`
+4. `artifacts/04-profile-response.txt`
 
-## Setup
+## GUIDED
 
-```bash
-cd labs/platform
-docker compose up -d --build
-```
+Per ogni request/response identificare:
 
-## GUIDED — Dalla richiesta anonima alla sessione
-
-### Step 1 — Una richiesta semplice
-
-```bash
-curl -i http://127.0.0.1:5005/api/health
-```
-
-Identifica:
-
-- metodo implicito;
+- metodo HTTP;
 - path;
+- hostname;
 - status code;
-- `Content-Type`;
-- almeno un header della risposta;
-- dati principali del body.
+- content type;
+- presenza di cookie/token;
+- dato controllato dal client;
+- dato prodotto dal server.
 
-### Step 2 — Endpoint protetto senza login
+## Domande
 
-```bash
-curl -i http://127.0.0.1:5005/api/me
-```
-
-Domanda: perché `401` ha senso qui? Che differenza avrebbe un `403`?
-
-### Step 3 — Crea una sessione
-
-```bash
-curl -i -c cookies.txt \
-  -d 'username=alice&password=Alice123!' \
-  http://127.0.0.1:5005/login
-```
-
-Apri `cookies.txt` e individua il cookie di sessione.
-
-Poi:
-
-```bash
-curl -i -b cookies.txt http://127.0.0.1:5005/api/me
-```
-
-Confronta le due risposte di `/api/me`: prima e dopo il login.
-
-### Step 4 — Anatomia di una request autenticata
-
-Ricostruisci in forma testuale:
-
-```http
-GET /api/me HTTP/1.1
-Host: 127.0.0.1:5005
-Cookie: ...
-```
-
-Segna cosa è necessario per identificare la risorsa e cosa rappresenta l'identità/sessione.
+1. Cosa cambia tra navigazione anonima e autenticata?
+2. Quale elemento sembra rappresentare la sessione?
+3. Il solo fatto di possedere un cookie dimostra quali autorizzazioni abbiamo?
+4. Quale richiesta riprodurresti per prima per capire il comportamento dell'applicazione?
 
 ## INDEPENDENT
 
-Usa browser DevTools o Burp/ZAP per osservare la funzione `Dashboard` e documenta:
+Disegnare:
 
-- request per `/api/orders`;
-- cookie o token usato;
-- status code;
-- struttura della risposta;
-- differenza tra chiamata anonima e autenticata.
+```text
+Browser -> Web App -> API -> Data
+```
+
+aggiungendo su ogni freccia le informazioni osservate nel dossier.
 
 ## CHALLENGE
 
-Riproduci una request del browser con `curl` usando soltanto gli elementi realmente necessari. Rimuovi un elemento alla volta e annota cosa cambia.
+Individuare almeno tre elementi della request che il client potrebbe modificare e formulare, per ciascuno, una domanda di sicurezza sensata.
 
 ## Deliverable
 
-Una pagina `Request Anatomy` con:
-
-```text
-Browser → HTTP request → UmbraMarket → HTTP response → Browser
-```
-
-più una request annotata riga per riga.
-
-## Cleanup
-
-Elimina `cookies.txt` al termine perché contiene una sessione didattica.
+Una request annotata riga per riga e un diagramma del flusso.

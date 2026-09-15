@@ -1,0 +1,9 @@
+[SIMULATED REQUEST A — BASELINE]
+GET /api/products/search?q=desk HTTP/1.1
+Host: api.umbramarket.lab
+
+[SIMULATED RESPONSE]
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"count":2,"items":[{"id":301,"name":"Desk Lamp"},{"id":302,"name":"Standing Desk"}]}

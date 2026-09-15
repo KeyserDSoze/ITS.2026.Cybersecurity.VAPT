@@ -7,9 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const siteDir = path.resolve(__dirname, '..');
 const repoRoot = path.resolve(siteDir, '..');
 const lessonsDir = path.join(repoRoot, 'lessons');
-const labsDir = path.join(repoRoot, 'labs');
 const outputDir = path.join(siteDir, 'public', 'content');
-const githubBase = 'https://github.com/KeyserDSoze/ITS.2026.Cybersecurity.VAPT/blob/main';
 
 function slugify(value) {
   return value
@@ -36,7 +34,7 @@ function section(markdown, heading) {
 }
 
 function summaryFrom(markdown) {
-  const candidateSections = ['Missione di oggi', 'La missione finale', 'Scenario', 'Scopo', 'Obiettivi', 'Cosa imparerai'];
+  const candidateSections = ['Missione di oggi', 'La missione finale', 'Scopo', 'Obiettivi', 'Cosa imparerai'];
   const source = candidateSections.map((heading) => section(markdown, heading)).find(Boolean) || '';
   const paragraphs = source.split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean);
   const paragraph = paragraphs.find((item) => !item.startsWith('-') && !item.startsWith('```') && !item.startsWith('>'));
@@ -64,41 +62,12 @@ function addHeadingIds(html) {
   });
 }
 
-function rewriteRelativeLinks(html, repoDir) {
-  return html.replace(/href="(?!https?:|mailto:|#)([^"]+)"/g, (full, href) => {
-    const target = path.posix.normalize(path.posix.join(repoDir, href));
-    return `href="${githubBase}/${target}" target="_blank" rel="noreferrer"`;
-  });
-}
-
 async function readQuiz(dir) {
   try {
     const raw = await fs.readFile(path.join(dir, 'quiz.json'), 'utf8');
     return JSON.parse(raw);
   } catch (error) {
     if (error.code === 'ENOENT') return [];
-    throw error;
-  }
-}
-
-async function readLab(slug) {
-  const labDir = path.join(labsDir, slug);
-  const markdownPath = path.join(labDir, 'README.md');
-  try {
-    const markdown = await fs.readFile(markdownPath, 'utf8');
-    const titleMatch = markdown.match(/^#\s+(.+)$/m);
-    const title = titleMatch ? stripInlineMarkdown(titleMatch[1]) : `Lab ${slug}`;
-    const parsed = addHeadingIds(marked.parse(markdown));
-    return {
-      title,
-      summary: summaryFrom(markdown),
-      headings: headingsFrom(markdown),
-      html: rewriteRelativeLinks(parsed, `labs/${slug}`),
-      markdown,
-      repoPath: `labs/${slug}/README.md`,
-    };
-  } catch (error) {
-    if (error.code === 'ENOENT') return null;
     throw error;
   }
 }
@@ -124,7 +93,7 @@ for (const entry of entries) {
   const title = titleMatch ? stripInlineMarkdown(titleMatch[1]) : entry.name;
   const numberMatch = entry.name.match(/^(\d+)/);
   const number = numberMatch ? Number(numberMatch[1]) : lessons.length;
-  const html = rewriteRelativeLinks(addHeadingIds(marked.parse(markdown)), `lessons/${entry.name}`);
+  const html = addHeadingIds(marked.parse(markdown));
 
   lessons.push({
     number,
@@ -135,7 +104,6 @@ for (const entry of entries) {
     html,
     markdown,
     quiz: await readQuiz(dir),
-    lab: await readLab(entry.name),
     pdf: `pdfs/${entry.name}.pdf`,
   });
 }

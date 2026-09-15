@@ -1,86 +1,55 @@
-# Lab 01 — Client Kickoff & Rules of Engagement
+# Lab 01 — Il cliente dice: «Fateci un pentest»
 
 ## Scenario
 
-Il cliente dice soltanto:
+UmbraMarket sta per pubblicare una nuova piattaforma. Il cliente invia una richiesta volutamente incompleta.
 
-> "UmbraMarket sta per andare in produzione. Vogliamo sapere se è sicura. Fateci un penetration test."
+## Dossier
 
-Il problema del laboratorio non è tecnico: devi trasformare una richiesta vaga in un incarico eseguibile e autorizzato.
+- `artifacts/01-request-from-client.txt`
+- `artifacts/02-architecture-fragment.txt`
 
-## Regola fondamentale
+Sono documenti completamente fittizi.
 
-In questa attività **non si testa nulla** finché scope e Rules of Engagement non sono sufficientemente chiari.
+## Obiettivo
 
-## GUIDED — Le prime domande
+Trasformare una richiesta vaga in un incarico tecnicamente eseguibile.
 
-Dividi le domande in cinque gruppi:
+## GUIDED — Le domande prima dei tool
 
-1. **obiettivo** — cosa vuole sapere il cliente?
-2. **asset** — quali sistemi sono inclusi?
-3. **modalità** — black, grey o white box?
-4. **limiti** — cosa non dobbiamo fare?
-5. **comunicazione** — chi contattiamo se qualcosa va storto?
+Dividere le domande in quattro categorie:
 
-Per ogni gruppo formula almeno due domande.
+1. obiettivo del test;
+2. asset e scope;
+3. tecniche/limiti;
+4. comunicazione ed evidenze.
 
-### Esempio
+Per ogni domanda spiegare **quale rischio operativo evita**.
 
-Domanda debole:
+## Informazione progressiva
 
-> Possiamo usare Nmap?
-
-Domanda migliore:
-
-> Quali hostname e indirizzi IP sono esplicitamente inclusi nello scope e sono autorizzate attività di network enumeration su tutti questi asset?
-
-La seconda domanda chiarisce prima il **confine**, poi lo strumento.
-
-## Decision point
-
-Il cliente dichiara:
-
-```text
-In scope:
-- applicazione web di staging
-- API usata dalla web app
-- account test forniti dal cliente
-
-Out of scope:
-- sistemi di pagamento di terze parti
-- e-mail reali dei dipendenti
-- denial of service
-- social engineering
-```
-
-Scrivi cosa è ancora ambiguo.
+Il docente può rivelare `02-architecture-fragment.txt` solo dopo che gli studenti hanno chiesto informazioni sull'architettura.
 
 ## INDEPENDENT
 
-Produci una pagina `Scope & Rules of Engagement` con almeno:
+Preparare una bozza di Rules of Engagement con:
 
-- obiettivo dell'assessment;
-- asset in scope;
-- asset out of scope;
-- approccio black/grey/white box;
-- credenziali fornite;
-- tecniche vietate;
-- finestra temporale;
+- in scope;
+- out of scope;
+- orari;
+- credenziali eventualmente fornite;
+- attività da confermare prima dell'esecuzione;
 - stop condition;
-- contatto di escalation;
-- gestione delle evidenze;
-- deliverable attesi.
+- contatto di escalation.
 
 ## CHALLENGE
 
-Trova almeno tre situazioni che potrebbero creare un incidente se il contratto restasse ambiguo. Per ciascuna scrivi la domanda che useresti per risolvere l'ambiguità.
+Individuare almeno 5 ambiguità nella richiesta originale che potrebbero portare due tester diversi a svolgere due assessment completamente differenti.
 
 ## Deliverable
 
-`scope.md`, massimo due pagine, scritto come documento che un collega potrebbe usare senza chiederti chiarimenti.
+Una pagina di Scope & Rules of Engagement.
 
 ## Debrief
 
-Domanda finale:
-
-> Quale singola informazione mancante avrebbe potuto causare il problema più serio durante il test?
+Un pentest comincia quando è chiaro **cosa dobbiamo dimostrare**, non quando parte il primo scanner.

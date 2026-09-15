@@ -1,0 +1,10 @@
+[SIMULATED OBSERVATION OUTPUT]
+DNS lookup:
+shop.umbramarket.lab -> 10.77.0.10
+
+TCP reachability summary:
+80/tcp   open   http
+443/tcp  open   https
+8080/tcp closed http-alt
+
+Note: output didattico inventato. Non proviene da una scansione reale.

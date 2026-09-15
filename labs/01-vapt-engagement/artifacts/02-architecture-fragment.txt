@@ -1,0 +1,13 @@
+[SIMULATED ARCHITECTURE NOTE]
+Internet/User
+   |
+   v
+shop.umbramarket.lab
+   |
+   +--> api.umbramarket.lab
+   |
+   +--> files.umbramarket.lab
+
+Esiste inoltre un portale amministrativo interno.
+
+Nota per gli studenti: la presenza di un asset nell'architettura NON equivale automaticamente alla sua inclusione nello scope.

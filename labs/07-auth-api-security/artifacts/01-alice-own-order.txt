@@ -1,0 +1,10 @@
+[SIMULATED REQUEST]
+GET /api/orders/1001 HTTP/1.1
+Host: api.umbramarket.lab
+Cookie: session=demo-alice-7f2a
+
+[SIMULATED RESPONSE]
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"orderId":1001,"ownerId":101,"ownerName":"Alice Demo","total":79.90}

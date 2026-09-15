@@ -1,0 +1,6 @@
+[SIMULATED DNS OUTPUT]
+shop.umbramarket.lab.  300  IN  A      10.77.0.10
+api.umbramarket.lab.   300  IN  A      10.77.0.10
+files.umbramarket.lab. 300  IN  A      10.77.0.20
+
+Commento: più hostname possono puntare allo stesso indirizzo IP. Questo output non dimostra che espongano la stessa applicazione.

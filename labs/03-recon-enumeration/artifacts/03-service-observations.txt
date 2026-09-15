@@ -1,0 +1,12 @@
+[SIMULATED SERVICE OBSERVATIONS]
+https://shop.umbramarket.lab/
+  HTTP 200
+  Server header: nginx/1.24.0
+  Page title: UmbraMarket
+
+https://api.umbramarket.lab/
+  HTTP 404
+  Content-Type: application/json
+  Body: {"error":"route not found","docs":"/docs"}
+
+Domanda: un 404 significa che il servizio non è interessante? Perché?

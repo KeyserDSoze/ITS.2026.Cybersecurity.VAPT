@@ -1,0 +1,10 @@
+[SIMULATED RESPONSE]
+HTTP/1.1 200 OK
+Content-Type: application/json
+Cache-Control: no-store
+
+{
+  "userId": 101,
+  "name": "Alice Demo",
+  "role": "customer"
+}

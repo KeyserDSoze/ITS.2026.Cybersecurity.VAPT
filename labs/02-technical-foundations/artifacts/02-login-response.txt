@@ -1,0 +1,7 @@
+[SIMULATED RESPONSE AFTER A VALID TRAINING LOGIN]
+HTTP/1.1 302 Found
+Location: /account
+Set-Cookie: session=demo-alice-7f2a; HttpOnly; Secure; SameSite=Lax
+Content-Length: 0
+
+Domanda: quali proprietà del cookie possiamo osservare? Quali proprietà della sessione NON possiamo dedurre da questo output?

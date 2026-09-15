@@ -1,97 +1,56 @@
-# Lab 06 — Injection: From Anomaly to Evidence
+# Lab 06 — Input Changes Behaviour
 
 ## Scenario
 
-UmbraMarket Guided contiene due punti volutamente insicuri. L'obiettivo non è "sparare payload": devi partire dal comportamento atteso, introdurre una variazione minima e capire **perché** la risposta cambia.
+Il team segnala che la ricerca prodotti produce risultati strani con alcuni caratteri. Non ricevete un exploit: ricevete tre osservazioni simulate e dovete costruire una spiegazione tecnica.
 
-## Scope
+## Dossier
 
-```text
-http://127.0.0.1:5005/search
-http://127.0.0.1:5005/greet
-```
+- `artifacts/01-normal-request.txt`
+- `artifacts/02-anomalous-input.txt`
+- `artifacts/03-controlled-confirmation.txt`
 
-Solo target locale del laboratorio.
+Tutti gli input e gli output sono fittizi e confinati alla simulazione.
 
-## GUIDED A — SQL Injection
+## GUIDED
 
-### Baseline
+Per i tre casi rispondere:
 
-Apri:
+1. qual era il comportamento atteso?
+2. cosa è cambiato?
+3. quale componente potrebbe interpretare l'input?
+4. quale ipotesi nasce?
+5. quale evidenza è ancora necessaria prima di chiamarla vulnerabilità?
 
-```text
-http://127.0.0.1:5005/search?q=Umbra
-```
+## Simulazione dell'attacco
 
-Annota numero di risultati e comportamento atteso.
-
-### Test minimo
-
-Prova un singolo apice URL-encoded:
+Il dossier mostra una progressione volutamente controllata:
 
 ```text
-http://127.0.0.1:5005/search?q=%27
+input normale
+   -> risposta normale
+input anomalo minimo
+   -> errore differente
+variante di conferma predisposta dal laboratorio
+   -> comportamento coerente con manipolazione della query
 ```
 
-Domande:
+Non serve estrarre dati, modificare record o aumentare l'impatto. La PoC termina quando il comportamento è dimostrato.
 
-- la risposta cambia?
-- compare un errore del database?
-- questo dimostra già l'impatto oppure solo un input handling insicuro?
+## INDEPENDENT
 
-### Conferma controllata
+Scrivere un finding con:
 
-Sul solo laboratorio locale, confronta una ricerca normale con una condizione booleana semplice:
-
-```text
-Umbra' OR '1'='1
-```
-
-Usa il proxy per vedere esattamente la request inviata. Non estrarre tabelle, password o dati ulteriori: la PoC minima è sufficiente.
-
-## GUIDED B — Reflected XSS
-
-Baseline:
-
-```text
-http://127.0.0.1:5005/greet?name=Alice
-```
-
-Prima verifica semplice rendering HTML:
-
-```html
-<b>student</b>
-```
-
-Se il browser interpreta il markup, formula l'ipotesi XSS. Per la conferma nel solo target didattico puoi usare una PoC minima come:
-
-```html
-<script>alert(1)</script>
-```
-
-Domanda: qual è la **causa**? Perché bloccare soltanto la stringa `script` non risolve la classe di problema?
-
-## Errori da evitare
-
-- partire direttamente dal payload più complesso;
-- confondere un errore con una vulnerabilità confermata;
-- dimostrare più impatto del necessario;
-- proporre blacklist di payload come remediation.
-
-## INDEPENDENT — Juice Shop
-
-Scegli una singola superficie di input e applica lo stesso metodo:
-
-```text
-baseline → input anomalo → differenza → ipotesi → conferma minima
-```
-
-Non usare soluzioni/copioni esterni.
+- punto di input;
+- evidenza;
+- ipotesi sulla causa;
+- impatto plausibile separato dall'impatto dimostrato;
+- remediation.
 
 ## CHALLENGE
 
-Trova un secondo contesto di input in Juice Shop e spiega perché la PoC deve essere adattata al contesto HTML/SQL/JSON invece di essere copiata meccanicamente.
+Spiegare perché bloccare un singolo carattere non è una remediation robusta e quale classe di controllo dovrebbe correggere la causa.
 
 ## Deliverable
 
-Un finding completo per una sola vulnerabilità, con request/response, impatto e remediation sulla causa.
+Finding completo + sequenza evidenze A/B/C.

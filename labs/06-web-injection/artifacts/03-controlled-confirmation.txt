@@ -1,0 +1,12 @@
+[SIMULATED CONTROLLED CONFIRMATION]
+Il docente fornisce una seconda variante di input già predisposta per il laboratorio.
+
+Observed result:
+- HTTP status torna 200.
+- La ricerca restituisce 8 elementi invece dei 2 attesi.
+- Ripetendo il test si ottiene lo stesso comportamento.
+- Non sono stati modificati dati.
+- Non sono stati estratti dati sensibili.
+
+Interpretazione da discutere:
+La combinazione tra errore sul delimitatore e cambiamento riproducibile della logica di selezione è coerente con un problema di costruzione della query. Il finding deve comunque distinguere causa inferita ed evidenza osservata.

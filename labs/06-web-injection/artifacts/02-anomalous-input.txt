@@ -1,0 +1,11 @@
+[SIMULATED REQUEST B — MINIMAL ANOMALOUS INPUT]
+GET /api/products/search?q=desk%27 HTTP/1.1
+Host: api.umbramarket.lab
+
+[SIMULATED RESPONSE]
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json
+
+{"error":"search backend rejected query","reference":"ERR-DB-17"}
+
+Questo output da solo NON dimostra ancora una SQL injection. Dimostra che un piccolo cambiamento dell'input ha prodotto un comportamento server-side differente.

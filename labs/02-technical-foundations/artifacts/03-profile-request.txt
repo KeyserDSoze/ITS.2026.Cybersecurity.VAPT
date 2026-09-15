@@ -1,0 +1,6 @@
+[SIMULATED REQUEST]
+GET /api/profile HTTP/1.1
+Host: api.umbramarket.lab
+Accept: application/json
+Cookie: session=demo-alice-7f2a
+X-Client-Version: web-2026.1

@@ -1,0 +1,10 @@
+[SIMULATED PORT SCAN SUMMARY]
+Host: 10.77.0.10
+22/tcp   filtered ssh
+80/tcp   open     http
+443/tcp  open     https
+
+Host: 10.77.0.20
+80/tcp   open     http
+
+Nessun traffico reale è stato generato: questo è un artefatto didattico.

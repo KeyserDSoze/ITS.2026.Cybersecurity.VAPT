@@ -1,86 +1,52 @@
-# Lab 07 — Two Users, One Object
+# Lab 07 — Two Users, One Order
 
 ## Scenario
 
-UmbraMarket espone API usate dal frontend. Devi verificare se il server applica controlli di autorizzazione sugli oggetti e sulle funzioni, non soltanto se l'utente è autenticato.
+Alice e Bob sono due utenti completamente fittizi dell'ambiente didattico. Il laboratorio simula un controllo di autorizzazione errato su un endpoint ordini.
 
-## Scope GUIDED
+## Dossier
 
-```text
-http://127.0.0.1:5005/api/*
-```
+- `artifacts/01-alice-own-order.txt`
+- `artifacts/02-bob-own-order.txt`
+- `artifacts/03-alice-requests-bob-order.txt`
 
-Account:
+## Obiettivo
 
-```text
-alice / Alice123!
-bob   / Bob123!
-admin / Admin123!
-```
+Capire la differenza tra **essere autenticati** e **essere autorizzati ad accedere a uno specifico oggetto**.
 
-## GUIDED A — Authentication vs Authorization
+## GUIDED
 
-Accedi come Alice e osserva:
+Confrontare i tre artefatti e rispondere:
 
-```text
-GET /api/me
-GET /api/orders
-```
+1. chi è autenticato in ciascuna richiesta?
+2. quale oggetto viene richiesto?
+3. quale controllo dovrebbe eseguire il server?
+4. quale singola risposta dimostra il problema?
+5. che cosa sarebbe eccessivo fare dopo aver ottenuto la prova?
 
-Alice dovrebbe vedere i propri order ID `1001` e `1003`.
+## Simulazione dell'attacco
 
-Apri quindi, sempre come Alice:
+La PoC del laboratorio consiste soltanto nel modificare l'identificatore di un ordine **tra due record fittizi predisposti appositamente**.
 
-```text
-GET /api/orders/1001
-```
+Il test termina quando la risposta dimostra accesso cross-user. Non si enumerano altri ID e non si raccolgono altri dati.
 
-Questa è la baseline autorizzata.
+## INDEPENDENT
 
-Ora formula l'ipotesi:
-
-> Se il server usa l'ID dell'ordine ma non verifica il proprietario, cambiare l'ID potrebbe restituire un oggetto di un altro utente.
-
-Nel solo laboratorio locale prova:
+Scrivere:
 
 ```text
-GET /api/orders/1002
+PRECONDITION
+ACTION
+EXPECTED
+OBSERVED
+IMPACT
+STOP CONDITION
 ```
-
-Se ricevi i dati di Bob, hai dimostrato un difetto di object-level authorization (IDOR/BOLA).
-
-## GUIDED B — Function-level authorization
-
-Alice è una `customer`. Verifica la risposta di:
-
-```text
-GET /api/admin/stats
-```
-
-Domanda:
-
-- il problema è authentication?
-- oppure il server non controlla il ruolo necessario per la funzione?
-
-## Matrice richiesta
-
-| Endpoint | Method | Auth richiesta | Oggetto/ruolo | Baseline | Test authz | Risultato |
-|---|---|---|---|---|---|---|
-| | | | | | | |
-
-## INDEPENDENT — crAPI
-
-Per una API più realistica usa OWASP crAPI seguendo `setup-crapi.md`. Prima completa il **happy path** dell'applicazione, poi scegli un singolo scenario di authorization e applica il metodo visto sopra.
-
-Non partire dalla lista delle challenge: prima mappa flussi, oggetti e identità.
 
 ## CHALLENGE
 
-Cerca un'incoerenza tra due utenti, due ruoli o due endpoint equivalenti e costruisci una PoC minima senza azioni distruttive.
+Spiegare perché nascondere nell'interfaccia il link all'ordine di Bob non risolve il problema e dove deve essere applicato il controllo.
 
 ## Deliverable
 
-- matrice endpoint/ruoli;
-- almeno un finding di authorization;
-- request baseline + request modificata + response rilevante;
-- spiegazione di authentication vs authorization nel caso osservato.
+Finding di Broken Object Level Authorization / access control con PoC minima.

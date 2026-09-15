@@ -1,0 +1,5 @@
+[SIMULATED CLIENT NOTE]
+Cliente: UmbraMarket S.r.l.
+Target autorizzato: shop.umbramarket.lab
+Obiettivo: capire quali informazioni un utente Internet potrebbe raccogliere prima di autenticarsi.
+Vincolo: nessuna modifica ai dati, nessun test su altri hostname senza conferma.

@@ -1,91 +1,47 @@
-# Lab 00 — First Look at UmbraMarket
+# Lab 00 — First Look
 
 ## Scenario
 
-Sei appena entrato nel team che deve valutare UmbraMarket prima del rilascio. In questa prima attività **non devi cercare vulnerabilità**: devi imparare a separare ciò che osservi da ciò che stai ipotizzando.
+È il primo giorno dell'assessment UmbraMarket. Il cliente vi consegna un singolo target didattico e una breve nota di autorizzazione. Non dovete trovare una vulnerabilità: dovete dimostrare di saper separare ciò che **sapete** da ciò che **pensate**.
 
-## Scope
-
-Autorizzati esclusivamente:
+## Scope simulato
 
 ```text
-http://127.0.0.1:5005
-http://127.0.0.1:8080
-http://127.0.0.1:9090
+IN SCOPE: shop.umbramarket.lab
+OUT OF SCOPE: qualunque altro hostname o sistema
+ATTIVITÀ CONSENTITE: osservazione, richieste HTTP non distruttive, enumeration di base
 ```
 
-Niente scansioni estese del computer, niente altri host, niente exploit.
+Tutti gli output in `artifacts/` sono inventati per il laboratorio.
 
-## Setup
+## Dossier
 
-```bash
-cd labs/platform
-docker compose up -d --build
-./scripts/check.sh
-```
+Leggere nell'ordine:
 
-## GUIDED — Osserva prima di concludere
+1. `artifacts/01-client-note.txt`
+2. `artifacts/02-first-observations.txt`
+3. `artifacts/03-http-response.txt`
 
-### Step 1 — Verifica che il target esista
+## Compito
 
-```bash
-curl -i http://127.0.0.1:5005/api/health
-```
+Per ogni riga interessante compilare:
 
-Annota almeno tre **fatti osservabili**. Esempio di forma corretta:
+| Osservazione | FACT / HYPOTHESIS | Perché è utile? | Cosa vorrei verificare dopo? |
+|---|---|---|---|
 
-```text
-FACT: la risposta HTTP restituisce status 200.
-FACT: il body contiene un campo status con valore ok.
-```
+## GUIDED
 
-Non scrivere ancora frasi come "è sicuro", "usa sicuramente Flask" o "è vulnerabile".
+Individuare almeno 5 fatti e 3 ipotesi.
 
-### Step 2 — Confronta due servizi
-
-```bash
-curl -I http://127.0.0.1:8080
-curl -I http://127.0.0.1:9090
-```
-
-Per ciascun servizio compila:
-
-| Osservazione | È un fatto? | Quale ipotesi suggerisce? |
-|---|---|---|
-| | | |
-
-### Step 3 — Dal fatto alla domanda
-
-Scegli due osservazioni e trasformale in un possibile test successivo.
-
-Schema:
-
-```text
-Osservazione → Ipotesi → Test che potrei eseguire → Evidenza che cercherei
-```
-
-Non eseguire ancora il test se richiede attività non previste dallo scope.
-
-## Hint progressivi
-
-**Hint 1:** guarda status code, header, tipo di contenuto e nomi esposti.
-
-**Hint 2:** una stringa `Server:` è un dato dichiarato dal server, non prova assoluta della tecnologia reale.
-
-**Hint 3:** chiediti sempre se stai descrivendo ciò che hai visto o ciò che pensi significhi.
+Per ogni ipotesi scrivere un test successivo **senza inventare il risultato**.
 
 ## INDEPENDENT
 
-Visita i tre target autorizzati e produci:
-
-- almeno 8 fatti;
-- almeno 4 ipotesi;
-- almeno 4 possibili test successivi;
-- 3 domande da porre al cliente.
+Costruire una piccola attack-surface note con ciò che sappiamo del target.
 
 ## CHALLENGE
 
-Disegna una mini attack-surface map usando solo le informazioni raccolte senza scanner automatici.
+Nell'output compare un'informazione che suggerisce l'esistenza di un secondo hostname. Spiegare perché scoprirlo non significa automaticamente poterlo testare.
 
 ## Deliverable
 
@@ -94,13 +50,10 @@ Una pagina con:
 ```text
 FACTS
 HYPOTHESES
-TESTS TO CONSIDER
+NEXT TESTS
 QUESTIONS FOR THE CLIENT
 ```
 
-## Cleanup
+## Debrief
 
-```bash
-cd labs/platform
-docker compose down
-```
+Il punto non è indovinare la tecnologia corretta. Il punto è non trasformare un indizio in una conclusione.
