@@ -4,6 +4,12 @@ Questa cartella contiene il materiale **per il docente**: scalette d'aula, tempi
 
 Non viene caricata dal portale studenti GitHub Pages. È però parte della repository pubblica, quindi **non deve contenere materiale d'esame riservato, soluzioni segrete, flag, credenziali private o answer key che si desidera mantenere nascosta**.
 
+## Punto di partenza
+
+Per l'erogazione del corso usare prima di tutto [`COURSE-RUNBOOK.md`](COURSE-RUNBOOK.md): contiene la sequenza complessiva, le dipendenze tra moduli, le routine pre/post lezione, la gestione degli hint e l'adattamento ai diversi livelli della classe.
+
+Poi aprire la guida del singolo modulo.
+
 ## Moduli disponibili
 
 | Modulo | Guida docente | Focus |
@@ -29,6 +35,7 @@ Un file per ogni modulo:
 ```text
 instructor/
 ├── README.md
+├── COURSE-RUNBOOK.md
 ├── 00-baseline-and-mindset.md
 ├── 01-vapt-engagement.md
 ├── 02-technical-foundations.md
