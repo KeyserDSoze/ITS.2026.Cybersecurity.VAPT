@@ -1,0 +1,41 @@
+SIMULATED CONTROLLED VALIDATION
+
+Test account: Alice
+
+Request:
+
+GET /api/orders/1002
+Authorization: Bearer <alice-demo-token>
+
+Observed response:
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "orderId": 1002,
+  "owner": "bob.demo@example.lab",
+  "status": "paid",
+  "total": 149.00,
+  "deliveryCity": "Perugia-DEMO"
+}
+
+EXPECTED SECURE BEHAVIOR
+
+Alice should not receive Bob's order object. A secure application would reject the request or otherwise avoid returning Bob's protected data.
+
+STOP CONDITION REACHED
+
+The exercise has demonstrated one controlled cross-user access using only the two fictional accounts provided by the client.
+
+Do not enumerate additional order identifiers. Do not modify the order. Preserve the request and response as evidence.
+
+STUDENT TASK
+
+Decide:
+
+- what finding this supports;
+- which evidence is sufficient;
+- what impact can be stated directly;
+- what impact would still be speculation;
+- which remediation addresses the root cause.
