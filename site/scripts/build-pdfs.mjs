@@ -39,6 +39,29 @@ function renderQuiz(lesson, phase, title, intro) {
     </section>`;
 }
 
+function renderLab(lab) {
+  if (!lab) return '';
+  const artifacts = (lab.artifacts || []).map((artifact, index) => `
+    <section class="print-artifact">
+      <div class="artifact-title">Artefatto ${String(index + 1).padStart(2, '0')} · ${escapeHtml(artifact.name)}</div>
+      <pre><code>${escapeHtml(artifact.content)}</code></pre>
+    </section>
+  `).join('');
+
+  return `
+    <section class="print-lab">
+      <div class="lab-cover">
+        <div class="eyebrow">Simulazione guidata · dati fittizi</div>
+        <h2>${escapeHtml(lab.title)}</h2>
+        <p class="meta">${escapeHtml(lab.summary || '')}</p>
+      </div>
+      <div class="lab-flow">Osserva → Interpreta → Formula ipotesi → Scegli il prossimo test → Raccogli evidenza</div>
+      <div class="lab-body">${lab.html}</div>
+      ${artifacts ? `<h2>Artefatti simulati</h2>${artifacts}` : ''}
+    </section>
+  `;
+}
+
 const browser = await puppeteer.launch({
   headless: true,
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -59,6 +82,7 @@ try {
       'Autoverifica finale',
       'Completa queste domande dopo la lezione. Nella versione web puoi verificare immediatamente le risposte.'
     );
+    const lab = renderLab(lesson.lab);
 
     await page.setContent(`<!doctype html>
 <html lang="it">
@@ -86,6 +110,13 @@ try {
   .print-quiz h2 { margin: 4px 0 6px; }
   .print-question { border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 12px; break-inside: avoid; }
   .print-question ol { margin: 6px 0 0 20px; padding: 0; }
+  .print-lab { margin-top: 34px; padding-top: 26px; border-top: 3px solid #2563eb; }
+  .lab-cover { padding: 12px 14px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; }
+  .lab-cover h2 { margin: 5px 0 7px; }
+  .lab-flow { margin: 14px 0 18px; padding: 9px 11px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e8f0; color: #475569; font-size: 9pt; font-weight: 700; }
+  .lab-body > h1:first-child { display: none; }
+  .print-artifact { break-inside: avoid; margin: 12px 0 18px; }
+  .artifact-title { font-weight: 700; margin-bottom: 6px; color: #334155; }
 </style>
 </head>
 <body>
@@ -96,6 +127,7 @@ try {
   </header>
   ${entryQuiz}
   <main>${lesson.html}</main>
+  ${lab}
   ${exitQuiz}
 </body>
 </html>`, { waitUntil: 'domcontentloaded' });
@@ -115,4 +147,4 @@ try {
   await browser.close();
 }
 
-console.log(`Generated ${course.lessons.length} lesson PDFs.`);
+console.log(`Generated ${course.lessons.length} lesson PDFs with available lab dossiers.`);
