@@ -4,6 +4,21 @@ Questa cartella contiene il materiale **per il docente**: scalette d'aula, tempi
 
 Non viene caricata dal portale studenti GitHub Pages. È però parte della repository pubblica, quindi **non deve contenere materiale d'esame riservato, soluzioni segrete, flag, credenziali private o answer key che si desidera mantenere nascosta**.
 
+## Moduli disponibili
+
+| Modulo | Guida docente | Focus |
+|---:|---|---|
+| 00 | [`00-baseline-and-mindset.md`](00-baseline-and-mindset.md) | baseline, fatti vs ipotesi, mindset |
+| 01 | [`01-vapt-engagement.md`](01-vapt-engagement.md) | kickoff, scope e Rules of Engagement |
+| 02 | [`02-technical-foundations.md`](02-technical-foundations.md) | DNS, TCP/TLS, HTTP, sessione |
+| 03 | [`03-recon-enumeration.md`](03-recon-enumeration.md) | recon, enumeration e attack surface |
+| 04 | [`04-vulnerability-assessment.md`](04-vulnerability-assessment.md) | scanner vs assessment, CVE/CVSS, validazione |
+| 05 | [`05-web-pentesting-foundations.md`](05-web-pentesting-foundations.md) | proxy, mapping web, ruoli e input |
+| 06 | [`06-web-injection.md`](06-web-injection.md) | input handling, contesto, detection e conferma |
+| 07 | [`07-auth-api-security.md`](07-auth-api-security.md) | authentication, authorization, API e BOLA |
+
+I moduli 08–12 verranno aggiunti con lo stesso formato.
+
 ## Struttura
 
 Un file per ogni modulo:
