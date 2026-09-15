@@ -11,6 +11,34 @@ const pdfDir = path.join(siteDir, 'public', 'pdfs');
 const course = JSON.parse(await fs.readFile(contentPath, 'utf8'));
 await fs.mkdir(pdfDir, { recursive: true });
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function renderQuiz(lesson, phase, title, intro) {
+  const questions = (lesson.quiz || []).filter((question) => phase === 'entry' ? question.phase === 'entry' : question.phase !== 'entry');
+  if (!questions.length) return '';
+
+  return `
+    <section class="print-quiz">
+      <div class="eyebrow">${escapeHtml(title)}</div>
+      <h2>${escapeHtml(title)}</h2>
+      <p class="meta">${escapeHtml(intro)}</p>
+      ${questions.map((question, index) => `
+        <div class="print-question">
+          <strong>${index + 1}. ${escapeHtml(question.question)}</strong>
+          <ol type="A">
+            ${question.options.map((option) => `<li>${escapeHtml(option)}</li>`).join('')}
+          </ol>
+        </div>
+      `).join('')}
+    </section>`;
+}
+
 const browser = await puppeteer.launch({
   headless: true,
   args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -19,6 +47,19 @@ const browser = await puppeteer.launch({
 try {
   for (const lesson of course.lessons) {
     const page = await browser.newPage();
+    const entryQuiz = renderQuiz(
+      lesson,
+      'entry',
+      'Test di ingresso',
+      'Rispondi prima di leggere la teoria. Non è un voto: serve a capire il tuo punto di partenza. La versione web fornisce correzione e spiegazione immediate.'
+    );
+    const exitQuiz = renderQuiz(
+      lesson,
+      'exit',
+      'Autoverifica finale',
+      'Completa queste domande dopo la lezione. Nella versione web puoi verificare immediatamente le risposte.'
+    );
+
     await page.setContent(`<!doctype html>
 <html lang="it">
 <head>
@@ -41,6 +82,10 @@ try {
   a { color: #1d4ed8; text-decoration: none; }
   img { max-width: 100%; }
   .meta { color: #64748b; font-size: 9pt; }
+  .print-quiz { border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 18px; margin: 18px 0 26px; break-inside: auto; }
+  .print-quiz h2 { margin: 4px 0 6px; }
+  .print-question { border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 12px; break-inside: avoid; }
+  .print-question ol { margin: 6px 0 0 20px; padding: 0; }
 </style>
 </head>
 <body>
@@ -49,7 +94,9 @@ try {
     <h1>${lesson.title}</h1>
     <div class="meta">Materiale studente · versione generata automaticamente dalla repository del corso</div>
   </header>
+  ${entryQuiz}
   <main>${lesson.html}</main>
+  ${exitQuiz}
 </body>
 </html>`, { waitUntil: 'domcontentloaded' });
 
