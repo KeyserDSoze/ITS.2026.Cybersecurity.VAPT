@@ -1,6 +1,6 @@
 # Ambiente di laboratorio — Linee guida iniziali
 
-Questa guida definisce la base tecnica del corso. I singoli laboratori potranno aggiungere requisiti specifici.
+Questa guida definisce la base tecnica del corso. I singoli laboratori possono aggiungere requisiti specifici.
 
 ## Obiettivi dell'ambiente
 
@@ -28,7 +28,7 @@ Host dello studente
      └── come ambiente separato quando serve tooling specifico
 ```
 
-Non è necessario obbligare ogni esercizio a passare da Kali. Per i laboratori web, browser, proxy, `curl` e Docker possono essere sufficienti anche sull'host.
+Non è necessario obbligare ogni esercizio a passare da Kali. Per i laboratori web, browser, proxy, `curl` e Docker sono spesso sufficienti anche sull'host.
 
 ## Tool base
 
@@ -43,21 +43,45 @@ Ogni studente dovrebbe avere accesso almeno a:
 - un editor di testo o IDE;
 - Kali Linux per gli esercizi che lo richiedono.
 
-Tool aggiuntivi verranno introdotti solo quando servono a un obiettivo didattico preciso.
+Tool aggiuntivi vengono introdotti solo quando servono a un obiettivo didattico preciso.
 
-## Target web/API
+## UmbraMarket Lab Platform
 
-Come target principali privilegiare applicazioni volutamente vulnerabili e facili da ripristinare, preferibilmente containerizzate.
+Per i moduli iniziali e web usiamo lo stack pubblico in [`../labs/platform/`](../labs/platform/).
 
-Candidati:
+Lo stack espone esclusivamente su loopback:
 
-- OWASP Juice Shop;
-- applicazioni/API vulnerabili predisposte per il corso;
-- laboratori online autorizzati come PortSwigger Web Security Academy.
+```text
+127.0.0.1:5005  UmbraMarket Guided Lab
+127.0.0.1:3000  OWASP Juice Shop
+127.0.0.1:8080  Admin Portal
+127.0.0.1:9090  File Service
+```
+
+Avvio:
+
+```bash
+cd labs/platform
+docker compose pull
+docker compose up -d --build
+```
+
+Reset completo:
+
+```bash
+docker compose down -v
+docker compose up -d --build
+```
+
+Lo stack è deliberatamente vulnerabile e **non deve essere pubblicato su Internet o sulla LAN dell'aula**. Il binding `127.0.0.1` è una misura intenzionale.
+
+## Target API
+
+Per il modulo API avanzato può essere utilizzato OWASP crAPI come target dedicato. Il relativo laboratorio documenta il setup separatamente perché lo stack è più pesante del laboratorio base.
 
 ## Target di rete/sistema
 
-Per exploitation e post-exploitation potranno essere usate VM dedicate e isolate.
+Per exploitation e post-exploitation usiamo VM dedicate e isolate.
 
 Requisiti:
 
@@ -67,12 +91,10 @@ Requisiti:
 - credenziali esclusivamente didattiche;
 - dati fittizi.
 
-## Networking
-
-Una configurazione tipica per VM locali può prevedere:
+Configurazione concettuale:
 
 ```text
-[Kali / Tester] ---- rete di laboratorio isolata ---- [Target]
+[Kali / Tester] ---- rete host-only di laboratorio ---- [Target VM]
 ```
 
 Quando serve accesso Internet per aggiornamenti o documentazione, separare concettualmente e, se possibile, tecnicamente l'interfaccia usata per il laboratorio da quella usata per Internet.
@@ -88,7 +110,7 @@ Prima di eseguire un comando attivo, lo studente deve poter rispondere a:
 
 ## Reset e riproducibilità
 
-Ogni lab locale dovrebbe documentare:
+Ogni lab locale deve documentare:
 
 - comando di avvio;
 - configurazione di rete;
@@ -97,21 +119,9 @@ Ogni lab locale dovrebbe documentare:
 - procedura di reset;
 - eventuali volumi o dati da eliminare.
 
-Per Docker, preferire quando possibile un flusso simile a:
-
-```bash
-docker compose up -d
-# laboratorio
-docker compose down -v
-```
-
-Il comando reale dipenderà dal laboratorio.
-
 ## Raccolta evidenze
 
-Creare una cartella locale di lavoro per ogni assessment, fuori dalla repository del corso se contiene dati personali o materiale che non deve essere pubblicato.
-
-Esempio:
+Creare una cartella locale di lavoro per ogni assessment, fuori dalla repository del corso se contiene dati personali o materiale non destinato alla pubblicazione.
 
 ```text
 assessment-notes/
@@ -123,7 +133,7 @@ assessment-notes/
 └── report/
 ```
 
-Questa struttura serve a insegnare ordine e tracciabilità, non deve necessariamente essere committata.
+Questa struttura serve a insegnare ordine e tracciabilità.
 
 ## Materiale d'esame
 
