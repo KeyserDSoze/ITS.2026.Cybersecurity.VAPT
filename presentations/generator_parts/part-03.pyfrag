@@ -1,0 +1,121 @@
+        ('FATTO','La risposta dichiara nginx e invia un cookie.',TEAL),
+        ('IPOTESI','Quel cookie potrebbe rappresentare una sessione.',BLUE),
+        ('PROSSIMO TEST','Cosa cambia se manca o se cambia?',AMBER)],'Non trasformiamo un header in una certezza')
+    statement(prs,D,M,'Una buona osservazione non è ancora una vulnerabilità.','Il nostro lavoro è costruire una catena: osservazione → ipotesi → verifica → impatto → finding.',section='metodo',accent=BLUE)
+    compare(prs,D,M,'Vulnerability Assessment e Penetration Test','VULNERABILITY ASSESSMENT',[
+        'cerchiamo debolezze e configurazioni rischiose','validiamo alert e prerequisiti','prioritizziamo in base al contesto'],
+        'PENETRATION TEST',[
+        'partiamo da ipotesi di attacco','possiamo usare PoC controllate','misuriamo l’impatto entro scope e RoE'],
+        'Due attività diverse. Stessa disciplina sulle evidenze.')
+    cards(prs,D,M,'Quanto sappiamo all’inizio?',[
+        {'title':'BLACK BOX','body':['pochissime informazioni iniziali','simuliamo una prospettiva esterna'],'color':INK},
+        {'title':'GREY BOX','body':['alcune informazioni o account','buon compromesso per molti test'],'color':BLUE},
+        {'title':'WHITE BOX','body':['molta visibilità interna','codice, architettura, configurazioni'],'color':TEAL}],
+        'Cambiano le informazioni di partenza, non i limiti dell’autorizzazione.')
+    process(prs,D,M,'Un engagement ha un ciclo di vita',['pre-engagement','recon','assessment','validation / PoC','reporting'],'Le fasi cambiano; note ed evidenze ci accompagnano dall’inizio alla fine.')
+    big_question(prs,D,M,'UmbraMarket ci scrive: «Fateci un pentest e diteci se siamo sicuri».','Questa richiesta è volutamente insufficiente.','Noi cosa chiediamo prima di iniziare?',section='client kickoff')
+    cards(prs,D,M,'Cinque cose che dobbiamo rendere chiare',[
+        {'title':'PERIMETRO','body':['host, domini, ambienti','in scope / out of scope']},
+        {'title':'IDENTITÀ','body':['account e ruoli disponibili','test autenticati o anonimi'],'color':BLUE},
+        {'title':'LIMITI','body':['azioni vietate','DoS, dati reali, persistence'],'color':AMBER},
+        {'title':'FINESTRA','body':['orari, contatti, escalation','cosa succede se qualcosa va storto'],'color':VIOLET},
+        {'title':'OUTPUT','body':['cosa consegniamo','formato, evidenze e priorità'],'color':GREEN}],
+        'La parte “tecnica” inizia già qui')
+    matrix(prs,D,M,'Trasformiamo una richiesta vaga in scope',['Area','Decisione','Esempio'],[
+        ['Target','cosa possiamo testare','shop.umbramarket.lab'],
+        ['Esclusioni','cosa non tocchiamo','admin.umbramarket.lab'],
+        ['Account','quali identità usiamo','Alice / Bob demo'],
+        ['Tecniche','cosa è consentito','HTTP test non distruttivi'],
+        ['Output','cosa consegniamo','finding + evidence + remediation']],
+        'Lo scope deve essere leggibile e verificabile',section='client kickoff')
+    compare(prs,D,M,'Dove possiamo andare. Dove dobbiamo fermarci.','RULES OF ENGAGEMENT',[
+        'tecniche consentite e vietate','orari e rate limit','contatti di escalation','gestione di dati e credenziali'],
+        'STOP CONDITION',[
+        'abbiamo già la prova minima','rischio di impatto non necessario','siamo fuori scope','il cliente chiede di fermarci'],
+        'Un professionista sa anche quando NON continuare.')
+    lab_handoff(prs,D,M,'Ora tocca a noi — Client Kickoff','Siamo il team che riceve il brief iniziale di UmbraMarket. Le informazioni sono incomplete apposta.',[
+        'facciamo domande','scriviamo cosa è in/out','definiamo 3 regole operative','decidiamo quando fermarci'],
+        '1 pagina: Scope + RoE + domande ancora aperte')
+    big_question(prs,D,M,'Fermiamoci ogni tanto e facciamoci tre domande','Queste tre domande sono il nostro “debugger mentale”.','Cosa sappiamo? · Cosa stiamo assumendo? · Quale evidenza ci manca?',section='debrief')
+    takeaways(prs,D,M,['separare fatti, ipotesi ed evidenze','spiegare cosa cambia tra VA e PT','fare le domande giuste prima del primo test','scrivere scope, RoE e stop condition leggibili'])
+    bridge(prs,D,M,'Giornata 2 — Fondamentali tecnici + Recon','Quando clicchiamo “Login”, che cosa succede davvero tra browser, rete e applicazione?','DAY 02')
+    # backup
+    cards(prs,D,M,'Il reporting inizia dal primo minuto',[
+        {'title':'NOTA GREZZA','body':['cosa ho fatto','quando','con quale input']},
+        {'title':'EVIDENZA','body':['output conservato','riproducibile da un altro tester'],'color':BLUE},
+        {'title':'OSSERVAZIONE','body':['cosa posso affermare','senza anticipare la conclusione'],'color':AMBER}],
+        'Più tardi queste note diventeranno finding',section='approfondimento',backup=True)
+    matrix(prs,D,M,'Una tabella che useremo per tutto il corso',['Tipo','Esempio','Stato'],[
+        ['FACT','200 OK con cookie session','observed'],['HYPOTHESIS','cookie usato per autenticazione','unverified'],['QUESTION','cosa succede senza cookie?','next test']],
+        'Semplice, ma potentissima per mantenere il ragionamento pulito',section='approfondimento',backup=True)
+    cards(prs,D,M,'Quanto è forte la nostra evidenza?',[
+        {'title':'DEBOLE','body':['una sola osservazione','non ripetuta'],'color':RED},
+        {'title':'MEDIA','body':['comportamento riproducibile','ma causa ancora incerta'],'color':AMBER},
+        {'title':'FORTE','body':['baseline + variazione controllata','risultato coerente e ripetibile'],'color':GREEN}],
+        'La conclusione non deve essere più forte dell’evidenza che la sostiene.',section='approfondimento',backup=True)
+    return prs
+
+
+def build_day2():
+    prs=Presentation();set_wide(prs);D='DAY 02';M='02 + 03'
+    cover(prs,D,'Dal click alla superficie d’attacco','Seguiamo una richiesta dall’hostname all’applicazione e trasformiamo l’enumeration in una mappa utile.',M,['risolviamo','seguiamo il traffico','enumeriamo','costruiamo la mappa'])
+    journey_slide(prs,D,M,[('fondamentali','DNS · TCP · TLS · HTTP'),('request','cosa controlliamo'),('recon','cosa esiste'),('surface','cosa vale approfondire')],['request anatomy','attack surface','next-test list'])
+    big_question(prs,D,M,'Quando scriviamo shop.umbramarket.lab nel browser, quante cose succedono prima di vedere una pagina?','Se non sappiamo dove siamo nella catena, rischiamo di interpretare male quello che osserviamo.','Seguiamo il percorso, strato per strato.')
+    process(prs,D,M,'Dal nome all’applicazione',['DNS','IP / routing','TCP','TLS','HTTP','application'],'Ogni livello può darci informazioni diverse')
+    cards(prs,D,M,'DNS: il nome diventa un indirizzo',[
+        {'title':'A / AAAA','body':['hostname → IP','primo legame da annotare']},
+        {'title':'CNAME','body':['alias verso un altro nome','può rivelare dipendenze'],'color':BLUE},
+        {'title':'DOMANDA','body':['stiamo guardando lo stesso servizio?','ci sono altri hostname?'],'color':AMBER}],
+        'Un record DNS non è una vulnerabilità: è contesto')
+    terminal(prs,D,M,'Leggiamo una request, senza correre','''GET /api/orders/1001?format=full HTTP/1.1
+Host: shop.umbramarket.lab
+Cookie: session=demo-alice-7f2a
+Accept: application/json
+User-Agent: Mozilla/5.0''',[
+        ('RISORSA','/api/orders/1001',TEAL),('IDENTITÀ','cookie di sessione',BLUE),('INPUT','path + query + header',AMBER)],'Ogni riga può diventare una domanda')
+    cards(prs,D,M,'Status code: cosa ci dice davvero?',[
+        {'title':'2xx','body':['la richiesta è stata gestita','non significa “sicuro”']},
+        {'title':'3xx','body':['redirect','spesso utile per capire flussi di login'],'color':BLUE},
+        {'title':'4xx / 5xx','body':['rifiuto o errore','sono segnali, non conclusioni'],'color':AMBER}],
+        'La semantica applicativa conta più del numero')
+    compare(prs,D,M,'Sessione: cosa mantiene il “filo” tra le richieste?','COOKIE DI SESSIONE',[
+        'inviato dal browser a ogni request compatibile','può includere Secure / HttpOnly / SameSite','va osservato come identificatore, non “decodificato per forza”'],
+        'TOKEN / BEARER',[
+        'spesso usato nelle API','può contenere claim o essere opaco','la domanda è sempre: cosa usa il server per decidere?'],
+        'Identità e autorizzazione non sono la stessa cosa.')
+    statement(prs,D,M,'Recon non significa “lanciare Nmap”.','Significa ridurre l’incertezza: quali asset esistono, quali servizi espongono, quali tecnologie dichiarano, quale test ha senso fare dopo.',section='recon',accent=BLUE)
+    compare(prs,D,M,'Recon passivo e attivo','PASSIVO',[
+        'fonti già disponibili','documentazione, DNS, certificati, informazioni pubbliche','nessuna interazione diretta col target'],
+        'ATTIVO',[
+        'interagiamo col target','porte, banner, HTTP, discovery','dobbiamo restare entro scope e rate concordati'],
+        'La distinzione serve per scegliere la tecnica giusta al momento giusto.')
+    terminal(prs,D,M,'Un port scan è un punto di partenza','''Nmap scan report for 10.77.0.10
+PORT    STATE    SERVICE
+22/tcp  filtered ssh
+80/tcp  open     http
+443/tcp open     https
+
+Nmap scan report for 10.77.0.20
+80/tcp  open     http''',[
+        ('FATTO','80/443 rispondono su .10',TEAL),('NON SAPPIAMO','la versione reale del software',BLUE),('NEXT TEST','capire cosa serve HTTP',AMBER)],'Porta aperta ≠ vulnerabilità')
+    cards(prs,D,M,'Web discovery: piccoli indizi, grandi domande',[
+        {'title':'robots.txt','body':['dichiara percorsi ai crawler','non crea “aree segrete”']},
+        {'title':'sitemap.xml','body':['mappa alcune risorse','può ampliare la surface'],'color':BLUE},
+        {'title':'header / link','body':['tecnologie, backend, docs','da validare prima di crederci'],'color':AMBER}],
+        'Cerchiamo superficie, non “flag”')
+    cards(prs,D,M,'Usiamo tre etichette per non confonderci',[
+        {'title':'OBSERVED','body':['l’abbiamo visto direttamente','es: porta 443 open']},
+        {'title':'INFERRED','body':['deduzione ragionevole','es: /api suggerisce un servizio API'],'color':BLUE},
+        {'title':'UNVERIFIED','body':['plausibile ma ancora da provare','es: versione software da banner'],'color':AMBER}],
+        'Questa classificazione entra nel taccuino')
+    matrix(prs,D,M,'La nostra attack surface',['Asset','Exposure','Evidence','Confidence','Next test'],[
+        ['shop.umbramarket.lab','80 / 443','scan + HTTP','high','map web'],
+        ['api.umbramarket.lab','443','Link header','medium','verify host'],
+        ['files.umbramarket.lab','80','DNS + HTTP','high','inspect files'],
+        ['admin.umbramarket.lab','?','architecture note','low','scope check']],
+        'Una mappa utile deve suggerire il prossimo passo')
+    lab_handoff(prs,D,M,'Laboratorio — Build the Attack Surface','Riceviamo output DNS, scan, header e discovery di UmbraMarket in più passaggi.',[
+        'classifichiamo observed / inferred','costruiamo la mappa','scegliamo i next test','blocchiamo ciò che è fuori scope'],
+        'Attack Surface Inventory + 3 next test motivati')
+    big_question(prs,D,M,'Il punto non è «quanti servizi abbiamo trovato?»','Il punto è: quale nuova decisione possiamo prendere grazie a ciò che abbiamo trovato?','Quale test faremo adesso, e perché?',section='debrief')
+    takeaways(prs,D,M,['leggere una request e individuare identità, risorsa e input','distinguere host, hostname, porta, servizio e applicazione','trasformare enumeration in una attack surface','scegliere il prossimo test in base alle evidenze'])
