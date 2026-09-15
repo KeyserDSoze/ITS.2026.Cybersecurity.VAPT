@@ -1,0 +1,32 @@
+SIMULATED SCANNER SUMMARY
+
+Target set: authorized UmbraMarket web/API scope
+
+[HIGH] Possible outdated web server
+Evidence: HTTP header contains `Server: nginx/1.24.0`
+Scanner note: "Known vulnerabilities may exist for this version."
+
+[MEDIUM] Content-Security-Policy header not observed on shop.umbramarket.lab
+Evidence: response headers from GET /
+
+[MEDIUM] Predictable numeric identifiers detected
+Evidence: API path `/api/orders/1001`
+Scanner note: "Potential insecure direct object reference."
+
+[LOW] Server technology disclosure
+Evidence: `Server` and `X-Powered-By` headers
+
+[HIGH] Possible sensitive directory exposure
+Evidence: request to `/backup/` returned HTTP 403
+Scanner note: "Directory may contain backups."
+
+STUDENT TASK
+
+For every alert classify it initially as:
+
+- observation only;
+- hypothesis requiring validation;
+- not enough information;
+- likely false positive / misleading conclusion.
+
+Do NOT assign a final finding or severity based only on this output.
