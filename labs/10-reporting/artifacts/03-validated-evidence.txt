@@ -1,0 +1,22 @@
+SIMULATED VALIDATED EVIDENCE
+
+Request A — Alice reads her own order
+GET /api/orders/1001 HTTP/1.1
+Host: shop.umbramarket.lab
+Authorization: Bearer alice-demo-token
+
+Response A
+HTTP/1.1 200 OK
+{"orderId":1001,"owner":"alice","item":"Desk lamp","total":39.90}
+
+Request B — same Alice session, different object ID
+GET /api/orders/1002 HTTP/1.1
+Host: shop.umbramarket.lab
+Authorization: Bearer alice-demo-token
+
+Response B
+HTTP/1.1 200 OK
+{"orderId":1002,"owner":"bob","item":"Office chair","total":189.00}
+
+Validation statement:
+The same fictional Alice identity received a successful response containing a fictional order assigned to Bob after only the object identifier was changed.
