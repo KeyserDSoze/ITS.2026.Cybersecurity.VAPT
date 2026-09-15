@@ -1,17 +1,19 @@
 # Instructor Guide
 
-Questa cartella contiene il materiale **per il docente**: scalette d'aula, tempi suggeriti, domande da porre, demo, modalità di lancio dei laboratori e debrief.
+Questa cartella contiene il materiale **per il docente**: calendario reale, metodo di conduzione, runbook slide-by-slide, demo, domande, laboratori e debrief.
 
-Non viene caricata dal portale studenti GitHub Pages. È però parte della repository pubblica, quindi **non deve contenere materiale d'esame riservato, soluzioni segrete, flag, credenziali private o answer key che si desidera mantenere nascosta**.
+Non viene caricata dal portale studenti GitHub Pages. È però parte della repository pubblica, quindi non deve contenere soluzioni riservate, flag, credenziali private o answer key che si desidera mantenere nascosta.
 
-## Punto di partenza
+## Da dove partire
 
-Per l'erogazione del corso usare prima di tutto:
+Se devi tenere lezione, apri in quest'ordine:
 
-1. [`30-HOUR-SCHEDULE.md`](30-HOUR-SCHEDULE.md) — calendario operativo per le **30 ore reali** disponibili;
-2. [`COURSE-RUNBOOK.md`](COURSE-RUNBOOK.md) — metodo generale di conduzione, gestione hint, routine e adattamento della classe;
-3. [`../presentations/README.md`](../presentations/README.md) — PowerPoint premium per ciascuna giornata;
-4. la guida del singolo modulo.
+1. [`START-HERE.md`](START-HERE.md) — bussola rapida da tenere aperta durante il corso;
+2. [`PRE-FLIGHT-CHECKLIST.md`](PRE-FLIGHT-CHECKLIST.md) — controllo tecnico e materiale prima dell'aula;
+3. [`30-HOUR-SCHEDULE.md`](30-HOUR-SCHEDULE.md) — calendario operativo per le **30 ore reali** disponibili;
+4. [`COURSE-RUNBOOK.md`](COURSE-RUNBOOK.md) — metodo generale di conduzione, gestione hint e adattamento della classe;
+5. [`presentations/`](presentations/README.md) — regia slide-by-slide delle otto giornate;
+6. la guida del singolo modulo, quando serve più profondità.
 
 Il piano da 30 ore usa una regola prudenziale: ogni incontro da 4 ore contiene **circa 3 ore di attività pianificata**, lasciando spazio a due pause da almeno 15 minuti e a circa 30 minuti complessivi di elasticità per setup, domande, recupero e debrief.
 
@@ -37,9 +39,11 @@ Il piano da 30 ore usa una regola prudenziale: ogni incontro da 4 ore contiene *
 
 ```text
 instructor/
-├── README.md
+├── START-HERE.md
+├── PRE-FLIGHT-CHECKLIST.md
 ├── 30-HOUR-SCHEDULE.md
 ├── COURSE-RUNBOOK.md
+├── presentations/                 # regia slide-by-slide delle 8 giornate
 ├── 00-baseline-and-mindset.md
 ├── 01-vapt-engagement.md
 ├── 02-technical-foundations.md
@@ -60,7 +64,8 @@ Materiale complementare:
 ```text
 lessons/        teoria e percorso studente
 labs/           simulazioni, dossier e artefatti
-presentations/  slide premium per le giornate d'aula
+presentations/  PowerPoint per le giornate d'aula
+resources/      riferimenti + cheat sheet studente
 site/           portale studenti e PDF
 ```
 
@@ -110,7 +115,7 @@ Come chiudere l'attività e collegare ciò che è successo al lavoro professiona
 
 ### 11. Evidenze da osservare
 
-Cosa dovrebbe essere presente nelle note o nel deliverable degli studenti.
+Cosa dovrebbe essere presente nelle note o nel deliverable.
 
 ### 12. Adattamento del livello
 
@@ -138,17 +143,10 @@ Il corso non premia l'uso del maggior numero di tool. Premia la capacità di pre
 
 ## Uso delle guide
 
-La guida non deve essere letta come uno script rigido. È un supporto per mantenere coerenti:
+Le guide non sono script rigidi. Servono a mantenere coerenti obiettivo, ritmo, domande, livello di hint, qualità del debrief e collegamento tra moduli.
 
-- obiettivo della lezione;
-- ritmo;
-- domande alla classe;
-- livello di hint;
-- qualità del debrief;
-- collegamento tra un modulo e il successivo.
-
-Quando il livello della classe è incerto, privilegiare il percorso GUIDED e aumentare l'autonomia solo quando gli studenti riescono a spiegare il proprio ragionamento.
+Quando il livello della classe è incerto, privilegiare il percorso GUIDED e aumentare l'autonomia solo quando riusciamo a far spiegare il ragionamento dietro le scelte.
 
 ## Materiale riservato
 
-Quando verranno creati esami, soluzioni riservate o rubriche non pubbliche, dovranno essere conservati in una repository privata separata o in storage privato. Un branch della presente repository pubblica non è una protezione.
+Il materiale realmente riservato dell'esame — soluzioni, flag, credenziali, answer key, rubriche private e infrastruttura valutativa — deve restare in una repository privata separata o in storage privato. Un branch di questa repository pubblica non è una protezione.
