@@ -10,7 +10,8 @@ Per l'erogazione del corso usare prima di tutto:
 
 1. [`30-HOUR-SCHEDULE.md`](30-HOUR-SCHEDULE.md) — calendario operativo per le **30 ore reali** disponibili;
 2. [`COURSE-RUNBOOK.md`](COURSE-RUNBOOK.md) — metodo generale di conduzione, gestione hint, routine e adattamento della classe;
-3. la guida del singolo modulo.
+3. [`../presentations/README.md`](../presentations/README.md) — PowerPoint premium per ciascuna giornata;
+4. la guida del singolo modulo.
 
 Il piano da 30 ore usa una regola prudenziale: ogni incontro da 4 ore contiene **circa 3 ore di attività pianificata**, lasciando spazio a due pause da almeno 15 minuti e a circa 30 minuti complessivi di elasticità per setup, domande, recupero e debrief.
 
@@ -54,12 +55,13 @@ instructor/
 └── 12-capstone.md
 ```
 
-Il materiale studente rimane invece in:
+Materiale complementare:
 
 ```text
-lessons/    teoria e percorso studente
-labs/       simulazioni, dossier e artefatti
-site/       portale studenti e PDF
+lessons/        teoria e percorso studente
+labs/           simulazioni, dossier e artefatti
+presentations/  slide premium per le giornate d'aula
+site/           portale studenti e PDF
 ```
 
 ## Template della guida docente
