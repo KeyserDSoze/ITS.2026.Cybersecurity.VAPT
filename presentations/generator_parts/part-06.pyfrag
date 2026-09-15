@@ -1,0 +1,118 @@
+        {'title':'QUAL È IL RISCHIO','body':['cosa diventerebbe accessibile','quale escalation è plausibile'],'color':AMBER}],
+        'L’obiettivo è costruire un attack path credibile',section='post-exploitation')
+    process(prs,D,M,'Dal contesto all’attack path',['initial access','current identity','privilege boundary','minimal proof','cleanup / stop'],'Niente persistence, stealth o raccolta dati non necessaria',section='post-exploitation')
+    statement(prs,D,M,'Il report è il vero prodotto del test.','L’exploit dura pochi secondi. Il finding deve permettere a cliente e team tecnico di capire, riprodurre, prioritizzare e correggere.',section='reporting',accent=TEAL)
+    cards(prs,D,M,'Un finding professionale risponde a cinque domande',[
+        {'title':'COSA','body':['qual è la debolezza','titolo descrittivo']},
+        {'title':'DOVE','body':['asset, endpoint, funzione','scope preciso'],'color':BLUE},
+        {'title':'PROVA','body':['request / response / output','steps to reproduce'],'color':AMBER},
+        {'title':'IMPATTO','body':['cosa può succedere davvero','non quello che “potrebbe forse” accadere'],'color':VIOLET}],
+        'E infine: come la correggiamo?',section='reporting')
+    compare(prs,D,M,'Severity e priorità','SEVERITY TECNICA',[
+        'exploitability','privilegi necessari','impatto su confidenzialità, integrità, disponibilità'],
+        'PRIORITÀ CLIENTE',[
+        'dato / processo coinvolto','esposizione reale','compensating controls','urgenza di remediation'],
+        'CVSS aiuta; il contesto decide.',section='reporting')
+    compare(prs,D,M,'Executive summary e finding tecnico','EXECUTIVE SUMMARY',[
+        'cosa abbiamo testato','rischi principali','priorità e prossimi passi','linguaggio comprensibile'],
+        'TECHNICAL FINDING',[
+        'causa','evidenza','riproduzione','impatto e remediation'],
+        'Due pubblici diversi, una sola realtà tecnica.',section='reporting')
+    big_question(prs,D,M,'Dove entra l’AI?','Può accelerare il lavoro, ma non può diventare la fonte della nostra evidenza.','AI propone. Noi verifichiamo.',section='AI')
+    cards(prs,D,M,'Usi che ci fanno guadagnare tempo',[
+        {'title':'RIORGANIZZARE','body':['note grezze → struttura','checklist e tabelle']},
+        {'title':'RIFORMULARE','body':['finding più chiaro','executive summary'],'color':BLUE},
+        {'title':'GENERARE IPOTESI','body':['domande da verificare','possibili prerequisiti'],'color':AMBER}],
+        'Mai copiare una conclusione tecnica senza verificarla',section='AI')
+    terminal(prs,D,M,'L’AI può essere molto sicura… e sbagliare','''AI draft:
+"The exposed nginx/1.24.0 banner confirms CVE-2026-99999
+and allows unauthenticated RCE on the target."
+
+Available evidence:
+- Server header only
+- no build verification
+- no advisory checked
+- no exploitability test''',[
+        ('VERIFIED','banner presente',TEAL),('WRONG','“confirms CVE”',RED),('MISSING','fonte primaria + prerequisiti',AMBER)],'Il tono sicuro non aumenta la qualità dell’evidenza',section='AI')
+    process(prs,D,M,'Human checkpoint',['claim AI','fonte primaria','confronta prerequisiti','verifica sul target','riscrivi solo ciò che regge'],'AI output ≠ evidence',section='AI')
+    lab_handoff(prs,D,M,'Mini-lab — Dal finding alla comunicazione','Seguiamo una catena completa: prerequisiti → PoC simulata → contesto → finding → AI review.',[
+        'decidiamo se continuare','costruiamo l’attack path','scriviamo il finding','smontiamo gli overclaim AI'],
+        'Finding finale + 5 righe di executive summary')
+    big_question(prs,D,M,'Nella prossima giornata lavoriamo quasi senza rete di sicurezza.','Il capstone ci chiederà di scegliere da soli dove spendere tempo e quando fermarci.','Il metodo deve diventare nostro.',section='capstone briefing')
+    takeaways(prs,D,M,['decidere se una PoC aggiunge davvero valore','descrivere il security context dopo un accesso','trasformare evidenze in finding e priorità','usare l’AI come acceleratore verificato, non come autorità'])
+    bridge(prs,D,M,'Giornata 7 — Capstone UmbraMarket','Davanti a un assessment completo, quale sarà la nostra prima decisione?','DAY 07')
+    # backup
+    cards(prs,D,M,'Remediation: quattro livelli di qualità',[
+        {'title':'DEBOLE','body':['“aggiornare il software”','troppo generico']},
+        {'title':'MEGLIO','body':['indica componente e controllo','spiega la causa'],'color':BLUE},
+        {'title':'BUONA','body':['azione concreta + verifica','considera regressioni'],'color':GREEN}],
+        'La remediation deve essere utile a chi deve implementarla',section='approfondimento',backup=True)
+    cards(prs,D,M,'Fonti primarie da preferire quando verifichiamo',[
+        {'title':'VENDOR','body':['security advisory','release notes / patch notes']},
+        {'title':'CVE RECORD','body':['identificatore e riferimenti','versioni / condizioni'],'color':BLUE},
+        {'title':'DOCUMENTAZIONE','body':['configurazione e prerequisiti','comportamento atteso'],'color':AMBER}],
+        'Blog e AI possono aiutare a orientarsi, non a chiudere la verifica',section='approfondimento',backup=True)
+    compare(prs,D,M,'Finding debole vs finding difendibile','DEBOLE',[
+        '“Il server è vulnerabile a RCE”','nessun prerequisito dimostrato','impatto copiato da un advisory'],
+        'DIFENDIBILE',[
+        'descrive esattamente ciò che abbiamo verificato','separa osservato e inferito','collega remediation alla causa'],
+        'Un report professionale riduce l’overclaim.',section='approfondimento',backup=True)
+    cards(prs,D,M,'Checklist prima di usare una frase dell’AI',[
+        {'title':'FONTE','body':['possiamo risalire a una fonte primaria?']},
+        {'title':'EVIDENZA','body':['la frase è supportata dai nostri test?'],'color':BLUE},
+        {'title':'SCOPE','body':['la proposta resta dentro il mandato?'],'color':AMBER}],
+        'Se una risposta è no, l’AI ci ha dato una pista, non una conclusione.',section='approfondimento',backup=True)
+    return prs
+
+
+def build_day7():
+    prs=Presentation();set_wide(prs);D='DAY 07';M='12'
+    cover(prs,D,'Capstone UmbraMarket','Oggi il corso smette di guidarci passo per passo. Costruiamo un mini-assessment end-to-end.',M,['capire lo scope','costruire la surface','scegliere i test','scrivere il report'])
+    journey_slide(prs,D,M,[('briefing','cosa ci viene chiesto'),('planning','dove spendiamo tempo'),('testing','cosa possiamo provare'),('reporting','cosa possiamo sostenere')],['attack surface','notes','finding','evidence pack'])
+    statement(prs,D,M,'Il capstone non premia chi trova più cose.','Premia chi sa scegliere, verificare, fermarsi e spiegare perché una conclusione è supportata.',accent=TEAL)
+    matrix(prs,D,M,'Il nostro contratto operativo di oggi',['Area','Regola'],[
+        ['Scope','solo gli asset esplicitamente autorizzati'],
+        ['Evidence','salviamo ciò che sostiene ogni conclusione'],
+        ['Testing','una ipotesi alla volta'],
+        ['Stop','niente escalation senza valore aggiunto'],
+        ['Reporting','niente overclaim']],
+        'Le stesse regole del lavoro reale, in miniatura',section='briefing')
+    process(prs,D,M,'Il flusso che possiamo usare',['scope','surface','ipotesi','test','evidence','finding','summary'],'Non è obbligatorio farlo in modo perfettamente lineare',section='planning')
+    big_question(prs,D,M,'Abbiamo 3 ore effettive. Dove spendiamo il primo blocco?','Non tutto merita lo stesso tempo. La priorità è una decisione tecnica.','Quale evidenza ci darebbe più informazione?',section='planning')
+    cards(prs,D,M,'Taccuino del pentester: minimo indispensabile',[
+        {'title':'FACTS','body':['cosa abbiamo osservato','con timestamp / artefatto']},
+        {'title':'HYPOTHESES','body':['cosa pensiamo possa spiegare il dato','quanto siamo sicuri'],'color':BLUE},
+        {'title':'TESTS','body':['cosa proviamo e perché','expected vs observed'],'color':AMBER},
+        {'title':'DECISIONS','body':['continuare, cambiare pista, fermarsi','motivazione'],'color':VIOLET}],
+        'Le note raccontano il processo, non solo il risultato',section='planning')
+    cards(prs,D,M,'Gli artefatti contengono anche rumore',[
+        {'title':'BANNER','body':['può essere vero, falso o proxy','serve validazione']},
+        {'title':'OUT-OF-SCOPE','body':['può essere interessante','ma non autorizza il test'],'color':RED},
+        {'title':'SCANNER ALERT','body':['può essere utile','ma non è un finding'],'color':AMBER}],
+        'Parte del lavoro è decidere cosa ignorare',section='testing')
+    process(prs,D,M,'Una validazione forte',['expected behavior','cambio una variabile','observed behavior','ripeto','stop condition'],'La stessa logica vista nei laboratori precedenti',section='testing')
+    cards(prs,D,M,'Hint: usiamoli bene',[
+        {'title':'LEVEL 0','body':['nessun hint','provate a decidere da soli']},
+        {'title':'LEVEL 1','body':['domanda sul metodo','“cosa sapete davvero?”'],'color':BLUE},
+        {'title':'LEVEL 2','body':['indizio sull’area','“confrontate i due utenti”'],'color':AMBER},
+        {'title':'LEVEL 3','body':['passaggio guidato','solo se siamo bloccati'],'color':VIOLET}],
+        'Chiedere un hint non è fallire: l’importante è capire perché serviva',section='testing')
+    compare(prs,D,M,'Meglio un finding forte di cinque alert','FINDING FORTE',[
+        'evidenza minima e riproducibile','impatto coerente con la prova','remediation di causa','scope chiaro'],
+        'ALERT DEBOLE',[
+        'copiato dallo scanner','prerequisiti non verificati','impatto ipotizzato','nessuna decisione umana'],
+        'La qualità del report riflette la qualità del processo.',section='reporting')
+    matrix(prs,D,M,'Evidence review prima del report',['Categoria','Cosa ci finisce'],[
+        ['CONFIRMED','evidenza sufficiente e riproducibile'],
+        ['OBSERVED / NOT VALIDATED','segnale reale, conclusione non verificata'],
+        ['OUT OF SCOPE','scoperto ma non testato'],
+        ['NOT DEMONSTRATED','impatto non provato']],
+        'Queste categorie ci proteggono dagli overclaim',section='reporting')
+    lab_handoff(prs,D,M,'Adesso lavoriamo — UmbraMarket Mini Assessment','Riceviamo il dossier a rilascio progressivo. Non apriamo tutto subito: ogni artefatto deve rispondere a una domanda.',[
+        'costruiamo la surface','scegliamo una pista','validiamo almeno un problema','prepariamo il finding'],
+        'Attack Surface + Notes + Finding + Evidence Pack')
+    big_question(prs,D,M,'Checkpoint metà sessione','Se dovessimo fermarci adesso, cosa potremmo già sostenere nel report?','Questa domanda ci dice se le nostre note stanno funzionando.',section='checkpoint')
+    big_question(prs,D,M,'Checkpoint finale','Quale finding possiamo difendere davanti al cliente senza aggiungere una sola parola non dimostrata?','Quello è il nostro risultato.',section='checkpoint')
+    takeaways(prs,D,M,['gestire un assessment partendo da informazioni incomplete','prioritizzare i test in base al valore informativo','validare almeno un finding con una stop condition chiara','trasformare note ed evidenze in un risultato professionale'])
+    bridge(prs,D,M,'Giornata 8 — Report & Client Presentation','Riusciamo a spiegare il rischio a qualcuno che non ha visto nessuno dei nostri test?','DAY 08')
+    # backup
