@@ -1,0 +1,124 @@
+        {'title':'QUERY','body':['prepared statements / parameterized queries','separare dati e istruzioni']},
+        {'title':'OUTPUT','body':['encoding contestuale','template safe by default'],'color':BLUE},
+        {'title':'COMMAND / PATH','body':['allowlist e API sicure','evitare concatenazione diretta'],'color':AMBER}],
+        'Bloccare un singolo carattere è quasi sempre una patch fragile')
+    process(prs,D,M,'Evidence chain che regge un finding',['A · baseline','B · anomalia','C · conferma','D · impatto / stop'],'Ogni passo deve essere riproducibile')
+    lab_handoff(prs,D,M,'Laboratorio — Input Changes Behaviour','Riceviamo baseline, input anomalo e una conferma controllata in artefatti separati.',[
+        'descriviamo cosa cambia','separiamo osservato e inferito','decidiamo se l’evidenza basta','scriviamo remediation di causa'],
+        'Finding + evidence A/B/C + stop condition')
+    big_question(prs,D,M,'Quanto forte può essere la nostra conclusione?','“C’è un errore” è più debole di “il comportamento è coerente e riproducibile con un problema di query construction”.','Scriviamo solo ciò che possiamo sostenere.',section='debrief')
+    takeaways(prs,D,M,['seguire un input fino al suo possibile interprete','costruire una baseline prima del test','usare differenze riproducibili come evidenza','distinguere detection, impact e remediation di causa'])
+    bridge(prs,D,M,'Giornata 5 — Authentication, Authorization & API Security','Se Alice è autenticata, il server verifica davvero che l’ordine richiesto appartenga ad Alice?','DAY 05')
+    # backup
+    cards(prs,D,M,'XSS: il punto è il contesto di output',[
+        {'title':'HTML TEXT','body':['serve encoding HTML contestuale']},
+        {'title':'ATTRIBUTE','body':['regole diverse','attenzione a quote e URL'],'color':BLUE},
+        {'title':'JAVASCRIPT','body':['contesto ancora diverso','evitare inserimenti non sicuri'],'color':AMBER}],
+        '“Sanitizzare” senza sapere il contesto non è una remediation precisa',section='approfondimento',backup=True)
+    cards(prs,D,M,'Perché un 500 può ingannarci',[
+        {'title':'PARSER','body':['input non valido','errore generico']},
+        {'title':'VALIDATION','body':['controllo applicativo','messaggio poco gestito'],'color':BLUE},
+        {'title':'BACKEND','body':['database o altro sink','ma serve una seconda evidenza'],'color':AMBER}],
+        'L’errore è un indizio, non la diagnosi',section='approfondimento',backup=True)
+    matrix(prs,D,M,'Source → sink → difesa',['Passaggio','Domanda'],[
+        ['Source','da dove entra il dato controllato?'],['Transformation','viene validato, normalizzato o decodificato?'],['Sink','chi interpreta il dato?'],['Control','qual è la difesa corretta per quel contesto?']],
+        'Questa mappa ci evita di scegliere test e remediation fuori contesto.',section='approfondimento',backup=True)
+    return prs
+
+
+def build_day5():
+    prs=Presentation();set_wide(prs);D='DAY 05';M='07'
+    cover(prs,D,'Authentication, Authorization & API Security','Seguiamo l’identità attraverso sessioni e token, poi verifichiamo se il server protegge davvero ogni oggetto e funzione.',M,['identifichiamo','manteniamo la sessione','autorizziamo','confrontiamo utenti'])
+    journey_slide(prs,D,M,[('authn','chi siamo'),('session','come restiamo riconosciuti'),('authz','cosa possiamo fare'),('API','su quale oggetto')],['API map','cross-user evidence','access-control finding'])
+    cards(prs,D,M,'Tre concetti che non dobbiamo confondere',[
+        {'title':'AUTHENTICATION','body':['verifica l’identità','es: login riuscito']},
+        {'title':'SESSION MANAGEMENT','body':['lega richieste successive all’utente','cookie o token'],'color':BLUE},
+        {'title':'AUTHORIZATION','body':['decide azione + oggetto + ruolo','è il cuore dei test di access control'],'color':AMBER}],
+        'Essere autenticati non significa essere autorizzati a tutto')
+    process(prs,D,M,'Un login, visto come flusso',['credenziali','verifica','session / token','request successiva','decisione server'],'Dopo il login iniziano molte domande interessanti')
+    cards(prs,D,M,'Cookie di sessione: attributi che osserviamo',[
+        {'title':'Secure','body':['inviato solo su HTTPS','riduce esposizione su HTTP']},
+        {'title':'HttpOnly','body':['non accessibile a JavaScript','mitiga alcuni scenari XSS'],'color':BLUE},
+        {'title':'SameSite','body':['controlla invio cross-site','aiuta contro alcuni scenari CSRF'],'color':AMBER}],
+        'Sono controlli importanti, ma non sostituiscono l’autorizzazione')
+    terminal(prs,D,M,'JWT: leggibile non significa fidato','''eyJhbGciOiJIUzI1NiJ9
+.eyJzdWIiOiIxMDEiLCJyb2xlIjoiY3VzdG9tZXIifQ
+.signature''',[
+        ('HEADER','algoritmo e metadata',TEAL),('PAYLOAD','claim: sub, role, exp…',BLUE),('SIGNATURE','integrità / autenticità',AMBER)],'Il server deve verificare la firma e decidere cosa usare per autorizzare')
+    cards(prs,D,M,'Access control: tre famiglie che vedremo spesso',[
+        {'title':'ORIZZONTALE','body':['Alice accede ai dati di Bob','stesso ruolo, oggetto diverso']},
+        {'title':'VERTICALE','body':['utente standard usa funzioni admin','ruolo diverso'],'color':BLUE},
+        {'title':'FUNCTION LEVEL','body':['endpoint sensibile invocabile direttamente','la UI non è un controllo'],'color':AMBER}],
+        'La decisione deve essere server-side, ogni volta')
+    process(prs,D,M,'Two Users, One Object',['Alice → 1001','Bob → 1002','Alice → 1002','server decide','noi osserviamo'],'Cambiamo una sola variabile: l’object ID')
+    terminal(prs,D,M,'La prova minima di un problema di authorization','''GET /api/orders/1002 HTTP/1.1
+Host: shop.umbramarket.lab
+Cookie: session=demo-alice
+
+HTTP/1.1 200 OK
+
+{"orderId":1002,"owner":"Bob Demo","total":129.00}''',[
+        ('IDENTITÀ','Alice',TEAL),('OGGETTO','ordine di Bob',BLUE),('DECISIONE','server restituisce 200 + dati',RED)],'A questo punto abbiamo già una stop condition sensata')
+    matrix(prs,D,M,'Authorization Matrix',['Endpoint','Action','Alice','Bob','Admin','Object rule'],[
+        ['/api/me','read self','✓','✓','✓','self'],
+        ['/api/orders/{id}','read order','own','own','all','owner or admin'],
+        ['/api/admin/users','manage users','—','—','✓','admin only']],
+        'La matrice ci dice cosa dovrebbe accadere prima di testarlo')
+    cards(prs,D,M,'API: cosa guardiamo oltre all’object ID',[
+        {'title':'FUNCTION AUTHZ','body':['metodi / endpoint privilegiati','chi può chiamarli?']},
+        {'title':'PROPERTY AUTHZ','body':['campi leggibili o modificabili','mass assignment / excessive data exposure'],'color':BLUE},
+        {'title':'RESOURCE CONTROLS','body':['rate / pagination / size','abuso di risorse'],'color':AMBER},
+        {'title':'AUTHENTICATION','body':['token lifecycle','session expiry e revoca'],'color':VIOLET}],
+        'Non memorizziamo una Top 10: costruiamo domande dal modello dell’API')
+    compare(prs,D,M,'UI e server non hanno lo stesso ruolo','UI / CLIENT',[
+        'può nascondere bottoni','può evitare di mostrare certe funzioni','è sotto il controllo dell’utente'],
+        'SERVER',[
+        'deve verificare identità e permessi','deve proteggere ogni oggetto e azione','è il punto in cui l’autorizzazione conta davvero'],
+        '“Il bottone non c’è” non è un controllo di sicurezza.')
+    lab_handoff(prs,D,M,'Laboratorio — Two Users, One Order','Abbiamo due account demo e due ordini. Confrontiamo prima i flussi legittimi, poi cambiamo solo l’ID dell’ordine.',[
+        'mappiamo identità e oggetto','definiamo expected behavior','eseguiamo il cross-user test','ci fermiamo alla prova minima'],
+        'Finding BOLA / IDOR + request / response essenziali')
+    big_question(prs,D,M,'Quanta prova ci serve?','Se Alice legge un ordine di Bob, non serve enumerare 1000 ID per “essere più sicuri”.','Il rischio è già dimostrato. Ora documentiamo.',section='debrief')
+    takeaways(prs,D,M,['distinguere authentication, session e authorization','definire expected behavior prima del test','testare access control confrontando utenti, ruoli e oggetti','fermarsi quando una PoC minima dimostra il rischio'])
+    bridge(prs,D,M,'Giornata 6 — Exploitation, Post-Exploitation, Reporting & AI','Quando una vulnerabilità è confermata, quando vale davvero la pena fare una PoC più profonda?','DAY 06')
+    # backup
+    cards(prs,D,M,'Token lifecycle: domande utili',[
+        {'title':'SCADENZA','body':['quanto dura?','cosa succede dopo exp?']},
+        {'title':'REVOCA','body':['logout invalida davvero?','token rubato rimane valido?'],'color':BLUE},
+        {'title':'ROTATION','body':['refresh token','riuso / replay'],'color':AMBER}],
+        'Non testiamo “il JWT”: testiamo il comportamento della sessione',section='approfondimento',backup=True)
+    cards(prs,D,M,'BOLA, IDOR: nomi diversi, stessa domanda pratica',[
+        {'title':'OGGETTO','body':['quale record / risorsa sto chiedendo?']},
+        {'title':'IDENTITÀ','body':['chi sta facendo la richiesta?'],'color':BLUE},
+        {'title':'CONTROLLO','body':['il server collega davvero le due cose?'],'color':AMBER}],
+        'La terminologia aiuta dopo; il modello mentale viene prima',section='approfondimento',backup=True)
+    matrix(prs,D,M,'Una matrice semplice per i test di authorization',['Identità','Azione','Oggetto','Expected','Observed'],[
+        ['Alice','read','ordine Alice','200','?'],['Alice','read','ordine Bob','403 / 404','?'],['Bob','update','ordine Alice','403 / 404','?'],['Admin','read','ordine Alice','dipende dal modello','?']],
+        'Definire l’expected behavior prima del test rende l’evidenza molto più forte.',section='approfondimento',backup=True)
+    return prs
+
+
+def build_day6():
+    prs=Presentation();set_wide(prs);D='DAY 06';M='08 + 09 + 10 + 11'
+    cover(prs,D,'Dalla vulnerabilità al rischio raccontabile','Mettiamo insieme PoC controllata, post-exploitation, reporting e uso disciplinato dell’AI.',M,['decidiamo se exploitare','misuriamo il contesto','scriviamo il finding','verifichiamo l’AI'])
+    journey_slide(prs,D,M,[('PoC','vale la pena?'),('post-ex','cosa abbiamo ottenuto'),('report','cosa può capire il cliente'),('AI','cosa possiamo delegare')],['decision sheet','attack path','finding','AI claim review'])
+    big_question(prs,D,M,'Una vulnerabilità confermata va sempre sfruttata?','No. Una PoC è utile solo se aggiunge informazione e rimane entro le regole concordate.','Prima di exploitare facciamo un decision gate.',section='exploitation')
+    process(prs,D,M,'Decision gate prima della PoC',['finding confermato?','prerequisiti presenti?','valore aggiunto?','RoE lo consente?','stop condition?'],'Se una risposta critica è “no”, ci fermiamo',section='exploitation')
+    cards(prs,D,M,'Vulnerability, exploit, payload',[
+        {'title':'VULNERABILITY','body':['la debolezza nel sistema','la causa che rende possibile l’attacco']},
+        {'title':'EXPLOIT','body':['tecnica / codice che usa la debolezza','ha prerequisiti precisi'],'color':BLUE},
+        {'title':'PAYLOAD','body':['effetto successivo quando serve','non è sinonimo di exploit'],'color':AMBER}],
+        'Tre parole diverse, tre decisioni diverse',section='exploitation')
+    terminal(prs,D,M,'Un primo tentativo che non conferma nulla','''[SIMULATED CHECK]
+Target service: demosync 2.3
+Advisory requires: feature=legacy-sync
+Observed: feature flag not visible
+Result: prerequisite NOT confirmed
+
+Decision: do not claim exploitability yet.''',[
+        ('FATTO','manca un prerequisito',TEAL),('NON CONCLUDIAMO','“non vulnerabile”',RED),('NEXT STEP','cercare evidenza sul requisito',AMBER)],'Anche un tentativo “negativo” produce informazione',section='exploitation')
+    statement(prs,D,M,'La stop condition fa parte della tecnica.','Una PoC professionale dimostra il rischio con il minimo impatto necessario, poi si ferma.',section='exploitation',accent=AMBER)
+    big_question(prs,D,M,'Abbiamo accesso. Adesso cosa vogliamo capire?','Non “quanto lontano possiamo andare?”, ma “quale nuovo rischio possiamo misurare senza uscire dal mandato?”.','Partiamo dal security context.',section='post-exploitation')
+    cards(prs,D,M,'Post-exploitation: tre domande',[
+        {'title':'CHI SIAMO','body':['utente / servizio','host / container','privilegi attuali']},
+        {'title':'QUALI CONFINI','body':['gruppi, ACL, service accounts','segmentazione e trust'],'color':BLUE},
