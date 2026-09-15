@@ -1,0 +1,38 @@
+SIMULATED API COMPARISON
+
+Alice session:
+
+GET /api/orders/1001
+Authorization: Bearer <alice-demo-token>
+
+HTTP/1.1 200 OK
+{
+  "orderId": 1001,
+  "owner": "alice.demo@example.lab",
+  "status": "paid",
+  "total": 79.90
+}
+
+Bob session:
+
+GET /api/orders/1002
+Authorization: Bearer <bob-demo-token>
+
+HTTP/1.1 200 OK
+{
+  "orderId": 1002,
+  "owner": "bob.demo@example.lab",
+  "status": "paid",
+  "total": 149.00
+}
+
+No cross-user request has been made yet.
+
+DECISION POINT
+
+Write down:
+
+1. the authorization rule you expect the server to enforce;
+2. the smallest controlled test that can verify that rule;
+3. the expected secure result;
+4. the stop condition if the test demonstrates cross-user access.
