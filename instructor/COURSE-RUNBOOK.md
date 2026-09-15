@@ -2,7 +2,24 @@
 
 Questa pagina è il punto di controllo operativo del docente durante l'erogazione del corso.
 
-Le singole guide dettagliate sono in `instructor/00-...` fino a `12-...`.
+Per la distribuzione reale delle **30 ore disponibili** usare [`30-HOUR-SCHEDULE.md`](30-HOUR-SCHEDULE.md). Le singole guide dettagliate sono in `instructor/00-...` fino a `12-...` e contengono più materiale di quanto sarà necessariamente usato in aula.
+
+## Vincolo reale di erogazione
+
+Il corso dispone di 30 ore di calendario. Gli incontri principali durano 4 ore, con due pause da almeno 15 minuti.
+
+La regola di progettazione è:
+
+```text
+4 ore reali
+≈ 3 ore pianificate di lezione/lab
++ 30 min pause
++ 30 min elasticità
+```
+
+Quindi il percorso viene progettato su circa **22,5 ore effettive di attività**, non su 30 ore di contenuti da riempire.
+
+L'elasticità non è tempo perso: serve a proteggere laboratori, discussione, setup tecnico e differenze di velocità della classe.
 
 ## Obiettivo finale del percorso
 
@@ -59,11 +76,39 @@ Al termine del corso lo studente dovrebbe poter dire:
 
 Il modulo 10 può essere anticipato in piccole dosi fin dal primo giorno: ogni laboratorio produce già note ed evidence che confluiranno nel reporting.
 
+## Priorità in caso di ritardo
+
+Se il calendario reale si comprime, proteggere in questo ordine:
+
+```text
+mindset e scope
+HTTP e recon\ validazione
+web mapping
+input handling
+auth/API
+reporting
+capstone
+```
+
+Comprimere prima:
+
+```text
+sintassi/tool avanzati
+Metasploit esteso
+MITRE dettagliato
+panoramiche prodotto AI
+esempi aggiuntivi
+challenge extra
+```
+
+I moduli 08, 09 e 11 devono rimanere presenti, ma possono essere erogati principalmente tramite dossier e decisioni guidate.
+
 ## Routine prima di ogni lezione
 
 Checklist docente:
 
 ```text
+[ ] apro 30-HOUR-SCHEDULE.md e individuo il blocco della giornata
 [ ] apro la guida instructor del modulo
 [ ] apro lezione e dossier studente
 [ ] verifico gli artefatti nell'ordine previsto
@@ -197,6 +242,8 @@ Nel modulo 11 queste regole diventano oggetto esplicito di laboratorio.
 
 Il capstone pubblico deve verificare il processo, non sorprendere con tecniche mai viste.
 
+Nel piano da 30 ore viene protetta una giornata completa da 4 ore e l'incontro finale viene usato per chiusura, reporting e client presentation.
+
 Prima di avviarlo verificare che gli studenti sappiano almeno:
 
 - leggere una request;
@@ -216,6 +263,7 @@ Se una di queste competenze manca in gran parte della classe, usare il capstone 
 - presentare lo scanner come fonte di verità;
 - usare exploitation come spettacolo;
 - lasciare reporting tutto all'ultima lezione;
+- riempire i 30 minuti di elasticità con altra teoria preparata;
 - confondere materiale formativo pubblico ed esame riservato.
 
 ## Fine di ogni incontro
