@@ -1,0 +1,44 @@
+SIMULATED EVIDENCE REVIEW
+
+Before writing the final report, review what the assessment actually established.
+
+CONFIRMED BY THE DOSSIER
+
+- shop.umbramarket.lab and api.umbramarket.lab are authorized targets.
+- Alice can access order 1001.
+- Bob can access order 1002.
+- Alice receives Bob's order 1002 when requesting that object directly.
+- One controlled cross-user access is enough to satisfy the agreed stop condition.
+
+OBSERVED BUT NOT VALIDATED AS A VULNERABILITY
+
+- Server header reports nginx/1.24.0.
+- X-Powered-By reports demo-app/2.3.
+- Content-Security-Policy was not observed on one response.
+- `/backup/` returned 403.
+- Port 8080 was visible at the shared IP.
+
+OUTSIDE SCOPE / NOT TESTED
+
+- admin.umbramarket.lab
+- files.umbramarket.lab
+
+NOT DEMONSTRATED
+
+- unauthenticated order access;
+- order modification;
+- remote code execution;
+- server compromise;
+- database compromise;
+- access to all customer records;
+- lateral movement.
+
+FINAL CHECK
+
+For each statement in your report ask:
+
+1. Which artifact supports it?
+2. Is it a fact, interpretation or hypothesis?
+3. Does the wording exceed what was demonstrated?
+4. Can the client reproduce the issue from the evidence?
+5. Does the remediation fix the authorization decision on the server side?
