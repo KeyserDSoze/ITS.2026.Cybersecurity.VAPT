@@ -6,9 +6,13 @@ Non viene caricata dal portale studenti GitHub Pages. È però parte della repos
 
 ## Punto di partenza
 
-Per l'erogazione del corso usare prima di tutto [`COURSE-RUNBOOK.md`](COURSE-RUNBOOK.md): contiene la sequenza complessiva, le dipendenze tra moduli, le routine pre/post lezione, la gestione degli hint e l'adattamento ai diversi livelli della classe.
+Per l'erogazione del corso usare prima di tutto:
 
-Poi aprire la guida del singolo modulo.
+1. [`30-HOUR-SCHEDULE.md`](30-HOUR-SCHEDULE.md) — calendario operativo per le **30 ore reali** disponibili;
+2. [`COURSE-RUNBOOK.md`](COURSE-RUNBOOK.md) — metodo generale di conduzione, gestione hint, routine e adattamento della classe;
+3. la guida del singolo modulo.
+
+Il piano da 30 ore usa una regola prudenziale: ogni incontro da 4 ore contiene **circa 3 ore di attività pianificata**, lasciando spazio a due pause da almeno 15 minuti e a circa 30 minuti complessivi di elasticità per setup, domande, recupero e debrief.
 
 ## Moduli disponibili
 
@@ -30,11 +34,10 @@ Poi aprire la guida del singolo modulo.
 
 ## Struttura
 
-Un file per ogni modulo:
-
 ```text
 instructor/
 ├── README.md
+├── 30-HOUR-SCHEDULE.md
 ├── COURSE-RUNBOOK.md
 ├── 00-baseline-and-mindset.md
 ├── 01-vapt-engagement.md
@@ -69,7 +72,7 @@ Che cambiamento vogliamo vedere nel modo di ragionare degli studenti.
 
 ### 2. Durata suggerita
 
-Una scansione temporale flessibile. I tempi verranno adattati quando sarà definito il monte ore reale del corso.
+Una scansione temporale flessibile. Quando la guida del singolo modulo propone più tempo di quello disponibile nel piano reale, **prevale `30-HOUR-SCHEDULE.md`**: la guida completa serve come bacino di esempi, domande e varianti.
 
 ### 3. Preparazione prima della lezione
 
