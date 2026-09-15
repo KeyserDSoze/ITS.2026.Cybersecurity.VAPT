@@ -16,8 +16,11 @@ Non viene caricata dal portale studenti GitHub Pages. È però parte della repos
 | 05 | [`05-web-pentesting-foundations.md`](05-web-pentesting-foundations.md) | proxy, mapping web, ruoli e input |
 | 06 | [`06-web-injection.md`](06-web-injection.md) | input handling, contesto, detection e conferma |
 | 07 | [`07-auth-api-security.md`](07-auth-api-security.md) | authentication, authorization, API e BOLA |
-
-I moduli 08–12 verranno aggiunti con lo stesso formato.
+| 08 | [`08-controlled-exploitation.md`](08-controlled-exploitation.md) | exploitability, PoC minima e stop condition |
+| 09 | [`09-post-exploitation.md`](09-post-exploitation.md) | security context, privilege boundary e attack path |
+| 10 | [`10-reporting.md`](10-reporting.md) | finding, severity, remediation ed executive summary |
+| 11 | [`11-ai-assisted-pentesting.md`](11-ai-assisted-pentesting.md) | AI come assistente, verifica e human checkpoint |
+| 12 | [`12-capstone.md`](12-capstone.md) | conduzione del mini-assessment end-to-end |
 
 ## Struttura
 
@@ -29,7 +32,15 @@ instructor/
 ├── 00-baseline-and-mindset.md
 ├── 01-vapt-engagement.md
 ├── 02-technical-foundations.md
-├── ...
+├── 03-recon-enumeration.md
+├── 04-vulnerability-assessment.md
+├── 05-web-pentesting-foundations.md
+├── 06-web-injection.md
+├── 07-auth-api-security.md
+├── 08-controlled-exploitation.md
+├── 09-post-exploitation.md
+├── 10-reporting.md
+├── 11-ai-assisted-pentesting.md
 └── 12-capstone.md
 ```
 
@@ -112,6 +123,19 @@ COSA POSSO CONCLUDERE ADESSO?
 ```
 
 Il corso non premia l'uso del maggior numero di tool. Premia la capacità di prendere decisioni tecniche supportate da evidenze.
+
+## Uso delle guide
+
+La guida non deve essere letta come uno script rigido. È un supporto per mantenere coerenti:
+
+- obiettivo della lezione;
+- ritmo;
+- domande alla classe;
+- livello di hint;
+- qualità del debrief;
+- collegamento tra un modulo e il successivo.
+
+Quando il livello della classe è incerto, privilegiare il percorso GUIDED e aumentare l'autonomia solo quando gli studenti riescono a spiegare il proprio ragionamento.
 
 ## Materiale riservato
 
