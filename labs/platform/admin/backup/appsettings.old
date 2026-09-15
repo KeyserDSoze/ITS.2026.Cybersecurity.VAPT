@@ -1,0 +1,5 @@
+# TRAINING DATA ONLY
+environment=staging
+api_base=http://app.umbramarket.test:5005/api
+log_level=debug
+feature_admin_v2=false

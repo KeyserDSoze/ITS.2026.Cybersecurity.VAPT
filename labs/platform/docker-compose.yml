@@ -1,0 +1,36 @@
+services:
+  umbramarket:
+    build:
+      context: ./umbramarket
+    ports:
+      - "127.0.0.1:5005:5000"
+    volumes:
+      - umbramarket-data:/data
+    restart: unless-stopped
+
+  juice-shop:
+    image: bkimminich/juice-shop:v20.1.0
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
+
+  admin:
+    image: nginx:1.27-alpine
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./admin:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  files:
+    image: python:3.12-alpine
+    working_dir: /srv
+    command: ["python", "-m", "http.server", "8000"]
+    ports:
+      - "127.0.0.1:9090:8000"
+    volumes:
+      - ./files:/srv:ro
+    restart: unless-stopped
+
+volumes:
+  umbramarket-data:

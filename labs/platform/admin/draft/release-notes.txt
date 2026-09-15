@@ -1,0 +1,4 @@
+UmbraMarket Admin UI 2026.09
+- migration to new API pending
+- old diagnostics endpoint removed from navigation
+- review security headers before production release

@@ -1,0 +1,3 @@
+Release 2026.09
+Public storefront migrated to the current catalog API.
+Legacy admin content remains on a separate staging service.
