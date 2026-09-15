@@ -1,0 +1,69 @@
+name: Release versioned presentations
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-presentations.yml'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versione semantica, es. 1.1.0'
+        required: true
+        default: '1.0.0'
+      target_ref:
+        description: 'Commit, tag o branch da congelare'
+        required: true
+        default: 'main'
+
+permissions:
+  contents: write
+
+jobs:
+  release-presentations:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      VERSION: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '1.0.0' }}
+      TARGET_REF: ${{ github.event_name == 'workflow_dispatch' && inputs.target_ref || '5e539f3baf009e7c67b307f6cd3487d881806279' }}
+
+    steps:
+      - name: Checkout frozen presentation version
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_REF }}
+
+      - name: Prepare release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="presentations-v${VERSION}"
+          BUNDLE="presentations-v${VERSION}.zip"
+
+          cd presentations/premium
+          sha256sum *.pptx > ../../SHA256SUMS.txt
+          zip -j "../../${BUNDLE}" *.pptx
+          cd ../..
+
+          echo "TAG=${TAG}" >> "$GITHUB_ENV"
+          echo "BUNDLE=${BUNDLE}" >> "$GITHUB_ENV"
+
+      - name: Create release
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; nothing to do."
+            exit 0
+          fi
+
+          gh release create "$TAG" \
+            presentations/premium/*.pptx \
+            "$BUNDLE" \
+            SHA256SUMS.txt \
+            --repo "$REPO" \
+            --target "$TARGET_REF" \
+            --title "Presentazioni VAPT 2026 — v${VERSION}" \
+            --notes "Prima release versionata delle presentazioni del corso ITS Umbria — VAPT 2026.\n\nContiene:\n- gli 8 deck PowerPoint delle giornate di corso;\n- un bundle ZIP unico;\n- SHA256SUMS.txt per la verifica di integrità.\n\nQuesta release congela il materiale didattico delle presentazioni alla versione v${VERSION}."
