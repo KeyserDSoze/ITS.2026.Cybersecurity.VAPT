@@ -1,0 +1,115 @@
+def compare(prs, day, module, title_text, left_title, left_items, right_title, right_items, subtitle=None, section='confrontiamo', backup=False):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); title(slide,day,module,title_text,subtitle,section,backup)
+    add_bullets_box(slide,0.8,2.4,5.55,3.75,left_title,left_items,TEAL,SOFT)
+    add_bullets_box(slide,6.95,2.4,5.55,3.75,right_title,right_items,BLUE,SOFT)
+    add_text(slide,6.46,3.85,0.4,0.4,'↔',18,MUTED,True,align=PP_ALIGN.CENTER)
+    footer(slide,len(prs.slides))
+
+
+def process(prs, day, module, title_text, steps, subtitle=None, section='metodo', backup=False):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); title(slide,day,module,title_text,subtitle,section,backup)
+    n=len(steps); boxw=min(1.75,(11.5-(n-1)*0.2)/n); total=n*boxw+(n-1)*0.2; x=(W-total)/2; y=3.0
+    colors=[TEAL,BLUE,AMBER,VIOLET,TEAL,BLUE,AMBER,VIOLET]
+    for i,s in enumerate(steps):
+        rounded(slide,x,y,boxw,1.1,SOFT,WHITE)
+        chip(slide,x+0.1,y+0.12,str(i+1),colors[i%len(colors)],SOFT2,w=0.42)
+        add_text(slide,x+0.12,y+0.55,boxw-0.24,0.34,s,12.8,INK,True,align=PP_ALIGN.CENTER)
+        if i<n-1:
+            add_text(slide,x+boxw+0.03,y+0.46,0.14,0.2,'→',13,MUTED,True,align=PP_ALIGN.CENTER)
+        x+=boxw+0.2
+    footer(slide,len(prs.slides))
+
+
+def terminal(prs, day, module, title_text, code, callouts=None, subtitle=None, section='evidenza', backup=False):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); title(slide,day,module,title_text,subtitle,section,backup)
+    tw=7.25 if callouts else 11.7
+    rounded(slide,0.8,2.35,tw,3.65,MONO_BG,MONO_BG)
+    # terminal dots
+    for i,c in enumerate([RGBColor(248,113,113),RGBColor(251,191,36),RGBColor(74,222,128)]):
+        s=slide.shapes.add_shape(MSO_SHAPE.OVAL,Inches(1.05+i*0.22),Inches(2.58),Inches(0.10),Inches(0.10)); s.fill.solid();s.fill.fore_color.rgb=c;s.line.color.rgb=c
+    add_text(slide,1.02,2.88,tw-0.4,2.85,code,12.1,MONO_FG,False,MONO)
+    if callouts:
+        y=2.42
+        for i,(head,body,col) in enumerate(callouts):
+            rounded(slide,8.35,y,4.12,1.05,SOFT,WHITE)
+            add_text(slide,8.58,y+0.16,3.65,0.26,head,14,col,True)
+            add_text(slide,8.58,y+0.48,3.65,0.42,body,11.4,INK2)
+            y+=1.2
+    footer(slide,len(prs.slides))
+
+
+def matrix(prs, day, module, title_text, columns, rows, subtitle=None, section='mappa', backup=False):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); title(slide,day,module,title_text,subtitle,section,backup)
+    x0=0.75;y0=2.35;tw=11.85;header_h=0.6;row_h=min(0.68,3.6/max(1,len(rows)))
+    widths=[]
+    # weighting by column title lengths
+    weights=[max(1.0,len(c)/8) for c in columns]; s=sum(weights)
+    widths=[tw*w/s for w in weights]
+    x=x0
+    for c,w in zip(columns,widths):
+        rounded(slide,x,y0,w,header_h,DARK,DARK,False)
+        add_text(slide,x+0.10,y0+0.17,w-0.2,0.22,c,11.5,WHITE,True,align=PP_ALIGN.CENTER)
+        x+=w
+    y=y0+header_h
+    for ri,row in enumerate(rows):
+        x=x0; fill=SOFT if ri%2==0 else WHITE
+        for val,w in zip(row,widths):
+            rounded(slide,x,y,w,row_h,fill,BORDER,False)
+            add_text(slide,x+0.10,y+0.15,w-0.20,row_h-0.18,str(val),11.4,INK,False)
+            x+=w
+        y+=row_h
+    footer(slide,len(prs.slides))
+
+
+def lab_handoff(prs, day, module, title_text, scenario, tasks, deliverable, section='laboratorio'):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); title(slide,day,module,title_text,'Adesso usiamo il metodo sul dossier.',section)
+    rounded(slide,0.8,2.35,4.0,3.4,SOFT,WHITE)
+    chip(slide,1.05,2.62,'scenario',TEAL,WHITE,w=1.1)
+    add_text(slide,1.06,3.12,3.45,1.9,scenario,15,INK,True)
+    add_bullets_box(slide,5.12,2.35,4.15,3.4,'FACCIAMO',tasks,BLUE,SOFT)
+    rounded(slide,9.58,2.35,2.95,3.4,RGBColor(255,251,235),WHITE)
+    chip(slide,9.85,2.62,'cosa consegniamo',AMBER,WHITE,w=1.72)
+    add_text(slide,9.86,3.15,2.38,1.7,deliverable,14.5,INK,True)
+    add_text(slide,9.86,5.10,2.38,0.4,'→ apriamo il sito / dossier',11.5,AMBER,True)
+    footer(slide,len(prs.slides))
+
+
+def takeaways(prs, day, module, items, title_text='Prima di andare via, dobbiamo riuscire a…'):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); title(slide,day,module,title_text,'Ci interessa il perché delle decisioni, non il numero di tool.',section='chiudiamo')
+    y=2.35
+    colors=[TEAL,BLUE,AMBER,VIOLET,GREEN]
+    for i,it in enumerate(items):
+        rounded(slide,1.0,y,11.0,0.63,WHITE,BORDER)
+        add_text(slide,1.22,y+0.14,0.35,0.26,str(i+1).zfill(2),11,colors[i%len(colors)],True)
+        add_text(slide,1.75,y+0.13,9.9,0.30,it,14.5,INK,True)
+        y+=0.78
+    footer(slide,len(prs.slides))
+
+
+def bridge(prs, day, module, next_title, question, next_day):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); topbar(slide,day,module,'prossima tappa')
+    add_text(slide,0.8,1.45,11.0,0.4,'LA DOMANDA CHE CI PORTIAMO DIETRO',10.5,MUTED,True)
+    add_text(slide,0.8,2.1,11.1,1.25,question,29,INK,True)
+    rounded(slide,0.8,4.55,11.45,1.05,SOFT,WHITE)
+    chip(slide,1.05,4.89,next_day,BLUE,WHITE,w=1.1)
+    add_text(slide,2.42,4.82,8.9,0.4,next_title,16,BLUE,True)
+    footer(slide,len(prs.slides))
+
+
+def build_day1():
+    prs=Presentation();set_wide(prs);D='DAY 01';M='00 + 01'
+    cover(prs,D,'Entriamo nel mindset','Prima di toccare un target dobbiamo imparare a separare fatti, ipotesi, evidenze e confini.',M,['osserviamo','facciamo domande','definiamo i confini','documentiamo'])
+    journey_slide(prs,D,M,[('baseline','da dove partiamo'),('mindset','come ragioniamo'),('engagement','come lavoriamo'),('kickoff','come iniziamo davvero')],['note strutturate','scope & RoE','domande al cliente'])
+    big_question(prs,D,M,'Ci danno un target e ci dicono: «diteci se è sicuro». Da dove iniziamo?','La tentazione è aprire subito uno scanner. Noi facciamo un passo prima.','Prima domanda: che cosa sappiamo davvero?')
+    process(prs,D,M,'Il nostro metodo per tutto il corso',['osserviamo','formuliamo un’ipotesi','scegliamo un test minimo','raccogliamo evidenza','concludiamo'],'Questa sequenza tornerà in ogni modulo')
+    cards(prs,D,M,'Fatto. Ipotesi. Evidenza.',[
+        {'title':'FATTO','body':['qualcosa che abbiamo osservato','lo possiamo mostrare o riprodurre'],'color':TEAL},
+        {'title':'IPOTESI','body':['una spiegazione plausibile','serve ancora un test'],'color':BLUE},
+        {'title':'EVIDENZA','body':['ciò che sostiene la conclusione','request, response, output, nota'],'color':AMBER}],
+        'Tre categorie per non correre più veloci dei dati')
+    terminal(prs,D,M,'Una response ci dà un indizio','''HTTP/1.1 200 OK
+Server: nginx/1.24.0
+Set-Cookie: session=demo-alice-7f2a; HttpOnly; Secure
+Content-Type: application/json
+
+{"user":"alice","role":"customer"}''',[
