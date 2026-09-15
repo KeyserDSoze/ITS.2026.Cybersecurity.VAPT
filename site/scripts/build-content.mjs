@@ -7,6 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const siteDir = path.resolve(__dirname, '..');
 const repoRoot = path.resolve(siteDir, '..');
 const lessonsDir = path.join(repoRoot, 'lessons');
+const labsDir = path.join(repoRoot, 'labs');
 const outputDir = path.join(siteDir, 'public', 'content');
 
 function slugify(value) {
@@ -34,7 +35,7 @@ function section(markdown, heading) {
 }
 
 function summaryFrom(markdown) {
-  const candidateSections = ['Missione di oggi', 'La missione finale', 'Scopo', 'Obiettivi', 'Cosa imparerai'];
+  const candidateSections = ['Missione di oggi', 'La missione finale', 'Scenario', 'Scopo', 'Obiettivi', 'Cosa imparerai'];
   const source = candidateSections.map((heading) => section(markdown, heading)).find(Boolean) || '';
   const paragraphs = source.split(/\n\s*\n/).map((item) => item.trim()).filter(Boolean);
   const paragraph = paragraphs.find((item) => !item.startsWith('-') && !item.startsWith('```') && !item.startsWith('>'));
@@ -55,10 +56,10 @@ function headingsFrom(markdown) {
   return result;
 }
 
-function addHeadingIds(html) {
+function addHeadingIds(html, prefix = '') {
   return html.replace(/<h([2-3])>([\s\S]*?)<\/h\1>/g, (full, level, inner) => {
     const text = inner.replace(/<[^>]+>/g, '');
-    return `<h${level} id="${slugify(text)}">${inner}</h${level}>`;
+    return `<h${level} id="${prefix}${slugify(text)}">${inner}</h${level}>`;
   });
 }
 
@@ -72,7 +73,80 @@ async function readQuiz(dir) {
   }
 }
 
+async function readArtifacts(dir, root = dir) {
+  let entries;
+  try {
+    entries = await fs.readdir(dir, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+
+  const artifacts = [];
+  for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name, 'it', { numeric: true }))) {
+    const absolute = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      artifacts.push(...await readArtifacts(absolute, root));
+      continue;
+    }
+    if (!entry.isFile()) continue;
+
+    try {
+      const content = await fs.readFile(absolute, 'utf8');
+      artifacts.push({
+        name: path.relative(root, absolute).split(path.sep).join('/'),
+        content,
+        extension: path.extname(entry.name).replace(/^\./, '').toLowerCase() || 'txt',
+      });
+    } catch {
+      // Binary or unreadable artifacts are intentionally omitted from the web dossier.
+    }
+  }
+  return artifacts;
+}
+
+async function loadLabs() {
+  let entries = [];
+  try {
+    entries = await fs.readdir(labsDir, { withFileTypes: true });
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+
+  const labs = new Map();
+  for (const entry of entries) {
+    if (!entry.isDirectory() || !/^\d+/.test(entry.name)) continue;
+    const numberMatch = entry.name.match(/^(\d+)/);
+    if (!numberMatch) continue;
+    const number = Number(numberMatch[1]);
+    const dir = path.join(labsDir, entry.name);
+
+    let markdown;
+    try {
+      markdown = await fs.readFile(path.join(dir, 'README.md'), 'utf8');
+    } catch (error) {
+      if (error.code === 'ENOENT') continue;
+      throw error;
+    }
+
+    const titleMatch = markdown.match(/^#\s+(.+)$/m);
+    const title = titleMatch ? stripInlineMarkdown(titleMatch[1]) : `Lab ${String(number).padStart(2, '0')}`;
+    const artifacts = await readArtifacts(path.join(dir, 'artifacts'));
+
+    labs.set(number, {
+      slug: entry.name,
+      title,
+      summary: summaryFrom(markdown),
+      html: addHeadingIds(marked.parse(markdown), 'lab-'),
+      markdown,
+      artifacts,
+    });
+  }
+  return labs;
+}
+
 await fs.mkdir(outputDir, { recursive: true });
+const labs = await loadLabs();
 const entries = (await fs.readdir(lessonsDir, { withFileTypes: true }))
   .filter((entry) => entry.isDirectory())
   .sort((a, b) => a.name.localeCompare(b.name, 'it', { numeric: true }));
@@ -104,6 +178,7 @@ for (const entry of entries) {
     html,
     markdown,
     quiz: await readQuiz(dir),
+    lab: labs.get(number) || null,
     pdf: `pdfs/${entry.name}.pdf`,
   });
 }
@@ -115,4 +190,4 @@ const payload = {
 };
 
 await fs.writeFile(path.join(outputDir, 'lessons.json'), JSON.stringify(payload, null, 2));
-console.log(`Generated student content for ${lessons.length} lessons.`);
+console.log(`Generated student content for ${lessons.length} lessons and ${labs.size} lab dossiers.`);
