@@ -1,0 +1,109 @@
+def title(slide, day, module, title_text, subtitle=None, section=None, backup=False):
+    topbar(slide,day,module,section,backup)
+    add_text(slide,0.72,1.05,11.7,0.7,title_text,28,INK,True)
+    if subtitle:
+        add_text(slide,0.74,1.72,11.0,0.45,subtitle,13.5,MUTED)
+
+
+def add_bullets_box(slide,x,y,w,h,heading,items,color=TEAL,fill=SOFT):
+    rounded(slide,x,y,w,h,fill,WHITE)
+    slide.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(x),Inches(y),Inches(0.08),Inches(h)).fill.solid()
+    bar = slide.shapes[-1]; bar.fill.fore_color.rgb = color; bar.line.color.rgb = color
+    add_text(slide,x+0.22,y+0.18,w-0.4,0.35,heading,16,color,True)
+    tb = slide.shapes.add_textbox(Inches(x+0.22),Inches(y+0.62),Inches(w-0.42),Inches(h-0.78))
+    tf = tb.text_frame; tf.clear(); tf.word_wrap=True
+    p0 = tf.paragraphs[0]; p0.text=''
+    for item in items:
+        add_para(tf,item,13,INK,False,True)
+    return tb
+
+
+def cover(prs, day, title_text, subtitle, module, journey):
+    slide=prs.slides.add_slide(prs.slide_layouts[6])
+    # giant faint number
+    num=day.split()[-1]
+    add_text(slide,9.65,0.5,2.8,1.5,num,72,SOFT2,True,align=PP_ALIGN.RIGHT)
+    chip(slide,0.72,0.78,day,TEAL,SOFT2,w=1.05)
+    chip(slide,1.95,0.78,module,BLUE,SOFT2,w=max(1.2,0.11*len(module)+0.5))
+    add_text(slide,0.72,1.55,8.5,1.35,title_text,33,INK,True)
+    add_text(slide,0.74,2.92,8.7,0.7,subtitle,17,INK2)
+    # Journey
+    add_text(slide,0.74,4.25,2.2,0.3,'IL NOSTRO PERCORSO',10.5,MUTED,True)
+    x=0.74
+    widths=[]
+    for j in journey:
+        widths.append(max(1.15, min(2.0, 0.12*len(j)+0.65)))
+    total=sum(widths)+0.16*(len(widths)-1)
+    scale=min(1, 8.4/total)
+    widths=[w*scale for w in widths]
+    for i,(j,w) in enumerate(zip(journey,widths)):
+        rounded(slide,x,4.72,w,0.62,WHITE,BORDER)
+        add_text(slide,x+0.08,4.89,w-0.16,0.22,j,12.2,[TEAL,BLUE,AMBER,VIOLET,TEAL][i%5],True,align=PP_ALIGN.CENTER)
+        x += w+0.16
+        if i < len(journey)-1:
+            add_text(slide,x-0.13,4.89,0.1,0.2,'→',13,MUTED,True,align=PP_ALIGN.CENTER)
+    add_text(slide,0.74,5.72,10.5,0.55,'Le slide ci tengono sul filo. Il sito e i dossier ci danno i dettagli quando ci servono.',13,MUTED)
+    footer(slide,len(prs.slides))
+
+
+def journey_slide(prs, day, module, steps, outputs, title_text='Oggi facciamo questo percorso'):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); title(slide,day,module,title_text,'Alterniamo ragionamento, esempi, sito e laboratorio')
+    y=2.38; x=0.78
+    colors=[TEAL,BLUE,AMBER,VIOLET]
+    for i,(name,desc) in enumerate(steps):
+        w=2.65
+        if i>0:
+            add_text(slide,x-0.28,y+0.36,0.2,0.2,'→',14,MUTED,True,align=PP_ALIGN.CENTER)
+        rounded(slide,x,y,w,1.25,SOFT,WHITE)
+        chip(slide,x+0.18,y+0.16,f'{i+1}',colors[i%4],SOFT2,w=0.45)
+        add_text(slide,x+0.18,y+0.57,w-0.36,0.28,name,16,INK,True)
+        add_text(slide,x+0.18,y+0.88,w-0.36,0.25,desc,11.5,MUTED)
+        x += w+0.38
+    add_text(slide,0.8,4.55,3.4,0.3,'ALLA FINE CI PORTIAMO VIA',10.5,MUTED,True)
+    x=0.8
+    for i,o in enumerate(outputs):
+        w=max(1.65,min(3.25,0.11*len(o)+0.7))
+        chip(slide,x,5.0,o,[TEAL,BLUE,AMBER,VIOLET][i%4],WHITE,w=w)
+        # add border around chip
+        x += w+0.18
+    footer(slide,len(prs.slides))
+
+
+def big_question(prs, day, module, q, sub=None, prompt=None, section='ragioniamo'):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); topbar(slide,day,module,section)
+    add_text(slide,0.78,1.25,10.9,1.65,q,34,INK,True)
+    if sub:
+        add_text(slide,0.8,3.1,9.4,0.7,sub,16,INK2)
+    if prompt:
+        rounded(slide,0.8,4.45,11.5,1.2,SOFT,WHITE)
+        add_text(slide,1.1,4.77,10.9,0.5,prompt,16,TEAL,True,align=PP_ALIGN.CENTER)
+    footer(slide,len(prs.slides))
+
+
+def statement(prs, day, module, headline, body, section='concetto', accent=TEAL, backup=False):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); topbar(slide,day,module,section,backup)
+    bar=slide.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(0.86),Inches(1.65),Inches(0.16),Inches(2.7))
+    bar.fill.solid(); bar.fill.fore_color.rgb=accent; bar.line.color.rgb=accent
+    add_text(slide,1.34,1.56,10.2,1.7,headline,30,INK,True)
+    add_text(slide,1.35,3.48,9.8,1.2,body,15,INK2)
+    footer(slide,len(prs.slides))
+
+
+def cards(prs, day, module, title_text, cards_data, subtitle=None, section='concetto', backup=False):
+    slide=prs.slides.add_slide(prs.slide_layouts[6]); title(slide,day,module,title_text,subtitle,section,backup)
+    n=len(cards_data); cols=3 if n<=3 or n in (5,6) else 2; rows=math.ceil(n/cols)
+    x0=0.75; gap=0.24; total=11.82; w=(total-gap*(cols-1))/cols
+    h=1.75 if rows==1 else 1.52; y0=2.35
+    for i,c in enumerate(cards_data):
+        r=i//cols;cidx=i%cols;x=x0+cidx*(w+gap);y=y0+r*(h+0.26)
+        rounded(slide,x,y,w,h,SOFT,WHITE)
+        color=c.get('color',[TEAL,BLUE,AMBER,VIOLET][i%4])
+        bar=slide.shapes.add_shape(MSO_SHAPE.RECTANGLE,Inches(x),Inches(y),Inches(0.08),Inches(h))
+        bar.fill.solid();bar.fill.fore_color.rgb=color;bar.line.color.rgb=color
+        add_text(slide,x+0.22,y+0.18,w-0.4,0.35,c['title'],16.5,color,True)
+        tb=slide.shapes.add_textbox(Inches(x+0.22),Inches(y+0.65),Inches(w-0.4),Inches(h-0.78))
+        tf=tb.text_frame;tf.clear();p0=tf.paragraphs[0];p0.text=''
+        for line in c['body']:
+            add_para(tf,line,12.5,INK,False,True)
+    footer(slide,len(prs.slides))
+
