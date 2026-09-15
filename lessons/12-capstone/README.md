@@ -1,104 +1,255 @@
 # 12 — Capstone Formativo
 
-## Scopo
+## La missione finale
 
-Il capstone pubblico/formativo serve a integrare i concetti del corso. Non coincide con eventuali prove d'esame riservate.
+Sei arrivato alla fine del percorso. Ora non riceverai un walkthrough.
 
-Gli studenti ricevono uno scenario, uno scope e un ambiente autorizzato e devono organizzare in autonomia un piccolo assessment end-to-end.
+Riceverai un **incarico pubblico/formativo**, uno scope e un ambiente autorizzato. Dovrai organizzare un piccolo assessment end-to-end utilizzando il metodo costruito durante il corso.
 
-## Obiettivi
+> Questo capstone non è e non contiene l'eventuale prova d'esame riservata.
 
-- interpretare correttamente lo scope;
-- pianificare il lavoro;
-- fare reconnaissance ed enumeration;
-- individuare e validare vulnerabilità;
-- dimostrare l'impatto con misura;
-- raccogliere evidenze;
-- scrivere finding;
-- produrre executive summary e report;
-- presentare le priorità al cliente.
+## Prima di iniziare — readiness check
 
-## Regole
+Il pre-test non serve a ripassare definizioni. Ti propone decisioni di processo: scope ambiguo, output scanner, finding, exploitation e reporting. Se alcune risposte sono incerte, usa i link alle lezioni precedenti prima di partire.
 
-Il docente fornisce:
+## Obiettivo
 
-- scenario;
+Dimostrare che sai lavorare con autonomia crescente:
+
+```text
+scope → recon → ipotesi → test → evidence → finding → remediation → comunicazione
+```
+
+Non viene premiato il numero di tool usati e nemmeno il semplice numero di vulnerabilità trovate.
+
+## Briefing che riceverai
+
+Il docente fornirà:
+
+- scenario cliente;
 - target autorizzati;
 - eventuali credenziali didattiche;
-- limiti e stop condition;
+- obiettivo;
+- vincoli e stop condition;
 - tempo disponibile;
-- deliverable.
+- deliverable richiesti.
 
-Non viene fornito un walkthrough.
+Se qualcosa è ambiguo, **chiedere chiarimenti fa parte del test**.
 
-## Fasi suggerite
+## Fase 1 — Planning
 
-### 1. Planning
+Prima di toccare il target, spendi pochi minuti per scrivere:
 
-Gli studenti sintetizzano scope, obiettivi e ordine di lavoro.
+```text
+OBIETTIVO
+SCOPE
+OUT OF SCOPE
+VINCOLI
+DATI DISPONIBILI
+PIANO INIZIALE
+EVIDENZA CHE VORREI OTTENERE
+```
 
-### 2. Recon / Enumeration
+Non serve prevedere tutto. Serve avere una direzione.
 
-Costruiscono la superficie d'attacco e decidono dove approfondire.
+### Checkpoint
 
-### 3. Vulnerability Analysis
+Sai dire in una frase cosa devi dimostrare e cosa non sei autorizzato a fare?
 
-Formulano e verificano ipotesi.
+Se no, non iniziare ancora.
 
-### 4. Controlled Exploitation
+## Fase 2 — Recon & Enumeration
 
-Quando autorizzato e utile, dimostrano l'impatto con PoC minima.
+Costruisci l'attack surface inventory.
 
-### 5. Evidence Review
+Non accumulare output: aggiorna continuamente:
 
-Controllano che ogni conclusione importante abbia una prova riproducibile.
+```text
+FACTS
+HYPOTHESES
+NEXT TESTS
+```
 
-### 6. Reporting
+### Checkpoint
 
-Producono finding e executive summary.
+Hai una mappa abbastanza chiara da decidere dove investire il tempo?
 
-### 7. Client Presentation
+## Fase 3 — Vulnerability Analysis
 
-Breve restituzione orale delle priorità.
+Usa scanner, proxy e test manuali come strumenti per verificare ipotesi.
 
-## CORE
+Per ogni potenziale finding chiediti:
 
-Consegnare:
+1. qual è l'evidenza?
+2. posso riprodurlo?
+3. qual è la causa?
+4. qual è l'impatto?
+5. è dentro scope?
 
-- note strutturate;
+### Checkpoint
+
+Non inserire nel report un alert che non sapresti difendere davanti al cliente.
+
+## Fase 4 — Controlled Exploitation
+
+Solo quando autorizzato e utile.
+
+Prima di eseguire una PoC scrivi:
+
+```text
+PREREQUISITI
+RISCHIO
+EVIDENZA ATTESA
+STOP CONDITION
+CLEANUP
+```
+
+Se l'impatto è già sufficientemente dimostrato, non devi necessariamente spingerti oltre.
+
+## Fase 5 — Evidence Review
+
+Prima di scrivere il report, verifica che ogni conclusione importante abbia:
+
+- asset;
+- timestamp/contesto utile;
+- passaggi essenziali;
+- request/output pertinente;
+- risultato osservato;
+- distinzione tra fatto e interpretazione.
+
+Questa fase evita di accorgersi troppo tardi che manca una prova.
+
+## Fase 6 — Reporting
+
+Produci finding usando il template del corso.
+
+Poi scrivi una executive summary che risponda:
+
+- cosa abbiamo testato?
+- cosa abbiamo dimostrato?
+- quali rischi richiedono priorità?
+- cosa dovrebbe fare il cliente adesso?
+- quali limitazioni dobbiamo dichiarare?
+
+## Fase 7 — Client Presentation
+
+Prepara una restituzione breve.
+
+Ordine consigliato:
+
+```text
+1. obiettivo e scope
+2. postura generale
+3. rischio principale
+4. altri finding rilevanti
+5. priorità di remediation
+6. limitazioni / retest
+```
+
+Non leggere il report. Racconta le decisioni che il cliente deve prendere.
+
+## Come gestire il tempo
+
+Un possibile ritmo, da adattare alla durata assegnata:
+
+```text
+10% planning
+25% recon/mapping
+35% testing/validation
+10% evidence review
+20% reporting/presentation
+```
+
+Non è una regola rigida: serve a evitare di spendere tutto il tempo sulla prima curiosità tecnica.
+
+## Se ti blocchi
+
+Nel capstone non ci sono hint tecnici progressivi come nelle prime lezioni, ma puoi usare questo recovery loop:
+
+```text
+Che cosa so con certezza?
+Qual è la mia ipotesi migliore?
+Quale test minimo la distingue da un'alternativa?
+Che evidenza mi aspetto?
+È coerente con scope e tempo rimasto?
+```
+
+Se non sai rispondere, torna alle evidenze invece di cambiare tool a caso.
+
+## Livelli di completamento
+
+### BASELINE
+
+- scope compreso;
 - attack surface inventory;
+- note strutturate;
 - almeno un finding validato;
 - report sintetico.
 
-## CHALLENGE
+### STRONG
 
-Ricostruire un attack path che concateni più osservazioni/finding e spiegare perché il rischio complessivo è maggiore della somma dei singoli elementi.
+In aggiunta:
 
-## HARD MODE
+- più finding ben validati;
+- priorità motivate;
+- evidence pack ordinato;
+- executive summary chiara;
+- gestione del tempo efficace.
 
-Identificare una debolezza non rilevata dagli scanner e difendere tecnicamente la severity assegnata.
+### CHALLENGE
+
+- attack path che concatena più debolezze/osservazioni;
+- finding non rilevato automaticamente;
+- severity difesa tecnicamente;
+- presentazione cliente convincente.
 
 ## Criteri formativi
 
-Il capstone dovrebbe valorizzare:
+La qualità viene valutata soprattutto su:
 
-- metodo;
-- accuratezza;
-- qualità delle evidenze;
-- capacità di spiegazione;
-- gestione dello scope;
-- priorità;
-- remediation.
-
-Il semplice numero di vulnerabilità trovate non è una misura sufficiente.
+| Area | Cosa conta |
+|---|---|
+| Scope | rispetto dei limiti e capacità di chiarire ambiguità |
+| Metodo | test guidati da ipotesi, non tool casuali |
+| Accuratezza | pochi falsi positivi e conclusioni prudenti |
+| Evidence | prove riproducibili e ordinate |
+| Impatto | dimostrato con misura |
+| Reporting | chiarezza, severity, remediation |
+| Comunicazione | capacità di adattare il messaggio al cliente |
 
 ## Deliverable
 
-Usare:
+Usa:
 
 - [`../../templates/finding-template.md`](../../templates/finding-template.md)
 - [`../../templates/pentest-report-template.md`](../../templates/pentest-report-template.md)
 
-## Nota importante
+Consegna prevista nel capstone formativo:
 
-Qualunque futura versione usata come **esame valutativo riservato** dovrà essere progettata e conservata fuori da questa repository pubblica.
+```text
+1. Scope summary
+2. Attack Surface Inventory
+3. Structured notes
+4. Finding(s)
+5. Evidence Pack
+6. Executive Summary / mini report
+7. Breve restituzione orale
+```
+
+## Autovalutazione finale
+
+Prima di consegnare, chiediti:
+
+- ho separato fatti e ipotesi?
+- ogni finding ha evidence?
+- ho rispettato scope e RoE?
+- ho fatto test necessari o solo interessanti?
+- la remediation agisce sulla causa?
+- un tecnico può riprodurre?
+- un manager capisce perché importa?
+
+Completa anche il quiz finale del portale: è un ultimo controllo del processo, non un esame.
+
+## Nota sulla prova d'esame
+
+Qualunque futura prova valutativa riservata verrà progettata e conservata **fuori da questa repository pubblica**. Questo capstone rimane materiale di esercitazione accessibile agli studenti.
