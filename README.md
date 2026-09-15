@@ -28,21 +28,30 @@ La piattaforma offre tema chiaro/scuro, avanzamento persistente sul dispositivo,
 
 Il frontend è in [`site/`](site/README.md) e viene pubblicato dalla GitHub Action [`pages.yml`](.github/workflows/pages.yml).
 
+## Presentazioni PowerPoint
+
+Le presentazioni premium usate durante le giornate di lezione sono disponibili in [`presentations/`](presentations/README.md).
+
+Il set comprende **una presentazione per ciascuna delle 8 giornate** del piano da 30 ore. I `.pptx` vengono generati automaticamente e salvati in [`presentations/premium/`](presentations/premium/).
+
+Le slide sono pensate come supporto visuale da proiezione e vengono alternate al portale studenti, ai dossier e alle attività pratiche.
+
 ## Struttura della repository
 
 ```text
 .
-├── docs/          # impostazione del corso, syllabus e metodologia
-├── lessons/       # sorgente Markdown delle singole lezioni
-├── labs/          # simulazioni, dossier, setup e challenge pubbliche
-├── instructor/    # guida docente: tempi, demo, domande, debrief e conduzione d'aula
-├── templates/     # template per finding e report
-├── resources/     # riferimenti e risorse esterne
-├── assets/        # immagini e materiale statico riutilizzabile
-└── site/          # web app React per gli studenti + generazione PDF
+├── docs/           # impostazione del corso, syllabus e metodologia
+├── lessons/        # sorgente Markdown delle singole lezioni
+├── labs/           # simulazioni, dossier, setup e challenge pubbliche
+├── instructor/     # guida docente: tempi, demo, domande, debrief e conduzione d'aula
+├── presentations/  # PowerPoint premium per le giornate del corso
+├── templates/      # template per finding e report
+├── resources/      # riferimenti e risorse esterne
+├── assets/         # immagini e materiale statico riutilizzabile
+└── site/           # web app React per gli studenti + generazione PDF
 ```
 
-`instructor/` non viene caricato nel portale studenti, ma rimane comunque pubblico perché fa parte di questa repository. Per materiale realmente riservato usare una repository privata separata.
+`instructor/` e `presentations/` non vengono caricati nel portale studenti, ma rimangono comunque pubblici perché fanno parte di questa repository. Per materiale realmente riservato usare una repository privata separata.
 
 ## Principio didattico
 
