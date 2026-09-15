@@ -55,6 +55,8 @@ Simulazioni già disponibili:
 | [`08-controlled-exploitation/`](08-controlled-exploitation/) | From Finding to Controlled Proof | prerequisiti, exploitability e stop condition |
 | [`09-post-exploitation/`](09-post-exploitation/) | After Initial Access | privilege boundary e attack path |
 | [`10-reporting/`](10-reporting/) | From Raw Evidence to Professional Finding | evidenza, impatto e remediation |
+| [`11-ai-assisted-pentesting/`](11-ai-assisted-pentesting/) | AI propone, il tester verifica | VERIFIED / PLAUSIBLE / WRONG e human checkpoint |
+| [`12-capstone/`](12-capstone/) | UmbraMarket Mini Assessment | assessment end-to-end e dossier progressivo |
 
 Ogni cartella contiene un `README.md` e, quando utile, una directory `artifacts/` con gli output inventati da analizzare.
 
@@ -70,7 +72,9 @@ I laboratori 00-07 possono inoltre usare [`platform/`](platform/), che contiene:
 
 Le simulazioni testuali restano però utilizzabili anche senza avviare la piattaforma.
 
-I laboratori 08-10 sono progettati prima di tutto come dossier narrativi: exploitation, post-exploitation e reporting vengono rappresentati con output fittizi e prove controllate, così il focus rimane sulle decisioni del tester.
+I laboratori 08-11 sono progettati prima di tutto come dossier narrativi: exploitation, post-exploitation, reporting e uso dell'AI vengono rappresentati con output fittizi e prove controllate, così il focus rimane sulle decisioni del tester.
+
+Il laboratorio 12 è un capstone pubblico/formativo: gli artefatti sono ordinati per fasi e devono essere aperti progressivamente, dopo aver annotato cosa si sa, cosa si ipotizza e quale sarebbe il test successivo.
 
 ## Struttura
 
