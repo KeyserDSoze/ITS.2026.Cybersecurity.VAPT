@@ -1,0 +1,23 @@
+SIMULATED CLIENT CONTEXT
+
+UmbraMarket provides the following additional context after technical validation:
+
+- the `/api/orders/{id}` object is used by the customer portal;
+- real production order objects would contain delivery details and invoice references;
+- customers should only access their own orders;
+- support operators use a separate workflow that is not part of this exercise;
+- no evidence has been collected that an unauthenticated user can access orders;
+- no evidence has been collected that an attacker can modify an order;
+- no evidence has been collected that admin.umbramarket.lab is vulnerable because it was outside scope;
+- the launch is planned soon, so customer-data exposure is considered a release-blocking concern by the product owner.
+
+STUDENT TASK
+
+Update:
+
+- impact statement;
+- severity rationale;
+- remediation priority;
+- executive-summary wording.
+
+Be precise: do not claim unauthenticated access, modification, server compromise or access to every customer record unless the evidence actually demonstrates it.
