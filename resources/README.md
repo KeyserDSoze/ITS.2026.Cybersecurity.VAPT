@@ -2,7 +2,13 @@
 
 Riferimenti pubblici utili al corso.
 
-L'obiettivo di questa cartella non è creare una lista infinita di link, ma raccogliere fonti autorevoli che gli studenti possano imparare a consultare durante un assessment.
+L'obiettivo di questa cartella non è creare una lista infinita di link, ma raccogliere fonti autorevoli che possiamo imparare a consultare durante un assessment.
+
+## Cheat sheet del corso
+
+[`STUDENT-CHEAT-SHEET.md`](STUDENT-CHEAT-SHEET.md) raccoglie il filo mentale del corso: scope, HTTP, attack surface, scanner validation, web/API mapping, authorization, input handling, evidence, reporting e uso dell'AI.
+
+Non è una lista di payload: serve a ricordarci **come ragionare quando siamo bloccati**.
 
 ## Metodologie e knowledge base
 
@@ -19,13 +25,13 @@ L'obiettivo di questa cartella non è creare una lista infinita di link, ma racc
 
 - PortSwigger Web Security Academy
 - OWASP Juice Shop
-- altre applicazioni volutamente vulnerabili che verranno selezionate per i singoli moduli
+- altre applicazioni volutamente vulnerabili selezionate per i singoli moduli
 
 ## Tooling
 
 La documentazione ufficiale dei tool deve essere preferita a cheat sheet non verificati.
 
-Tool che potranno comparire nel corso, in base agli obiettivi dei singoli laboratori:
+Tool che possono comparire nel corso, in base agli obiettivi dei singoli laboratori:
 
 - Nmap
 - curl
@@ -37,7 +43,7 @@ Tool che potranno comparire nel corso, in base agli obiettivi dei singoli labora
 
 ## Vulnerability Intelligence
 
-Quando si analizza una vulnerabilità nota, verificare preferibilmente più fonti, ad esempio:
+Quando analizziamo una vulnerabilità nota, verifichiamo preferibilmente più fonti, ad esempio:
 
 - advisory del vendor;
 - record CVE;
@@ -49,7 +55,7 @@ Uno snippet trovato online o una risposta AI non costituiscono da soli una verif
 
 ## Regola per le fonti
 
-Durante il corso gli studenti dovrebbero imparare a distinguere:
+Durante il corso distinguiamo:
 
 1. fonte primaria;
 2. fonte secondaria autorevole;
