@@ -30,11 +30,19 @@ Il frontend è in [`site/`](site/README.md) e viene pubblicato dalla GitHub Acti
 
 ## Presentazioni PowerPoint
 
-Le presentazioni premium usate durante le giornate di lezione sono disponibili in [`presentations/`](presentations/README.md).
+Le presentazioni usate durante le giornate di lezione sono disponibili in [`presentations/`](presentations/README.md).
 
-Il set comprende **una presentazione per ciascuna delle 8 giornate** del piano da 30 ore. I `.pptx` vengono generati automaticamente e salvati in [`presentations/premium/`](presentations/premium/).
+Il set comprende **una presentazione per ciascuna delle 8 giornate** del piano da 30 ore, con runbook docente slide-by-slide in [`instructor/presentations/`](instructor/presentations/README.md).
 
 Le slide sono pensate come supporto visuale da proiezione e vengono alternate al portale studenti, ai dossier e alle attività pratiche.
+
+## Guida rapida docente
+
+Il punto di ingresso per l'erogazione è [`instructor/START-HERE.md`](instructor/START-HERE.md), seguito da:
+
+- [`instructor/PRE-FLIGHT-CHECKLIST.md`](instructor/PRE-FLIGHT-CHECKLIST.md)
+- [`instructor/30-HOUR-SCHEDULE.md`](instructor/30-HOUR-SCHEDULE.md)
+- [`instructor/COURSE-RUNBOOK.md`](instructor/COURSE-RUNBOOK.md)
 
 ## Struttura della repository
 
@@ -43,15 +51,15 @@ Le slide sono pensate come supporto visuale da proiezione e vengono alternate al
 ├── docs/           # impostazione del corso, syllabus e metodologia
 ├── lessons/        # sorgente Markdown delle singole lezioni
 ├── labs/           # simulazioni, dossier, setup e challenge pubbliche
-├── instructor/     # guida docente: tempi, demo, domande, debrief e conduzione d'aula
-├── presentations/  # PowerPoint premium per le giornate del corso
+├── instructor/     # guida docente, calendario, runbook e pre-flight
+├── presentations/  # PowerPoint delle otto giornate
 ├── templates/      # template per finding e report
-├── resources/      # riferimenti e risorse esterne
+├── resources/      # riferimenti + cheat sheet studente
 ├── assets/         # immagini e materiale statico riutilizzabile
 └── site/           # web app React per gli studenti + generazione PDF
 ```
 
-`instructor/` e `presentations/` non vengono caricati nel portale studenti, ma rimangono comunque pubblici perché fanno parte di questa repository. Per materiale realmente riservato usare una repository privata separata.
+`instructor/` e `presentations/` non vengono caricati nel portale studenti, ma rimangono comunque pubblici perché fanno parte di questa repository.
 
 ## Principio didattico
 
@@ -81,16 +89,16 @@ I tool sono strumenti per implementare una decisione tecnica, non sostituti del 
 
 Tutte le tecniche e i laboratori descritti in questa repository devono essere utilizzati **esclusivamente su sistemi propri, ambienti di laboratorio o target per cui esista un'autorizzazione esplicita**.
 
-## Materiale d'esame
+## Materiale d'esame riservato
 
 > **IMPORTANTE — questa repository è pubblica.**
 >
-> Materiale d'esame, soluzioni, flag, credenziali riservate, rubriche non pubbliche e infrastrutture predisposte per una prova valutativa **non devono essere inseriti in questa repository**, in nessun branch.
+> Soluzioni, flag, credenziali riservate, rubriche non pubbliche e infrastrutture predisposte per una prova valutativa reale **non devono essere conservate qui**, in nessun branch.
 
-GitHub non offre branch privati all'interno di una repository pubblica. Quando verrà predisposto il materiale d'esame, sarà mantenuto fuori da questa repository o in una repository privata separata.
+GitHub non offre branch privati all'interno di una repository pubblica. Il materiale realmente riservato deve rimanere fuori da questa repository o in una repository privata separata.
 
 Vedi anche [`docs/REPOSITORY_POLICY.md`](docs/REPOSITORY_POLICY.md).
 
 ## Stato
 
-Repository in costruzione per l'edizione 2026 del corso.
+Materiale principale pronto per l'erogazione dell'edizione 2026. Prima di ogni incontro usare la checklist docente e verificare l'ambiente di laboratorio.
