@@ -1,0 +1,49 @@
+UMBRAMARKET S.R.L. — FORMATIVE SCOPE & RULES OF ENGAGEMENT
+
+AUTHORIZED TARGETS
+
+- shop.umbramarket.lab
+- api.umbramarket.lab
+
+DISCOVERED BUT NOT AUTHORIZED UNLESS THE INSTRUCTOR EXPANDS SCOPE
+
+- any other hostname
+- any other IP
+
+TEST ACCOUNTS
+
+alice.demo@example.lab
+Role: customer
+
+bob.demo@example.lab
+Role: customer
+
+The passwords are provided by the instructor as fictional lab credentials.
+
+PERMITTED
+
+- normal browsing;
+- inspection of requests and responses;
+- non-destructive parameter changes;
+- comparison between the two provided accounts;
+- scanner output supplied by the exercise;
+- minimum proof needed to demonstrate an access-control problem.
+
+NOT PERMITTED
+
+- denial of service;
+- brute force;
+- password spraying;
+- testing third-party services;
+- modifying or deleting fictional customer records;
+- persistence;
+- collecting more customer records after the first sufficient proof;
+- testing newly discovered hosts without explicit scope confirmation.
+
+STOP CONDITION
+
+If cross-user access to a protected customer object is demonstrated with one controlled example, stop that line of testing and preserve the evidence.
+
+DELIVERABLES
+
+Evidence pack, finding(s), remediation and short executive summary.
