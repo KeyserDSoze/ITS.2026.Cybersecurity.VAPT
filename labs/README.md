@@ -20,15 +20,52 @@ CHALLENGE   = obiettivo e vincoli, metodo a scelta dello studente
 
 All'inizio del corso prevale GUIDED; procedendo verso il capstone aumenta l'autonomia.
 
+## Simulazioni guidate
+
+I primi laboratori possono essere svolti anche senza eseguire realmente tool: vengono forniti **output, request, response, note cliente e risultati completamente fittizi**. Lo studente deve interpretarli come se stesse lavorando a un vero assessment.
+
+Questo permette di allenare soprattutto:
+
+```text
+COSA HO OSSERVATO?
+        ↓
+COSA POSSO AFFERMARE?
+        ↓
+COSA STO SOLO IPOTIZZANDO?
+        ↓
+QUALE TEST FAREI DOPO?
+        ↓
+QUALE EVIDENZA MI SERVE?
+        ↓
+QUANDO POSSO FERMARMI?
+```
+
+Simulazioni già disponibili:
+
+| Lab | Storia | Concetto principale |
+|---|---|---|
+| [`00-baseline-and-mindset/`](00-baseline-and-mindset/) | First Look | fatti vs ipotesi |
+| [`01-vapt-engagement/`](01-vapt-engagement/) | Il cliente dice «fateci un pentest» | scope e Rules of Engagement |
+| [`02-technical-foundations/`](02-technical-foundations/) | Follow the Request | HTTP, sessione e request anatomy |
+| [`03-recon-enumeration/`](03-recon-enumeration/) | Build the Attack Surface | recon ed enumeration |
+| [`04-vulnerability-assessment/`](04-vulnerability-assessment/) | Scanner vs Human | validazione e falsi positivi |
+| [`05-web-pentesting-foundations/`](05-web-pentesting-foundations/) | Map Before You Attack | attack surface web |
+| [`06-web-injection/`](06-web-injection/) | Input Changes Behaviour | input handling e PoC minima |
+| [`07-auth-api-security/`](07-auth-api-security/) | Two Users, One Order | authentication vs authorization |
+
+Ogni cartella contiene un `README.md` e una directory `artifacts/` con gli output inventati da analizzare.
+
 ## Ambiente comune
 
-I laboratori 00-07 possono usare [`platform/`](platform/), che contiene:
+I laboratori 00-07 possono inoltre usare [`platform/`](platform/), che contiene:
 
 - UmbraMarket Guided Lab;
 - OWASP Juice Shop;
 - Admin Portal statico;
 - File Service;
 - setup Docker Compose e procedura di reset.
+
+Le simulazioni testuali restano però utilizzabili anche senza avviare la piattaforma.
 
 Per exploitation e post-exploitation viene usata una VM isolata separata, documentata nei relativi laboratori.
 
@@ -48,13 +85,13 @@ Ogni laboratorio dovrebbe contenere:
 - scenario;
 - scope;
 - obiettivi;
-- setup;
+- setup o dossier simulato;
 - attività GUIDED;
 - attività INDEPENDENT;
 - CHALLENGE;
 - hint progressivi quando utili;
 - deliverable;
-- cleanup/reset.
+- cleanup/reset quando esiste un target attivo.
 
 ## Evidenze
 
