@@ -1,0 +1,12 @@
+SIMULATED SCANNER OUTPUT
+
+Finding: Insecure Direct Object Reference
+Severity: HIGH
+Target: https://shop.umbramarket.lab/api/orders/{id}
+Evidence: parameter `id` appears numeric and user-controlled
+Confidence: medium
+
+Scanner note:
+"Potential access-control issue detected because the object identifier can be modified. Manual validation recommended."
+
+Important: this output alone does NOT prove unauthorized access.
