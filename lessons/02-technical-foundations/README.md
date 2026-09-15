@@ -1,130 +1,301 @@
 # 02 — Technical Foundations for Pentesting
 
-## Obiettivi
+## Missione di oggi
 
-- ripassare i fondamentali necessari per capire ciò che avviene durante un test;
-- collegare rete, DNS, TLS e HTTP al comportamento reale di un'applicazione;
+Prima di modificare una richiesta HTTP o interpretare un output di Nmap devi capire **cosa sta realmente succedendo tra il tuo browser e il target**.
+
+Oggi seguirai una singola richiesta dall'inizio alla fine: nome DNS, connessione, TLS, HTTP, sessione e autorizzazione.
+
+## Prima di iniziare — test rapido
+
+Fai il test iniziale nel portale. Ti farà lavorare su IP, porte, DNS, HTTP e autenticazione. Se alcune domande sembrano difficili, va bene: sono esattamente i concetti che riprendiamo qui.
+
+## Cosa imparerai
+
+- leggere una richiesta e una risposta HTTP;
+- capire a cosa servono IP, porte e DNS;
+- distinguere TCP e UDP a livello operativo;
+- capire cosa protegge TLS e cosa non protegge;
 - distinguere autenticazione, sessione e autorizzazione;
-- imparare a leggere una richiesta HTTP prima di modificarla.
+- riprodurre una richiesta semplice fuori dal browser.
 
-## Concetti chiave
+## 1. Dal nome al server
 
-### Rete
-
-Ripasso operativo di:
-
-- indirizzo IP;
-- subnet a livello intuitivo;
-- TCP vs UDP;
-- porte;
-- client e server;
-- socket e connessione.
-
-### DNS
-
-Dal nome al target:
+Quando apri:
 
 ```text
-hostname → DNS resolution → IP
+https://shop.umbramarket.lab/profile
 ```
 
-Discutere perché record DNS, sottodomini e nomi host possono ampliare la superficie d'attacco.
+il browser non "parla" direttamente con quel nome. In modo semplificato:
 
-### TLS
-
-Obiettivo didattico: capire che HTTPS protegge il canale ma non rende automaticamente sicura l'applicazione.
-
-### HTTP
-
-Anatomia minima:
-
-```http
-GET /api/profile HTTP/1.1
-Host: app.lab
-Cookie: session=...
-Authorization: Bearer ...
+```text
+hostname
+   ↓ DNS
+indirizzo IP
+   ↓ connessione
+porta TCP
+   ↓ TLS
+canale cifrato
+   ↓ HTTP
+richiesta applicativa
 ```
 
-Analizzare:
+### IP
 
-- method;
-- path;
-- query string;
-- header;
-- body;
-- status code;
-- content type.
+Un indirizzo IP identifica un'interfaccia raggiungibile in rete. Non identifica necessariamente un singolo sito: sullo stesso IP possono convivere più servizi e più virtual host.
 
-### Authentication vs Authorization
+### Porta
+
+La porta aiuta a identificare quale servizio applicativo deve ricevere la connessione. La presenza di una porta aperta dice soltanto che un servizio è raggiungibile, non che sia vulnerabile.
+
+### TCP e UDP
+
+Per questa fase ti basta ricordare:
+
+- **TCP** crea una comunicazione orientata alla connessione e ordinata;
+- **UDP** invia datagrammi senza la stessa gestione della connessione.
+
+Molti servizi web usano TCP; altri protocolli possono usare UDP.
+
+## 2. DNS: dal nome all'indirizzo
+
+DNS associa nomi a informazioni di rete.
 
 Esempio:
 
 ```text
-Authentication: chi sei?
-Authorization: cosa puoi fare?
+shop.umbramarket.lab → 10.10.10.20
 ```
 
-Mostrare perché essere autenticati non implica poter accedere a qualunque oggetto o funzione.
+Per un pentester DNS è interessante perché nomi e record possono rivelare **altri asset**:
 
-### Sessioni e token
+```text
+api.umbramarket.lab
+admin.umbramarket.lab
+files.umbramarket.lab
+```
 
-Spiegare a livello operativo:
+### Prova tu
 
-- session cookie;
-- bearer token;
-- scadenza;
-- logout;
-- rinnovo;
-- differenza tra stato lato server e token self-contained, senza entrare ancora nei dettagli JWT.
+Se `shop` e `admin` risolvono allo stesso IP, sono automaticamente la stessa applicazione?
 
-## Demo
+**No.** Lo stesso server/IP può distinguere la richiesta in base all'hostname.
 
-1. Aprire una semplice applicazione web.
-2. Osservare una richiesta dal browser.
-3. Riprodurla con `curl`.
-4. Modificare un header innocuo.
-5. Eseguire login.
-6. Confrontare traffico anonimo e autenticato.
+## 3. TLS e HTTPS
 
-Il focus della demo deve essere sul ragionamento, non sulla sintassi.
+HTTPS è HTTP trasportato dentro un canale protetto da TLS.
 
-## Lab — Follow the Request
+TLS aiuta a proteggere il traffico da intercettazioni e modifiche durante il transito, ma **non rende sicura la logica dell'applicazione**.
 
-Gli studenti ricevono una piccola applicazione e devono ricostruire il flusso di una funzionalità.
+Un sito HTTPS può comunque avere:
 
-### CORE
+- SQL injection;
+- controllo accessi insufficiente;
+- session management debole;
+- business logic vulnerabile.
 
-Per una funzionalità indicata, documentare:
+> Cifrato non significa privo di vulnerabilità.
 
-- metodo HTTP;
-- endpoint;
-- parametri;
-- meccanismo di autenticazione;
-- response code;
-- dati principali della risposta.
+## 4. Anatomia di una richiesta HTTP
+
+Esempio:
+
+```http
+GET /api/profile?id=42 HTTP/1.1
+Host: shop.umbramarket.lab
+Accept: application/json
+Cookie: session=abc123
+```
+
+Leggiamola:
+
+- `GET` è il **metodo**;
+- `/api/profile` è il **path**;
+- `id=42` è un **parametro**;
+- `Host` indica l'hostname richiesto;
+- `Cookie` trasporta qui un identificatore di sessione.
+
+Una risposta potrebbe essere:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"id":42,"name":"Alice"}
+```
+
+### Status code essenziali
+
+| Codice | Significato pratico |
+|---|---|
+| 200 | richiesta gestita con successo |
+| 201 | risorsa creata |
+| 302 | redirect |
+| 400 | richiesta non valida |
+| 401 | autenticazione richiesta/non valida |
+| 403 | richiesta compresa ma non autorizzata |
+| 404 | risorsa non trovata |
+| 500 | errore lato server |
+
+Non usare mai il solo status code come prova definitiva: osserva anche header e body.
+
+## 5. Metodi e body
+
+Esempio di richiesta che modifica dati:
+
+```http
+POST /api/profile HTTP/1.1
+Host: shop.umbramarket.lab
+Content-Type: application/json
+Cookie: session=abc123
+
+{"displayName":"alice"}
+```
+
+Il body contiene input controllabile dall'utente. Nei prossimi moduli imparerai a chiederti: **come viene validato? chi può inviarlo? quale oggetto modifica?**
+
+## 6. Authentication, sessione e authorization
+
+Sono tre concetti diversi.
+
+### Authentication
+
+Risponde a:
+
+> Chi sei?
+
+Tipicamente avviene durante il login.
+
+### Sessione
+
+Dopo il login, l'applicazione deve ricordare che le richieste successive appartengono a quell'utente. Può usare cookie o token.
+
+### Authorization
+
+Risponde a:
+
+> Cosa può fare questo utente autenticato?
+
+Alice può essere correttamente autenticata e comunque **non** essere autorizzata a vedere l'ordine di Bob.
+
+## 7. Esempio svolto — due richieste quasi identiche
+
+Alice apre il proprio ordine:
+
+```http
+GET /api/orders/1001 HTTP/1.1
+Cookie: session=alice-session
+```
+
+Poi osservi:
+
+```http
+GET /api/orders/1002 HTTP/1.1
+Cookie: session=alice-session
+```
+
+La domanda da pentester non è subito "è vulnerabile?". È:
+
+> Il server controlla che l'ordine 1002 appartenga ad Alice?
+
+Questa è un'ipotesi di authorization testing.
+
+## 8. Primo contatto con `curl`
+
+Nel laboratorio useremo richieste innocue sul target didattico.
+
+```bash
+curl -i http://<target>
+```
+
+`-i` include gli header della risposta.
+
+Per HTTPS in laboratorio:
+
+```bash
+curl -i https://<target>/
+```
+
+L'obiettivo non è memorizzare opzioni: è vedere che il browser non è l'unico modo per inviare HTTP.
+
+## Esempio svolto — leggere prima di modificare
+
+Hai questa richiesta:
+
+```http
+GET /api/me HTTP/1.1
+Host: api.umbramarket.lab
+Authorization: Bearer eyJ...
+```
+
+Prima di cambiare qualcosa annota:
+
+```text
+Metodo: GET
+Endpoint: /api/me
+Auth: Bearer token
+Input espliciti: nessun parametro visibile
+Ipotesi: il token identifica l'utente
+Test successivo: confrontare richiesta anonima e autenticata
+```
+
+Questo approccio riduce i tentativi casuali.
+
+## Laboratorio — Follow the Request
+
+### GUIDED
+
+Il docente indica una funzione, ad esempio "visualizza profilo".
+
+1. aprila nel browser;
+2. individua la request corrispondente negli strumenti sviluppatore/proxy;
+3. annota metodo, path, parametri e auth;
+4. annota status code e tipo di risposta;
+5. riproduci la richiesta con lo strumento indicato;
+6. modifica **un solo elemento innocuo** e osserva cosa cambia.
+
+Compila:
+
+| Elemento | Valore osservato |
+|---|---|
+| Metodo | |
+| Endpoint | |
+| Parametri | |
+| Autenticazione | |
+| Status | |
+| Content-Type | |
+
+### Se sei bloccato
+
+**Hint 1:** apri Network nel browser e ricarica la pagina.
+
+**Hint 2:** cerca la richiesta che restituisce i dati che vedi nella UI.
+
+### INDEPENDENT
+
+Scegli un'altra funzionalità e ricostruisci autonomamente il suo flusso HTTP.
 
 ### CHALLENGE
 
-Riprodurre la richiesta fuori dal browser e identificare quali elementi sono realmente necessari perché funzioni.
+Identifica una richiesta il cui comportamento cambia modificando un solo elemento tra path, parametro, header, cookie o token. Spiega **perché** quel dato è significativo.
 
-### HARD MODE
+## Deliverable professionale
 
-Individuare una richiesta che cambia comportamento modificando soltanto un elemento tra path, parametro, header, cookie o token e spiegare perché.
+Crea una pagina `Request Anatomy` con:
 
-## Deliverable
+- richiesta annotata;
+- risposta essenziale;
+- diagramma `Browser → Web/API → Backend → Data`;
+- tre possibili domande di sicurezza generate dall'osservazione.
 
-Una pagina "Request Anatomy" con una request annotata e un diagramma semplice:
+## Prima di chiudere
 
-```text
-Browser → Web/API → Backend → Data
-```
+Dovresti saper spiegare:
 
-## Collegamento al corso
+- perché HTTPS non elimina le vulnerabilità applicative;
+- perché 401 e 403 non significano la stessa cosa;
+- differenza tra login, sessione e autorizzazione;
+- quali parti di una request sono controllabili dall'utente.
 
-Questa lezione è il prerequisito pratico per:
-
-- proxy interception;
-- access control testing;
-- injection;
-- API security;
-- session testing.
+Completa l'autoverifica finale nel portale.
