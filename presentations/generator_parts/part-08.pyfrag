@@ -1,0 +1,129 @@
+
+# ---------- Deck 00: course panorama ----------
+
+def overview_cover(prs):
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    rounded(slide,0,0,W,H,WHITE,WHITE,False)
+    chip(slide,0.72,0.55,'PRESENTAZIONE 0',TEAL,SOFT2,w=1.85)
+    add_text(slide,0.72,1.35,11.7,1.15,'VAPT: il percorso completo',31,INK,True)
+    add_text(slide,0.72,2.58,10.8,0.95,'Una mappa ad alto livello del corso: cosa guarderemo, come ragioneremo e come collegheremo le evidenze.',19,INK2)
+    rounded(slide,0.72,4.25,11.9,1.25,SOFT,SOFT)
+    add_text(slide,1.02,4.58,11.3,0.55,'osservazione  →  ipotesi  →  verifica  →  impatto  →  remediation',21,TEAL,True,align=PP_ALIGN.CENTER)
+    add_text(slide,0.72,6.88,6.2,0.24,'ITS Umbria · Vulnerability Assessment & Penetration Testing',10,MUTED)
+
+
+def overview_topic(prs, n, title, subtitle, points, question, accent=TEAL):
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    topbar(slide,'DECK 00','panorama del corso',f'{n:02d}')
+    add_text(slide,0.72,1.18,11.7,0.55,title,27,INK,True)
+    add_text(slide,0.72,1.78,11.4,0.48,subtitle,15.5,MUTED)
+    y=2.55
+    for i,p in enumerate(points):
+        rounded(slide,0.78,y+i*0.74,8.25,0.56,SOFT,SOFT)
+        add_text(slide,1.02,y+0.12+i*0.74,7.75,0.34,p,15,INK)
+    rounded(slide,9.38,2.55,3.25,2.65,SOFT2,SOFT2)
+    add_text(slide,9.7,2.86,2.6,0.35,'DOMANDA GUIDA',11,accent,True)
+    add_text(slide,9.7,3.38,2.55,1.35,question,18,INK,True,valign=MSO_ANCHOR.MIDDLE)
+    footer(slide,n)
+
+
+def overview_map(prs):
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    topbar(slide,'DECK 00','panorama del corso','mappa')
+    add_text(slide,0.72,1.18,11.7,0.55,'Il corso come una catena unica',27,INK,True)
+    add_text(slide,0.72,1.82,11.5,0.45,'Non impariamo blocchi isolati: ogni fase prepara la successiva.',15.5,MUTED)
+    labels=[
+        ('scope','cosa possiamo fare'),('recon','cosa esiste'),('enumeration','come funziona'),
+        ('assessment','dove può esserci un problema'),('validation','cosa è vero davvero'),
+        ('impact','cosa significa'),('report','cosa deve sapere il cliente')]
+    x=0.72
+    widths=[1.42,1.35,1.55,1.7,1.55,1.35,1.35]
+    for idx,((a,b),ww) in enumerate(zip(labels,widths)):
+        rounded(slide,x,3.05,ww,1.45,SOFT if idx%2==0 else SOFT2,BORDER)
+        add_text(slide,x+0.12,3.32,ww-0.24,0.3,a.upper(),12,TEAL,True,align=PP_ALIGN.CENTER)
+        add_text(slide,x+0.12,3.77,ww-0.24,0.48,b,11.5,INK,align=PP_ALIGN.CENTER)
+        if idx < len(labels)-1:
+            add_text(slide,x+ww+0.03,3.58,0.28,0.3,'→',17,MUTED,True,align=PP_ALIGN.CENTER)
+        x += ww+0.3
+    add_text(slide,0.72,5.38,11.7,0.5,'La competenza chiave è saper passare da una evidenza alla decisione successiva.',18,INK2,True,align=PP_ALIGN.CENTER)
+    footer(slide,1)
+
+
+def overview_lab(prs):
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    topbar(slide,'DECK 00','panorama del corso','iniziamo subito')
+    add_text(slide,0.72,1.18,11.6,0.55,'Tre righe, già un esercizio da pentester',27,INK,True)
+    rounded(slide,0.78,2.05,5.15,3.35,MONO_BG,MONO_BG)
+    add_text(slide,1.05,2.38,4.6,2.7,'PORT     STATE  SERVICE\n22/tcp   open   ssh\n80/tcp   open   http\n443/tcp  open   https',19,MONO_FG,False,font=MONO)
+    qs=[('1','Cosa sappiamo?'),('2','Cosa stiamo solo ipotizzando?'),('3','Quale controllo minimo facciamo dopo?')]
+    for i,(num,q) in enumerate(qs):
+        rounded(slide,6.35,2.05+i*1.12,5.95,0.86,SOFT if i!=1 else SOFT2,BORDER)
+        chip(slide,6.58,2.28+i*1.12,num,TEAL,WHITE,w=0.55)
+        add_text(slide,7.28,2.26+i*1.12,4.65,0.4,q,16,INK,True)
+    add_text(slide,0.78,5.85,11.5,0.48,'Questo schema tornerà in ogni laboratorio: osservare, distinguere i fatti dalle ipotesi, scegliere il prossimo passo.',15.5,MUTED)
+    footer(slide,17)
+
+
+def build_overview():
+    prs=Presentation(); set_wide(prs)
+    overview_cover(prs)
+    overview_map(prs)
+    topics=[
+        ('Pentesting e mindset','Prima dei tool viene il metodo.',[
+            'Vulnerability assessment, pentest, red / blue / purple team','scope, autorizzazioni e Rules of Engagement','evidenza → ipotesi → verifica → conclusione'],
+         'Che cosa possiamo dimostrare senza andare oltre il perimetro?'),
+        ('Reconnaissance','Capire cosa esiste prima di decidere cosa testare.',[
+            'passive e active reconnaissance','DNS, domini, sottodomini, IP e tecnologie','costruzione progressiva della superficie esposta'],
+         'Quali informazioni cambiano davvero le nostre priorità?'),
+        ('Network enumeration','Dalle porte ai servizi.',[
+            'TCP/UDP e significato di open, closed, filtered','identificazione e versioning dei servizi','lettura ragionata degli output di scansione'],
+         'Una porta aperta: che cosa ci dice e che cosa non ci dice?'),
+        ('Service enumeration','Approfondire senza saltare alle conclusioni.',[
+            'banner, protocolli, configurazioni e funzionalità','endpoint, condivisioni, autenticazione e metadata','prioritizzazione delle superfici da analizzare'],
+         'Qual è la prossima informazione che ci serve?'),
+        ('Web application security','Leggere una web app come un sistema.',[
+            'HTTP/HTTPS, request, response, header e cookie','sessioni, autenticazione, autorizzazione e API','input utente e flussi applicativi'],
+         'Dove entra il dato controllato dall’utente e dove finisce?'),
+        ('Vulnerabilità web','Capire le famiglie di errore.',[
+            'Broken Access Control e authentication failures','injection, XSS, path traversal, SSRF e misconfiguration','causa → evidenza → impatto → remediation'],
+         'Qual è la causa del comportamento che osserviamo?'),
+        ('Vulnerability assessment','Uno scanner non è una sentenza.',[
+            'CVE, CWE, CVSS e contesto','false positive e false negative','versione vulnerabile ≠ vulnerabilità dimostrata'],
+         'Quale evidenza ci serve per validare la finding?'),
+        ('Exploitation controllata','Dimostrare il minimo necessario.',[
+            'precondizioni e primitive ottenute','PoC e validazione controllata','stop condition e riduzione dell’impatto del test'],
+         'Qual è la prova minima sufficiente?'),
+        ('Post-exploitation','Capire il valore reale dell’accesso ottenuto.',[
+            'utente corrente, privilegi e contesto','secret, permessi e configurazioni locali','privilege escalation e movimento laterale come concetti'],
+         'Che cosa possiamo fare davvero con questo livello di accesso?'),
+        ('Active Directory e ambienti enterprise','Il contesto aziendale cambia la lettura del rischio.',[
+            'dominio, Domain Controller, utenti e gruppi','Kerberos, NTLM e trust a livello concettuale','condivisioni, privilegi e credential reuse'],
+         'Quali relazioni tra identità e sistemi amplificano l’impatto?'),
+        ('Password e autenticazione','Le credenziali sono spesso il filo conduttore.',[
+            'hashing, salt, MFA e password policy','credential reuse, stuffing e spraying come concetti','secret management e gestione delle identità'],
+         'La debolezza è nella password o nel sistema che la gestisce?'),
+        ('Cloud, container e ambienti moderni','La superficie non finisce sul server.',[
+            'IAM, storage e secret nel cloud','container, Docker e Kubernetes ad alto livello','CI/CD e supply chain'],
+         'Quale identità può accedere a quale risorsa?'),
+        ('Attack chain','Il rischio nasce spesso dalla concatenazione.',[
+            'initial access → escalation → lateral movement','correlare finding tecniche diverse','distinguere possibilità teorica e catena dimostrata'],
+         'Cosa succede se mettiamo insieme le evidenze?'),
+        ('Reporting','Il lavoro non finisce quando troviamo il problema.',[
+            'executive summary e finding tecnici','evidenze, severità, impatto e remediation','riproducibilità, limiti e linguaggio preciso'],
+         'Il cliente sa cosa fare domani mattina?'),
+        ('Capstone finale','Mettere insieme tutto il metodo.',[
+            'società, asset e dati interamente fittizi','output, log, traffico e finding da correlare','attack chain, remediation e report finale'],
+         'Riusciamo a sostenere ogni conclusione con una evidenza?'),
+    ]
+    for i,t in enumerate(topics,start=2):
+        overview_topic(prs,i,*t)
+    overview_lab(prs)
+    return prs
+
+p0=save_deck(build_overview(),'day-00-course-overview-premium.pptx')
+print('saved',p0)
+
+# Keep the generated premium README aware of the introductory deck.
+with open(os.path.join(OUT,'README.md'),'a',encoding='utf-8') as f:
+    f.write('\n## Presentazione introduttiva\n\n')
+    f.write('- `day-00-course-overview-premium.pptx` — panoramica ad alto livello dell’intero percorso, da usare prima del Day 01.\n')
