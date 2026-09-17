@@ -14,3 +14,7 @@ Ogni deck contiene un flusso principale più alcune slide finali marcate **appro
 - `day-08-closing-report-presentation-premium.pptx`
 
 Principi di design: sfondo bianco, una idea dominante per slide, esempi tecnici concreti, poco testo per blocco, niente linguaggio del tipo “gli studenti devono…”.
+
+## Presentazione introduttiva
+
+- `day-00-course-overview-premium.pptx` — panoramica ad alto livello dell’intero percorso, da usare prima del Day 01.
