@@ -57,12 +57,13 @@ Simulazioni già disponibili:
 | [`10-reporting/`](10-reporting/) | From Raw Evidence to Professional Finding | evidenza, impatto e remediation |
 | [`11-ai-assisted-pentesting/`](11-ai-assisted-pentesting/) | AI propone, il tester verifica | VERIFIED / PLAUSIBLE / WRONG e human checkpoint |
 | [`12-capstone/`](12-capstone/) | UmbraMarket Mini Assessment | assessment end-to-end e dossier progressivo |
+| [`13-first-vapt-engagement/`](13-first-vapt-engagement/) | UmbraMarket First VAPT Engagement | VA → triage → PT controllato → report |
 
 Ogni cartella contiene un `README.md` e, quando utile, una directory `artifacts/` con gli output inventati da analizzare.
 
 ## Ambiente comune
 
-I laboratori 00-07 possono inoltre usare [`platform/`](platform/), che contiene:
+I laboratori 00-07 e il laboratorio 13 possono usare [`platform/`](platform/), che contiene:
 
 - UmbraMarket Guided Lab;
 - OWASP Juice Shop;
@@ -76,6 +77,8 @@ I laboratori 08-11 sono progettati prima di tutto come dossier narrativi: exploi
 
 Il laboratorio 12 è un capstone pubblico/formativo: gli artefatti sono ordinati per fasi e devono essere aperti progressivamente, dopo aver annotato cosa si sa, cosa si ipotizza e quale sarebbe il test successivo.
 
+Il laboratorio 13 è pensato come sessione compatta da aula: parte da un incarico cliente, usa realmente lo stack locale e attraversa reconnaissance, VA, validazione manuale, PoC minima e reporting.
+
 ## Struttura
 
 ```text
@@ -84,7 +87,8 @@ labs/
 ├── 00-baseline-and-mindset/
 ├── 01-vapt-engagement/
 ├── ...
-└── 12-capstone/
+├── 12-capstone/
+└── 13-first-vapt-engagement/
 ```
 
 Ogni laboratorio dovrebbe contenere:
