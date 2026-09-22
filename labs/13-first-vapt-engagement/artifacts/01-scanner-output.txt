@@ -1,0 +1,44 @@
+[UMBRA SCAN 4.2 — SIMULATED AUTOMATED OUTPUT]
+
+Target: local training scope
+Timestamp: fictional
+
+S-001  CRITICAL
+Title: Possible remote code execution on admin web server
+Evidence:
+  Server: nginx/1.27.x
+Reason:
+  Product/version fingerprint matched a generic exploit signature.
+Scanner conclusion:
+  "Immediate remote compromise likely."
+
+S-002  HIGH
+Title: Administrative interface exposed
+Evidence:
+  HTTP service detected on TCP/8080
+  Page title contains "Admin Portal"
+
+S-003  MEDIUM
+Title: Missing Content-Security-Policy
+Evidence:
+  CSP header not observed on UmbraMarket pages.
+
+S-004  HIGH
+Title: Possible broken object authorization
+Evidence:
+  Authenticated API endpoint pattern:
+  /api/orders/{integer}
+Reason:
+  Object identifiers appear predictable.
+Scanner conclusion:
+  "Other users' orders may be accessible."
+
+S-005  LOW
+Title: Verbose environment disclosure
+Evidence:
+  X-UmbraMarket-Environment: training
+
+IMPORTANT
+---------
+These are candidate findings, not validated vulnerabilities.
+Severity and exploitability have NOT been confirmed.
