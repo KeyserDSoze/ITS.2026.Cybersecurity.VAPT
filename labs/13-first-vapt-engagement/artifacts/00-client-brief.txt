@@ -1,0 +1,53 @@
+UMBRA MARKET S.R.L. — PRE-RELEASE SECURITY REVIEW
+TRAINING SCENARIO — ALL DATA IS FICTIONAL
+
+Business request
+----------------
+Stiamo preparando una nuova release del portale B2B UmbraMarket.
+Vogliamo sapere se un normale cliente autenticato può accedere a dati
+o funzionalità che non gli appartengono e se i servizi di staging
+espongono informazioni utili a un attaccante.
+
+Authorized scope
+----------------
+127.0.0.1 TCP/5005
+127.0.0.1 TCP/8080
+127.0.0.1 TCP/9090
+
+Explicitly out of scope
+-----------------------
+127.0.0.1 TCP/3000
+qualsiasi altra porta
+qualsiasi host o servizio Internet
+rete LAN dell'aula
+
+Allowed
+-------
+- basic reconnaissance and service enumeration
+- HTTP requests
+- authenticated tests with supplied customer accounts
+- manual parameter manipulation
+- controlled proof with minimum necessary evidence
+
+Not allowed
+-----------
+- brute force
+- denial of service
+- destructive actions
+- persistence
+- bulk extraction
+- testing other hosts
+
+Stop condition
+--------------
+Quando una singola richiesta o una singola risposta dimostra chiaramente
+un accesso non autorizzato, fermare quella linea di test e documentare.
+
+Provided accounts
+-----------------
+alice / Alice123!
+bob   / Bob123!
+
+Customer contact note
+---------------------
+"Lo scanner ci ha già dato parecchi HIGH, ma non sappiamo quali siano reali."
