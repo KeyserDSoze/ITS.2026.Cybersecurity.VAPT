@@ -208,7 +208,9 @@ Ogni gruppo produce:
 10. almeno un finding validato;
 11. una decision path / attack chain;
 12. remediation;
-13. executive summary ≤100 parole.
+13. Evidence Pack numerato;
+14. VAPT Final Report usando `reporting/final-report-template.md`;
+15. executive summary ≤100 parole.
 
 ## Principio
 
@@ -233,3 +235,38 @@ CANDIDATE FINDING
 ≠
 VULNERABILITÀ DIMOSTRATA
 ```
+
+
+---
+
+# Reporting finale
+
+La parte tecnica non termina con la PoC.
+
+Materiale:
+
+```text
+reporting/
+├── final-report-template.md
+├── sample-client-report.md
+├── instructor-report-review.md
+└── evidence/
+    ├── E-01-alice-own-order.txt
+    ├── E-02-bob-own-order.txt
+    ├── E-03-cross-user-order.txt
+    └── E-04-customer-admin-stats.txt
+```
+
+Gli studenti devono vedere l'intero ciclo:
+
+```text
+finding
+→ evidence pack
+→ impatto
+→ remediation
+→ retest
+→ executive summary
+→ final client report
+```
+
+Il sample report va mostrato **dopo** che i gruppi hanno provato a scrivere almeno il finding principale, così resta un confronto e non una soluzione da copiare.
