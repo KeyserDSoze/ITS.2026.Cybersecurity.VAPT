@@ -1,43 +1,30 @@
 # UmbraMarket — First VAPT Engagement
+## Instructor Runbook — blocco nominale da 4 ore
 
-## Scaletta docente per una lezione pratica da 4 ore
+Questo runbook è progettato con circa **3 ore di contenuto essenziale**, due pause da almeno 15 minuti e circa 30 minuti di buffer/estensione.
 
-### Obiettivo della lezione
+## Obiettivo
 
-Gli studenti devono uscire dalla lezione avendo capito concretamente questa differenza:
-
-> Uno scanner produce candidate findings.  
-> Un penetration tester raccoglie evidenze, formula ipotesi, verifica in modo controllato e conclude soltanto ciò che ha realmente dimostrato.
-
-Il laboratorio non è una CTF e non ha come obiettivo “trovare tutto”.
-
-Il percorso della giornata è:
+Portare gli studenti da:
 
 ```text
-SCOPE
-  ↓
-RECON
-  ↓
-ENUMERATION
-  ↓
-VULNERABILITY ASSESSMENT
-  ↓
-TRIAGE
-  ↓
-MANUAL VALIDATION
-  ↓
-CONTROLLED PT
-  ↓
-IMPACT
-  ↓
-REPORT
+"devo usare dei tool"
 ```
+
+a:
+
+```text
+"devo capire un'organizzazione, scegliere le ipotesi migliori,
+verificarle con il minimo impatto e sostenere le conclusioni con evidenze"
+```
+
+Il VA tecnico già presente è sufficiente. Non aggiungere vulnerabilità solo per riempire la lezione.
 
 ---
 
-# Prima della lezione — preparazione docente
+# Preparazione docente
 
-Avviare la piattaforma:
+Avviare:
 
 ```bash
 cd labs/platform
@@ -46,334 +33,250 @@ docker compose up -d --build
 ./scripts/check.sh
 ```
 
-Verificare:
+Tenere separati i materiali per wave.
+
+Non consegnare l'intera cartella `discovery/` in una volta sola se vuoi ottenere il massimo dall'esercizio.
+
+Materiale docente:
 
 ```text
-http://127.0.0.1:5005
-http://127.0.0.1:8080
-http://127.0.0.1:9090
-```
-
-Tenere pronti:
-
-```text
-labs/13-first-vapt-engagement/
-├── README.md
-├── student-workbook.md
-├── instructor-solution.md
-└── artifacts/
-    ├── 00-client-brief.txt
-    └── 01-scanner-output.txt
-```
-
-Non distribuire subito:
-
-```text
-01-scanner-output.txt
+instructor-runbook.md
+instructor-human-attack-surface.md
 instructor-solution.md
 ```
 
-Gli studenti devono partire solamente dal brief cliente.
+---
+
+# 00:00–00:15 — Brief e scope
+
+Consegna soltanto:
+
+`artifacts/00-client-brief.txt`
+
+Domande:
+
+- cosa vuole sapere il cliente?
+- cosa possiamo testare?
+- cosa non possiamo testare?
+- quale sarebbe una conclusione utile?
+
+Lavagna:
+
+```text
+SCOPERTO ≠ AUTORIZZATO
+```
+
+Non parlare ancora di tecniche.
 
 ---
 
-# 00:00–00:10 — Apertura
+# 00:15–00:30 — Wave 1: capire il cliente
 
-Non iniziare parlando di vulnerabilità.
-
-Dire qualcosa del tipo:
-
-> Oggi non faremo un esercizio nel quale vi dico quale vulnerabilità cercare.
->
-> Siete un piccolo team di security consultant.
->
-> Avete ricevuto un incarico da UmbraMarket.
->
-> Il vostro lavoro non è “hackerare la macchina”.
->
-> Il vostro lavoro è rispondere alla domanda del cliente con evidenze.
-
-Scrivere alla lavagna:
+Consegna:
 
 ```text
-EVIDENZA → IPOTESI → VERIFICA → CONCLUSIONE
+discovery/01-company-overview.md
+discovery/02-org-roles.md
 ```
 
-Poi aggiungere:
+Consegna agli studenti:
+
+> Non cercate vulnerabilità. Scrivete ciò che avete capito e ciò che vorreste chiedere.
+
+Ogni gruppo produce:
 
 ```text
-NON DOBBIAMO TROVARE TUTTO.
-DOBBIAMO DIMOSTRARE BENE QUELLO CHE TROVIAMO.
+5 FACT
+5 QUESTIONS
+3 PROBABLY NOT USEFUL
 ```
 
-Non mostrare ancora:
+Se qualcuno propone subito phishing, tailgating, USB ecc.:
 
-- IDOR;
-- `/api/admin/stats`;
-- SQL injection;
-- XSS;
-- percorsi interessanti.
+> Quale fatto ti ha portato lì? Cosa stai assumendo?
 
 ---
 
-# 00:10–00:25 — Client Brief e Scope
+# 00:30–00:45 — Wave 2: interviste e osservazioni
 
-Distribuire:
-
-```text
-artifacts/00-client-brief.txt
-```
-
-Lasciare 5 minuti per leggerlo.
-
-Poi chiedere alla classe:
+Consegna:
 
 ```text
-Qual è la domanda del cliente?
+discovery/03-interview-notes.md
+discovery/04-site-observation.md
 ```
 
-Risposta che vogliamo far emergere:
+Far marcare ogni elemento:
 
 ```text
-Può un normale cliente autenticato accedere
-a dati o funzionalità non autorizzate?
-
-I servizi di staging espongono informazioni
-utili a un possibile attaccante?
+OBSERVED
+REPORTED
+INFERRED
+UNKNOWN
 ```
 
-Poi chiedere:
+Cercare contraddizioni, non “vulnerabilità”.
+
+Esempi da far emergere senza suggerire la risposta:
+
+- policy dichiarata vs comportamento osservato;
+- postazione condivisa vs account condiviso;
+- porta tenuta aperta vs persona conosciuta;
+- laptop visibile vs sessione realmente sbloccata.
+
+---
+
+# 00:45–00:55 — Primo decision checkpoint
+
+Ogni gruppo sceglie 3 osservazioni e compila:
 
 ```text
-Qual è lo scope?
+OBSERVATION
+WHAT I NEED TO KNOW
+WHY IT MAY MATTER
 ```
+
+Non si parla ancora di exploit.
 
 Scrivere:
 
 ```text
-IN SCOPE
-
-127.0.0.1:5005
-127.0.0.1:8080
-127.0.0.1:9090
-```
-
-e:
-
-```text
-OUT OF SCOPE
-
-127.0.0.1:3000
-altre porte
-LAN
-Internet
-```
-
-### Punto didattico
-
-Spiegare:
-
-```text
-scoperto ≠ autorizzato
-```
-
-Se durante una scansione vedono porta 3000:
-
-> La annotiamo. Non la tocchiamo.
-
-Domanda alla classe:
-
-> Se Nmap vi mostra una porta che non compare nello scope, cosa fate?
-
-Risposta:
-
-```text
-documento → non testo
+INFORMAZIONE
+      ↓
+DOMANDA
+      ↓
+NUOVA INFORMAZIONE
+      ↓
+SOLO DOPO: IPOTESI
 ```
 
 ---
 
-# 00:25–00:50 — Reconnaissance ed Enumeration
+# 00:55–01:10 — PAUSA 1
 
-Ora possono iniziare a lavorare.
+---
 
-Strumenti consentiti:
+# 01:10–01:30 — Wave 3: tempo, controlli, pubblico
+
+Consegna:
+
+```text
+discovery/05-operating-calendar.md
+discovery/06-controls-and-policy-excerpts.md
+discovery/07-public-footprint.md
+```
+
+Ora possono correlare le fonti.
+
+Domande docente:
+
+- quale ipotesi avete dovuto ridimensionare dopo aver visto un controllo?
+- quale idea richiederebbe una condizione che martedì 09:00–13:00 non esiste?
+- quale informazione pubblica è soltanto contesto?
+- quali due informazioni, messe insieme, diventano più interessanti?
+
+Messaggio:
+
+```text
+BUONA IPOTESI + RISULTATO NEGATIVO = BUON LAVORO
+```
+
+---
+
+# 01:30–01:45 — Assessment Decision Board
+
+Consegna:
+
+`assessment-decision-board.md`
+
+Budget:
+
+```text
+10 unità
+```
+
+Gli studenti assegnano un costo alle proprie idee.
+
+Non esiste una tabella “giusta”.
+
+Contesta però decisioni non motivate:
+
+> Perché spendere 5 su questa strada quando ne hai una da 1 che risponde direttamente alla domanda del cliente?
+
+Devono includere almeno due:
+
+```text
+LOW PRIORITY / TEST LATER / OUT OF SCOPE / TOO INVASIVE / STOP
+```
+
+---
+
+# 01:45–02:05 — Recon tecnico e web mapping
+
+Ora entra la macchina.
+
+Consentire:
 
 ```text
 browser
 curl
 DevTools
 Nmap
-Burp/ZAP se già lo conoscono
+Burp/ZAP
 ```
-
-Non dare loro i comandi.
-
-Chiedere invece:
-
-> Qual è la prima cosa che vorreste sapere?
-
-Dovrebbero emergere:
-
-```text
-quali servizi?
-quali porte?
-che tipo di applicazioni?
-che comportamento HTTP?
-```
-
-Lasciarli lavorare circa 15–20 minuti.
-
----
-
-## Primo checkpoint docente
-
-Fermare la classe.
-
-Creare alla lavagna una tabella:
-
-| Asset | Evidenza | Interpretazione |
-|---|---|---|
-| 5005 | HTTP / UmbraMarket | applicazione principale |
-| 8080 | HTTP / Admin staging | superficie aggiuntiva |
-| 9090 | HTTP / file service | directory/file exposure |
-
-Poi chiedere:
-
-> Abbiamo trovato tre vulnerabilità?
-
-Risposta:
-
-```text
-NO
-```
-
-Abbiamo trovato:
-
-```text
-SUPERFICIE DI ATTACCO
-```
-
-Questa distinzione deve essere molto chiara.
-
----
-
-# 00:50–01:05 — Web Mapping
-
-Ora gli studenti esplorano manualmente le applicazioni.
 
 Obiettivo:
 
 ```text
-non attaccare
-
-capire
+capire la superficie
+non trovare subito la vulnerabilità
 ```
 
-Chiedere di annotare:
+Fermare affermazioni come:
 
 ```text
-endpoint
-pagine
-parametri
-autenticazione
-cookie/sessioni
-API
-file
-informazioni esposte
-```
-
-Domanda guida:
-
-> Prima di cercare una vulnerabilità, cosa dobbiamo capire?
-
-Risposta:
-
-```text
-come funziona normalmente l'applicazione
-```
-
-Suggerire di usare Alice e Bob.
-
-```text
-alice / Alice123!
-bob   / Bob123!
-```
-
-Non dire perché abbiamo due account.
-
----
-
-# 01:05–01:20 — Primo debrief
-
-Fermare nuovamente tutti.
-
-Chiedere:
-
-> Cosa sappiamo?
-
-E separare le risposte in due colonne.
-
-```text
-FACT                 IPOTESI
-
-5005 è HTTP           potrebbe avere API vulnerabili
-esiste /api/orders    gli ID potrebbero essere prevedibili
-8080 è admin staging  potrebbe contenere informazioni utili
-9090 espone file      potrebbe esserci information disclosure
-```
-
-Se qualcuno dice:
-
-> Gli ID sono incrementali quindi c'è un IDOR.
-
-Correggere subito:
-
-```text
-NO.
-
-ID prevedibile ≠ IDOR.
-```
-
-Serve ancora:
-
-```text
-authorization failure
+porta aperta = vulnerabilità
+ID numerico = IDOR
+admin = compromesso
+versione = exploitable
 ```
 
 ---
 
-# 01:20–01:35 — PAUSA 1
+# 02:05–02:15 — Technical checkpoint
 
-Durante la pausa preparare lo scanner report.
+Lavagna:
 
----
+| Evidenza | Cosa significa | Cosa NON significa |
+|---|---|---|
+| 5005 HTTP | web app | vulnerabile |
+| 8080 Admin | superficie | admin bypass |
+| 9090 files | file service | leak critico |
+| /api/orders/{id} | object reference | BOLA |
 
-# 01:35–01:45 — Introduzione al Vulnerability Assessment
+Collegare la superficie tecnica a quella organizzativa.
 
-Al rientro dire:
+Domanda:
 
-> Il cliente ci comunica che una società esterna ha già eseguito uno scanner.
-
-Distribuire:
-
-```text
-artifacts/01-scanner-output.txt
-```
-
-Non commentarlo.
-
-Dare una sola consegna:
-
-> Per ogni finding decidete quale informazione vi manca per poterlo accettare come vulnerabilità.
+> Quale informazione del cliente cambia il modo in cui interpretiamo quello che vediamo tecnicamente?
 
 ---
 
-# 01:45–02:05 — Triage dello Scanner
+# 02:15–02:30 — PAUSA 2
 
-Gli studenti compilano il workbook.
+---
 
-Devono lavorare su:
+# 02:30–02:45 — Vulnerability Assessment
+
+Consegna:
+
+`artifacts/01-scanner-output.txt`
+
+Una sola istruzione:
+
+> Non ditemi quale finding ha severity più alta. Ditemi cosa manca per poter credere allo scanner.
+
+Lavorare su:
 
 ```text
 S-001 Possible RCE
@@ -383,650 +286,211 @@ S-004 Possible BOLA
 S-005 Environment disclosure
 ```
 
-Girare tra i gruppi facendo domande.
-
-Non dare risposte.
-
-Domande utili:
+VA:
 
 ```text
-Qual è l'evidenza?
-
-Qual è l'assunzione dello scanner?
-
-Versione vulnerabile significa automaticamente exploitable?
-
-Endpoint prevedibile significa automaticamente accesso non autorizzato?
-
-Admin exposed significa automaticamente compromesso?
-
-Missing CSP quale impatto dimostra da sola?
+SIGNAL
+→ ASSUMPTION
+→ VALIDATION NEEDED
 ```
 
 ---
 
-# 02:05–02:20 — Discussione collettiva VA
+# 02:45–03:00 — Triage
 
-Prendere S-001.
+Ogni gruppo deve scegliere quali finding meritano tempo.
 
-Scrivere:
+Per S-001 far emergere:
 
 ```text
-CRITICAL
-Possible Remote Code Execution
+banner/version
+≠
+prerequisiti
+≠
+exploitability
+≠
+impact
 ```
 
-Chiedere:
-
-> Chi considera questo finding confermato?
-
-Poi:
-
-> Qual è l'evidenza?
-
-Dovrebbero arrivare a:
+Per S-004:
 
 ```text
-banner/version fingerprint
-```
-
-Scrivere:
-
-```text
-VERSION MATCH
-       ≠
-EXPLOITABILITY
-```
-
-Poi:
-
-```text
-FINDING DELLO SCANNER
-        ↓
-CANDIDATO
-        ↓
-VERIFICA
-        ↓
-VALIDATO / NON VALIDATO
-```
-
-Questo è il cuore della parte VA.
-
----
-
-# 02:20–02:35 — Prioritizzazione
-
-Ora chiedere:
-
-> Avete tempo limitato. Quali piste investigate per prime?
-
-Lasciare che discutano.
-
-Possibili piste:
-
-```text
-RCE scanner
-Admin staging
-CSP
-Orders API
-File server
-```
-
-Non dichiarare una risposta giusta.
-
-Chiedere invece di motivare:
-
-```text
-Perché?
-Quale costo ha il test?
-Quale potenziale impatto?
-Quanto è facile ottenere evidenza?
-```
-
-Portarli naturalmente verso:
-
-```text
-authorization / admin exposure
-```
-
----
-
-# 02:35–02:50 — PAUSA 2
-
----
-
-# 02:50–03:05 — Happy Path prima del PT
-
-Qui cambiare approccio.
-
-Dire:
-
-> Adesso entriamo nella parte penetration testing.
->
-> Però prima di manipolare una richiesta dobbiamo sapere quale sia il comportamento corretto.
-
-Far autenticare:
-
-```text
-Alice
-```
-
-Osservare:
-
-```text
-/api/me
-/api/orders
-/api/orders/1001
-```
-
-Poi Bob:
-
-```text
-/api/orders/1002
-```
-
-Scrivere:
-
-```text
-BASELINE
-```
-
-Spiegare:
-
-> Senza baseline non sappiamo cosa sia anomalo.
-
----
-
-# 03:05–03:20 — Formulazione dell'ipotesi
-
-Chiedere:
-
-> Cosa avete osservato sugli ordini?
-
-Probabile risposta:
-
-```text
-hanno ID numerici
-```
-
-Risposta docente:
-
-> Benissimo. Questo è un fatto.
-
-Poi:
-
-> Quale potrebbe essere l'ipotesi?
-
-```text
-forse il server controlla soltanto
-che l'utente sia autenticato
-ma non controlla ownership
-```
-
-Scrivere:
-
-```text
-FACT
-/api/orders/{id}
-
-        ↓
-
-HYPOTHESIS
-missing ownership check
+predictable ID
+≠
+authorization failure
 ```
 
 Poi chiedere:
 
-> Qual è il test minimo possibile?
-
-Risposta:
-
-```text
-Alice richiede un ordine noto di Bob
-```
+> Qual è il test minimo che distinguerebbe le due cose?
 
 ---
 
-# 03:20–03:30 — Controlled Proof
+# 03:00–03:15 — Controlled PT
 
-Eseguire il test.
-
-```text
-Alice
-  ↓
-GET /api/orders/1002
-```
-
-Il server restituisce Bob.
-
-Fermare immediatamente la classe.
-
-Dire:
-
-> STOP.
-
-E chiedere:
-
-> Perché ci fermiamo?
-
-Risposta:
+Baseline:
 
 ```text
-abbiamo già evidenza sufficiente
+Alice → proprio ordine
+Bob   → proprio ordine
 ```
 
-Scrivere:
+Ipotesi:
+
+```text
+forse il backend verifica autenticazione
+ma non ownership
+```
+
+Test minimo:
+
+```text
+Alice → ordine noto di Bob
+```
+
+Se il server restituisce il record:
+
+```text
+STOP
+```
+
+Non enumerare altri ID.
+
+Lavagna:
 
 ```text
 PROOF ≠ MAXIMUM DAMAGE
 ```
 
-Poi:
-
-```text
-Una richiesta
-+
-una risposta
-=
-finding dimostrato
-```
-
 ---
 
-# 03:30–03:40 — Costruzione dell'evidenza
+# 03:15–03:30 — Finding
 
-Far compilare insieme:
+Compilare:
 
 ```text
 FACT
-Alice è autenticata.
-
-FACT
-1002 appartiene a Bob.
-
+HYPOTHESIS
 ACTION
-Alice richiede /api/orders/1002.
-
 EXPECTED
-403 / 404 oppure risposta negata.
-
 OBSERVED
-HTTP 200 + dati ordine Bob.
-
 CONCLUSION
-Manca il controllo object-level authorization.
-```
-
-Poi chiedere:
-
-> Cosa possiamo affermare?
-
-Risposta corretta:
-
-```text
-Un cliente autenticato può leggere
-un ordine appartenente a un altro cliente.
-```
-
-## Overclaim exercise
-
-Proporre verbalmente:
-
-> “Un attaccante può scaricare tutti i dati del database.”
-
-Chiedere:
-
-> Possiamo scriverlo?
-
-```text
-NO
-```
-
-> “È possibile prendere il controllo del server.”
-
-```text
-NO
-```
-
-> “La vulnerabilità permette l'accesso cross-user agli ordini.”
-
-```text
-SÌ
-```
-
----
-
-# 03:40–03:55 — Seconda pista: Admin
-
-Se il tempo lo consente, tornare al servizio 8080.
-
-Domanda:
-
-> Durante recon avevamo trovato qualcosa di interessante sull'admin?
-
-Lasciarli esplorare.
-
-Percorso possibile:
-
-```text
-/admin staging
-     ↓
-robots.txt
-     ↓
-/backup/
-/draft/
-     ↓
-appsettings.old
-     ↓
-assets/app.js
-     ↓
-/api/admin/stats
-```
-
-La cosa importante non è il path.
-
-La cosa importante è il ragionamento:
-
-```text
-INFORMATION DISCLOSURE
-          ↓
-NUOVA INFORMAZIONE
-          ↓
-NUOVA IPOTESI
-          ↓
-VERIFICA
-```
-
----
-
-# 03:55–04:05 — Authorization verticale
-
-Se individuano:
-
-```text
-/api/admin/stats
-```
-
-far provare solamente con Alice.
-
-Se riceve:
-
-```text
-HTTP 200
-```
-
-chiedere:
-
-> Che differenza c'è rispetto all'ordine di Bob?
-
-Far emergere:
-
-```text
-BOLA / IDOR
-
-utente A
-→ oggetto utente B
-```
-
-contro:
-
-```text
-BROKEN FUNCTION LEVEL AUTHORIZATION
-
-customer
-→ funzione admin
-```
-
-Ottimo punto per collegare horizontal e vertical authorization.
-
----
-
-# 04:05–04:20 — Scrittura del Finding
-
-Ogni gruppo sceglie preferibilmente il BOLA.
-
-Deve compilare:
-
-```text
-TITLE
-
-ASSET
-
-SUMMARY
-
-PRECONDITIONS
-
-STEPS TO REPRODUCE
-
-EVIDENCE
-
-IMPACT
-
-WHAT IS NOT DEMONSTRATED
-
-SEVERITY + RATIONALE
-
+DEMONSTRATED IMPACT
+NOT DEMONSTRATED
 REMEDIATION
-
 RETEST
 ```
 
-Dare 10–15 minuti.
-
----
-
-# 04:20–04:35 — Revisione collettiva
-
-Prendere un finding reale di un gruppo.
-
-Leggerlo insieme.
-
-Per ogni frase chiedere:
+Overclaim exercise:
 
 ```text
-FACT?
-INTERPRETATION?
-HYPOTHESIS?
-OVERCLAIM?
-```
-
-Correggere soprattutto parole come:
-
-```text
-tutti
-completo
-totale
-sempre
-qualsiasi
-compromesso
-critico
-```
-
-quando non supportate.
-
----
-
-# 04:35–04:45 — Remediation
-
-Chiedere:
-
-> Come correggereste il problema?
-
-Evitare risposte come:
-
-```text
-nascondere gli ID
-rendere gli ID più lunghi
-usare UUID
-togliere il link
-```
-
-Arrivare a:
-
-```text
-SERVER-SIDE AUTHORIZATION
-```
-
-Concettualmente:
-
-```text
-requested order
-        +
-authenticated user
-        ↓
-ownership check
-        ↓
-ALLOW / DENY
-```
-
-La query dovrebbe essere concettualmente:
-
-```text
-dammi l'ordine 1002
-SE appartiene all'utente autenticato
-```
-
-non:
-
-```text
-dammi semplicemente l'ordine 1002
+"può leggere l'ordine di Bob"                  → dimostrato
+"può leggere tutti gli ordini"                 → non dimostrato
+"ha compromesso il database"                   → non dimostrato
+"può prendere il controllo del server"         → non dimostrato
 ```
 
 ---
 
-# 04:45–04:55 — Executive Summary
+# 03:30–04:00 — BUFFER / ESTENSIONE
 
-Ultimo esercizio.
+Questa mezz'ora è deliberatamente libera.
+
+Scegli in base alla classe.
+
+## Opzione A — seconda pista tecnica
+
+Admin staging:
+
+```text
+recon
+→ informazione
+→ nuova ipotesi
+→ /api/admin/stats
+→ authorization verticale
+```
+
+## Opzione B — attack chain organizzativa
+
+Far scegliere tre elementi da fonti diverse e costruire una chain concettuale.
+
+La chain può anche terminare con:
+
+```text
+CONTROL EFFECTIVE
+STOP
+```
+
+## Opzione C — reporting
+
+Un gruppo legge il finding.
+
+La classe marca ogni frase:
+
+```text
+FACT
+INTERPRETATION
+HYPOTHESIS
+OVERCLAIM
+```
+
+## Opzione D — executive summary
 
 Massimo 100 parole.
 
-Devono spiegare a un manager:
-
-```text
-cosa abbiamo trovato
-chi può sfruttarlo
-quale impatto è dimostrato
-cosa deve essere corretto
-```
-
-Senza:
-
-```text
-payload
-cookie
-endpoint details inutili
-gergo OWASP non spiegato
-```
-
 ---
 
-# 04:55–05:00 — Chiusura
+# Se la classe va veloce
 
-Scrivere alla lavagna:
+Non aggiungere exploit.
 
-```text
-SCANNER
-   ↓
-segnale
+Aggiungere decisioni:
 
-TESTER
-   ↓
-ipotesi
+- quale test elimineresti?
+- quale dato ti manca?
+- quale controllo spezza la chain?
+- cosa cambierebbe con una finestra di due settimane?
+- cosa richiederebbe un engagement separato?
+- quale evidenza negativa merita comunque di essere documentata?
 
-VERIFICA
-   ↓
-evidenza
+# Se la classe va lenta
 
-PENTEST
-   ↓
-impatto dimostrato
+Taglia nell'ordine:
 
-REPORT
-   ↓
-decisione utile al cliente
-```
+1. public footprint;
+2. decision board dettagliato;
+3. seconda pista Admin;
+4. executive summary.
 
-Poi chiudere con queste domande:
-
-1. Quale finding sembrava più grave all'inizio?
-2. Quale finding siamo riusciti davvero a dimostrare?
-3. Quando abbiamo deciso di fermarci?
-4. Qual è la differenza tra “potrebbe essere vulnerabile” e “abbiamo dimostrato che è vulnerabile”?
-5. Cosa ha aggiunto il tester rispetto allo scanner?
-
----
-
-# Se la classe va troppo veloce
-
-Non aggiungere immediatamente nuove vulnerabilità.
-
-Aumentare invece la profondità.
-
-Chiedere:
-
-```text
-Qual è la root cause?
-
-Quale logging potrebbe rilevare questo comportamento?
-
-403 o 404: quale scegliereste e perché?
-
-UUID risolverebbe davvero il problema?
-
-Come testereste la remediation?
-
-Come distinguereste severity tecnica e business impact?
-
-Quale evidenza inserireste nel report?
-
-Quale evidenza NON inserireste?
-```
-
-Solo successivamente lasciare emergere:
-
-```text
-SQL injection
-XSS
-```
-
-senza trasformarle in attività di estrazione massiva.
-
----
-
-# Se la classe va troppo lenta
-
-Saltare la seconda pista Admin.
-
-Concentrarsi solamente su:
+Non tagliare:
 
 ```text
 scope
-→ recon
-→ scanner
-→ triage
-→ BOLA
-→ report
+discovery
+VA triage
+BOLA validation
+stop condition
 ```
-
-Questo percorso da solo è sufficiente per raggiungere l'obiettivo della lezione.
 
 ---
 
-# Risultato minimo atteso
+# Risultato minimo
 
-Alla fine della lezione ogni studente dovrebbe riuscire a spiegare:
+Alla fine devono saper spiegare:
 
 ```text
-Un vulnerability assessment identifica potenziali problemi.
-
-Un penetration test verifica in modo controllato
-se quei problemi sono realmente sfruttabili
-e quale impatto sia possibile dimostrare.
-
-La prova deve essere sufficiente,
-non massimamente invasiva.
+ATTACK SURFACE
+≠
+ELENCO DI PORTE
 ```
 
-## Frase finale della giornata
+e:
 
-> Il valore del pentester non è quante richieste riesce a fare, ma quanto bene riesce a trasformare un'osservazione in una conclusione dimostrabile.
+```text
+il pentester non cerca di attaccare tutto;
+costruisce ipotesi,
+sceglie quelle che meritano verifica,
+considera controlli/costi/scope,
+raccoglie la prova minima
+e non afferma più di quanto abbia dimostrato.
+```
