@@ -51,12 +51,13 @@ Aprire progressivamente:
 
 1. `artifacts/00-client-brief.txt`;
 2. `artifacts/02-company-human-surface-dossier.md`;
-3. costruire una prima mappa della superficie di attacco organizzativa;
-4. eseguire recon/enumeration sul target locale;
-5. `artifacts/01-scanner-output.txt`;
-6. validare manualmente soltanto le piste ritenute utili;
-7. compilare `student-workbook.md`;
-8. consegnare un finding completo e una attack-surface analysis.
+3. estrarre 12 fatti/dettagli e scrivere le domande che vorrebbero fare al cliente, **senza cercare ancora l'attacco**;
+4. dopo il confronto in aula, trasformare soltanto 5 osservazioni in ipotesi e scartarne almeno 2 motivate;
+5. eseguire recon/enumeration sul target locale;
+6. `artifacts/01-scanner-output.txt`;
+7. validare manualmente soltanto le piste ritenute utili;
+8. compilare `student-workbook.md`;
+9. consegnare un finding completo e una attack-surface analysis.
 
 Non tutte le abitudini descritte nel dossier devono portare a un attacco. Sono conclusioni valide anche:
 
@@ -115,13 +116,14 @@ L'account admin non viene consegnato agli studenti.
 Ogni gruppo deve consegnare:
 
 1. Attack Surface Inventory tecnico;
-2. Human / Process / Physical Attack Surface Map;
-3. almeno 10 ipotesi derivate dal dossier, incluse alcune da scartare;
-4. triage dei finding automatici;
-5. almeno un finding validato;
-6. una attack chain o decision path;
-7. remediation tecnica o procedurale;
-8. una mini executive summary di massimo 100 parole.
+2. 12 osservazioni dal dossier con relative domande di approfondimento;
+3. 5 ipotesi motivate, con almeno 2 decisioni di non procedere o bassa priorità;
+4. Human / Process / Physical Attack Surface Map;
+5. triage dei finding automatici;
+6. almeno un finding validato;
+7. una attack chain o decision path;
+8. remediation tecnica o procedurale;
+9. una mini executive summary di massimo 100 parole.
 
 ## Domanda guida
 
