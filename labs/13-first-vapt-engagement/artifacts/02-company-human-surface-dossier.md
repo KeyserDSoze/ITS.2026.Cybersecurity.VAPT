@@ -1,94 +1,44 @@
-# UmbraMarket — Company & Human Attack Surface Dossier
+# UmbraMarket — Profilo operativo e note di discovery
 
-> **Documento per gli studenti**  
-> Tutti i nomi, ruoli, luoghi, comportamenti e dati presenti in questo dossier sono fittizi e creati esclusivamente per il laboratorio.
-
-## Perché esiste questo documento
-
-Un assessment reale non parte sempre da una porta TCP.
-
-Un'azienda è composta da:
-
-```text
-persone
-processi
-abitudini
-spazi
-fornitori
-tecnologie
-documenti
-decisioni
-eccezioni
-```
-
-Durante questo laboratorio considerate **ogni informazione come potenziale elemento della superficie di attacco**, ma non assumete che ogni dettaglio sia vulnerabile o utile.
-
-Per ogni osservazione chiedetevi:
-
-```text
-COSA HO OSSERVATO?
-        ↓
-CHE COSA MI DICE SULL'ORGANIZZAZIONE?
-        ↓
-QUALE IPOTESI DI RISCHIO POTREBBE SUGGERIRE?
-        ↓
-QUALI PREREQUISITI SERVIREBBERO?
-        ↓
-È NELLO SCOPE?
-        ↓
-VALE DAVVERO LA PENA VERIFICARLA?
-```
+> **Materiale per gli studenti — scenario interamente fittizio**
+>
+> Il documento raccoglie informazioni provenienti da una breve intervista al cliente, note prese durante una visita alla sede e alcuni dettagli forniti dai responsabili di reparto.
+>
+> Le informazioni non hanno tutte lo stesso livello di precisione: alcune sono fatti osservati, altre sono descrizioni fornite dal personale. Non tutto ciò che compare qui è necessariamente rilevante per l'assessment.
 
 ---
 
-# 1. Profilo aziendale
+# 1. L'azienda
 
-## UmbraMarket S.r.l.
+UmbraMarket S.r.l. vende arredi e accessori per ufficio principalmente a clienti business.
 
-UmbraMarket è una PMI che vende arredi e accessori per ufficio a clienti business.
+Negli ultimi due anni l'azienda è cresciuta abbastanza rapidamente. Alcuni processi sono stati formalizzati, altri sono rimasti simili a quando il gruppo era molto più piccolo.
 
-L'azienda possiede:
+La società conta circa 48 dipendenti e una decina di collaboratori o consulenti che lavorano con una certa regolarità.
 
-- un portale e-commerce B2B;
-- un piccolo team commerciale;
-- un ufficio amministrativo;
-- un magazzino;
-- un reparto IT interno di dimensioni ridotte;
-- alcuni fornitori esterni per software, logistica e manutenzione.
+La sede principale comprende:
 
-L'azienda sta crescendo rapidamente e molti processi sono nati in modo informale.
+- uffici amministrativi;
+- uffici commerciali;
+- piccolo reparto IT;
+- sale riunioni;
+- magazzino;
+- area carico/scarico;
+- parcheggio dipendenti.
 
-### Dimensioni indicative
-
-```text
-circa 48 dipendenti
-circa 10 collaboratori/consulenti ricorrenti
-2 sedi operative nello scenario
-1 portale clienti
-1 area amministrativa
-1 magazzino
-```
-
-La sede oggetto del laboratorio ospita circa 35 persone durante una giornata normale.
+Durante una giornata normale sono presenti circa 30–35 persone.
 
 ---
 
-# 2. Organizzazione interna
+# 2. Reparti
 
 ## Direzione
 
-La direzione è composta da:
+La direzione comprende CEO, responsabile amministrazione, responsabile commerciale e responsabile operations.
 
-- CEO;
-- responsabile amministrazione;
-- responsabile commerciale;
-- responsabile operations.
+Il CEO è spesso fuori sede per clienti, eventi e fiere. Quando è in viaggio lavora soprattutto da smartphone e laptop.
 
-La direzione usa principalmente laptop aziendali.
-
-Il CEO viaggia frequentemente e lavora spesso da smartphone.
-
----
+La sua assistente gestisce parte dell'agenda e filtra molte richieste.
 
 ## IT
 
@@ -98,567 +48,572 @@ Il team IT è composto da tre persone:
 - System Administrator;
 - Developer / Application Support.
 
-Il team gestisce:
+Gestiscono account, laptop, rete, applicazioni SaaS e il portale UmbraMarket.
 
-- account;
-- laptop;
-- rete interna;
-- portale UmbraMarket;
-- applicazioni SaaS;
-- supporto agli utenti.
+Diversi dipendenti conoscono personalmente i tecnici IT e, quando hanno fretta, capita che li contattino direttamente anziché aprire un ticket.
 
-Quando il carico di lavoro aumenta, alcune attività vengono svolte rapidamente e documentate solo successivamente.
-
----
+Secondo l'IT Manager «alla fine i ticket li apriamo quasi sempre, anche se magari dopo».
 
 ## Commerciale
 
-Il reparto commerciale ha 9 persone.
+Il reparto commerciale conta 9 persone.
 
-Utilizza:
+Lavora molto tramite:
 
-- CRM;
 - email;
-- portale clienti;
-- file PDF;
+- CRM;
+- PDF;
 - fogli di calcolo;
-- smartphone aziendali.
+- telefono;
+- videoconferenze.
 
-Il commerciale riceve spesso documenti da clienti e potenziali clienti.
+I commerciali ricevono spesso materiale da persone che non hanno mai contattato prima: nuovi clienti, prospect, organizzatori di eventi e fornitori.
 
----
+Due commerciali sono quasi sempre fuori sede il martedì e il giovedì.
 
 ## Amministrazione
 
-L'amministrazione ha 6 persone.
+L'amministrazione conta 6 persone.
 
-Gestisce:
+Gestisce fatture, ordini, fornitori, pagamenti e documentazione contrattuale.
 
-- fatture;
-- ordini;
-- pagamenti;
-- dati dei fornitori;
-- documentazione contrattuale.
+Molti documenti arrivano per email.
 
-Riceve frequentemente email con allegati provenienti da soggetti esterni.
+La responsabile amministrativa dice che «con i fornitori storici ormai ci conosciamo tutti», mentre con i nuovi fornitori le verifiche sono più formali.
 
----
+## Magazzino
 
-## Magazzino e logistica
+Il magazzino impiega 12 operatori su turni parzialmente sovrapposti.
 
-Il magazzino ha 12 operatori.
+Sono presenti terminali dedicati, stampanti, lettori di codici e una postazione Windows utilizzata per documenti di spedizione.
 
-Alcune postazioni sono condivise tra più turni.
-
-Il personale del magazzino utilizza:
-
-- terminali;
-- stampanti;
-- lettori di codici;
-- una postazione Windows condivisa per documenti e spedizioni.
+Un operatore ha spiegato che la postazione «la usiamo un po' tutti quando serve stampare qualcosa».
 
 ---
 
-# 3. Una normale giornata in UmbraMarket
+# 3. Una giornata normale
 
-## 07:45–08:30 — Arrivo dei primi dipendenti
+## Prima delle 08:30
 
-Il personale del magazzino arriva prima degli uffici.
+Il magazzino inizia prima degli uffici.
 
-L'ingresso principale non è ancora molto frequentato.
+Tra le 07:45 e le 08:30 arrivano personale del magazzino, qualche corriere e, in alcune giornate, tecnici o fornitori.
 
-Il cancello viene aperto per permettere l'accesso ai corrieri.
+La reception apre alle 08:30.
 
-Durante questa fascia oraria possono arrivare contemporaneamente:
+Il cancello carrabile viene aperto prima per le consegne.
 
-- dipendenti;
-- corrieri;
-- manutentori;
-- fornitori.
+## 08:30–09:00
 
-La reception apre ufficialmente alle 08:30.
+È la fascia di maggiore ingresso del personale degli uffici.
 
----
+L'accesso principale richiede il badge.
 
-## 08:30–09:00 — Ingresso uffici
+Quando arrivano più colleghi insieme capita normalmente che chi è davanti tenga la porta per chi arriva subito dietro.
 
-La maggior parte dei dipendenti arriva tra le 08:30 e le 09:00.
+Un dipendente ha commentato: «Siamo pochi, più o meno ci conosciamo tutti».
 
-L'accesso avviene tramite badge.
-
-Quando più persone entrano contemporaneamente è comune che la porta venga tenuta aperta per chi arriva subito dietro.
-
-I dipendenti si conoscono quasi tutti di vista.
-
-I nuovi collaboratori e i consulenti non sempre sono riconoscibili.
+Nello stesso periodo entrano occasionalmente consulenti, candidati e manutentori.
 
 ---
 
-# 4. Reception e visitatori
+# 4. Reception
 
-La reception registra normalmente i visitatori.
-
-Il processo previsto è:
+Il processo dichiarato per un visitatore è:
 
 ```text
-visitatore
+arrivo
 → reception
 → registrazione
+→ contatto della persona interna
 → badge visitatore
-→ contatto interno
 → accesso
 ```
 
-Tuttavia:
+I badge visitatore sono riutilizzabili.
 
-- i corrieri abituali sono conosciuti;
-- alcuni fornitori ricorrenti vengono fatti entrare rapidamente;
-- nei momenti di maggiore traffico il controllo è meno formale;
-- i visitatori attendono vicino all'ingresso principale.
+La receptionist riconosce diversi corrieri e alcuni tecnici che vengono spesso in sede.
 
-I badge visitatore devono essere restituiti all'uscita.
+Durante le fasce di maggiore ingresso capita che la reception debba gestire contemporaneamente telefono, visitatori e consegne.
+
+Sul bancone sono disponibili:
+
+- materiale commerciale;
+- alcuni biglietti da visita;
+- un piccolo cartoncino con le informazioni per il Wi-Fi ospiti;
+- il numero interno della reception.
 
 ---
 
-# 5. Pausa caffè
+# 5. Zona break
 
-Tra le 10:15 e le 10:45 molte persone vanno nella zona break.
+La pausa principale della mattina è generalmente tra le 10:15 e le 10:45.
 
-Nella zona break sono presenti:
+La zona break è usata da persone di reparti diversi.
+
+Sono presenti:
 
 - macchina del caffè;
 - distributore automatico;
 - tavoli;
-- stampante multifunzione poco distante.
+- una lavagna con comunicazioni interne;
+- una stampante multifunzione nel corridoio poco distante.
 
-I dipendenti parlano frequentemente di:
+Le conversazioni sono quelle tipiche di un ufficio: clienti, riunioni, problemi della giornata, ferie, consegne e qualche commento sui sistemi informatici.
 
-- clienti;
-- riunioni;
-- problemi tecnici;
-- scadenze;
-- colleghi assenti.
-
-Non esistono regole particolari sulle conversazioni nella zona break.
+Il venerdì qualcuno porta spesso dolci o pizza.
 
 ---
 
-# 6. Pausa sigaretta
+# 6. Il retro dell'edificio
 
-Circa 8–10 dipendenti fumano regolarmente.
+Circa 8–10 persone fumano regolarmente.
 
-La zona utilizzata si trova sul retro dell'edificio, vicino:
+Per fumare utilizzano una zona sul retro dell'edificio.
 
-- all'uscita secondaria;
-- all'area dei cassonetti;
-- al parcheggio del personale;
-- alla zona di carico/scarico.
+Nella stessa area si trovano:
 
-Durante la pausa:
+- uscita secondaria;
+- parcheggio;
+- zona carico/scarico;
+- cassonetti e raccolta carta;
+- passaggio verso il magazzino.
 
-- alcune persone lasciano il badge al collo;
-- vengono utilizzati smartphone personali;
-- si parla spesso di lavoro;
-- la porta posteriore viene aperta frequentemente.
+Durante le pause capita che persone dell'ufficio e del magazzino si incontrino lì.
 
-L'area non è presidiata continuamente.
+Alcuni tengono il badge al collo, altri lo infilano in tasca.
+
+La porta posteriore viene utilizzata anche dagli operatori che si spostano tra magazzino e parcheggio.
+
+Non c'è una postazione fissa di reception sul retro.
 
 ---
 
 # 7. Parcheggio
 
-Il parcheggio dipendenti si trova accanto all'edificio.
+Il personale tende a parcheggiare più o meno nelle stesse zone.
 
-Alcune automobili sono facilmente riconoscibili perché riportano:
+Alcuni veicoli hanno un pass aziendale sul parabrezza.
 
-- adesivi aziendali;
-- pass del parcheggio;
-- materiale commerciale visibile dall'esterno.
+Due auto commerciali riportano il logo UmbraMarket.
 
-Il personale tende a lasciare l'auto sempre nella stessa zona.
+Nei giorni di fiera o visita clienti può esserci più movimento del normale.
+
+Un dipendente lascia quasi sempre un ombrello rosso molto riconoscibile sul sedile posteriore; l'informazione non ha particolare rilevanza per l'azienda, ma è stata annotata durante la visita.
 
 ---
 
-# 8. Scrivanie
+# 8. Scrivanie e uffici
 
-La politica aziendale prevede di bloccare il computer quando ci si allontana.
+Gli uffici sono principalmente open space.
 
-Nella pratica il comportamento varia.
+La policy aziendale prevede il blocco della sessione quando ci si allontana dalla postazione.
 
-Alcuni dipendenti:
+Le abitudini osservate non sono uniformi.
 
-- bloccano sempre la postazione;
-- lasciano il PC sbloccato durante pause brevi;
-- lasciano documenti cartacei sulla scrivania;
-- tengono post-it con promemoria;
-- utilizzano notebook personali per prendere appunti.
+Sulle scrivanie si trovano normalmente:
 
-Non è noto se sui post-it siano presenti password.
+- taccuini;
+- post-it;
+- cuffie;
+- bottiglie;
+- documenti;
+- biglietti da visita;
+- caricabatterie.
+
+Non è stato esaminato il contenuto dei documenti o dei promemoria.
+
+Molte persone lasciano il laptop collegato a monitor, tastiera e mouse durante la pausa pranzo.
 
 ---
 
 # 9. Sale riunioni
 
-Le sale riunioni hanno:
+Sono presenti tre sale.
+
+Due sono prenotabili tramite calendario.
+
+La terza, più piccola, viene spesso usata senza prenotazione per telefonate e call veloci.
+
+Le sale dispongono di:
 
 - monitor;
-- adattatori HDMI/USB-C;
+- adattatori HDMI e USB-C;
 - lavagna;
-- rete Wi-Fi aziendale;
-- rete Wi-Fi guest.
+- telecomandi;
+- accesso alle reti wireless disponibili in sede.
 
-Al termine delle riunioni possono rimanere sulla lavagna:
+Le lavagne vengono pulite con regolarità, ma non necessariamente subito dopo ogni riunione.
 
-- nomi di progetti;
-- diagrammi;
-- date;
-- nominativi di clienti.
+Durante la visita era ancora visibile metà di un diagramma relativo a un progetto chiamato “Orvieto”.
 
-Le sale vengono utilizzate anche da consulenti esterni.
+Non è stato spiegato cosa sia il progetto Orvieto.
 
 ---
 
 # 10. Stampanti
 
-Sono presenti stampanti multifunzione condivise.
+Sono presenti diverse stampanti multifunzione.
 
-Le persone inviano documenti e spesso li ritirano qualche minuto più tardi.
+Quella più grande è nel corridoio tra amministrazione e commerciale.
 
-Occasionalmente alcuni fogli rimangono nel vassoio.
+Alcuni utenti inviano una stampa e la recuperano più tardi.
 
-La stampante principale viene utilizzata anche dall'amministrazione.
+A volte un collega ritira anche le stampe di un'altra persona se sta già passando da lì.
+
+Durante la visita erano presenti nel vassoio alcuni fogli relativi a una campagna commerciale; non sono stati letti.
 
 ---
 
-# 11. Documenti cartacei
+# 11. Carta e archivi
 
-UmbraMarket cerca di lavorare digitalmente, ma vengono ancora stampati:
+L'azienda usa molti documenti digitali ma continua a stampare:
 
 - ordini;
-- fatture;
-- documenti di spedizione;
 - preventivi;
-- fogli di lavoro;
-- documentazione tecnica.
+- documenti di spedizione;
+- fatture;
+- appunti di riunione;
+- schede tecniche.
 
-I documenti da eliminare dovrebbero essere inseriti nei contenitori dedicati alla distruzione sicura.
+Per alcuni documenti esiste un contenitore interno destinato alla distruzione.
 
-I normali cestini degli uffici vengono però utilizzati per fogli considerati non importanti.
+I normali cestini vengono utilizzati per il resto.
 
----
-
-# 12. Rifiuti e area cassonetti
-
-Sul retro dell'edificio si trovano:
-
-- rifiuti ordinari;
-- carta;
-- imballaggi;
-- materiale proveniente dal magazzino.
-
-Per documenti sensibili esiste un contenitore interno dedicato.
-
-Non tutti i dipendenti hanno però la stessa percezione di cosa sia "sensibile".
-
-Vicino ai cassonetti transitano:
-
-- fumatori;
-- personale del magazzino;
-- addetti alle pulizie;
-- corrieri.
+L'amministrazione conserva ancora alcuni fascicoli cartacei in armadi chiusi.
 
 ---
 
-# 13. Supporti USB
+# 12. Area rifiuti
 
-Le porte USB dei laptop non sono completamente disabilitate.
+Sul retro vengono raccolti carta, cartone e rifiuti del magazzino.
 
-Il personale utilizza occasionalmente chiavette per:
+Gli imballaggi vengono accumulati in particolare dopo le consegne del mattino.
+
+Nell'area passano personale del magazzino, fumatori, addetti alle pulizie e corrieri.
+
+Durante la visita non è stato ispezionato alcun contenitore.
+
+---
+
+# 13. Supporti rimovibili
+
+Il personale usa soprattutto cloud e condivisioni aziendali.
+
+Capita comunque di usare supporti USB per:
 
 - presentazioni;
-- trasferimenti temporanei;
-- documenti di fornitori;
-- aggiornamenti di apparecchiature non connesse.
+- documenti ricevuti da alcuni fornitori;
+- dispositivi non collegati alla rete;
+- trasferimenti temporanei.
 
-L'IT raccomanda di non utilizzare dispositivi sconosciuti.
+L'IT ricorda periodicamente di fare attenzione ai dispositivi non riconosciuti.
 
-Non è stato verificato quanto questa regola venga rispettata.
-
----
-
-# 14. Smartphone
-
-Molti dipendenti utilizzano lo smartphone personale durante le pause.
-
-Alcuni account aziendali sono accessibili anche tramite smartphone.
-
-Il CEO e alcuni commerciali lavorano spesso in mobilità.
-
-In ufficio vengono utilizzati sia dispositivi aziendali sia personali.
+Un tecnico ha commentato che «ormai quasi nessuno usa più chiavette, tranne quando servono davvero».
 
 ---
 
-# 15. Wi-Fi
+# 14. Smartphone e lavoro mobile
 
-Esistono due reti principali:
+Alcuni dipendenti hanno smartphone aziendali, altri utilizzano anche dispositivi personali.
+
+Il CEO e i commerciali lavorano spesso fuori sede.
+
+Le notifiche di posta e calendario vengono consultate frequentemente da smartphone.
+
+Durante le pause molte persone lasciano il laptop in ufficio e portano con sé soltanto il telefono.
+
+---
+
+# 15. Reti wireless
+
+Durante la visita risultavano visibili due SSID:
 
 ```text
 UMBRA-CORP
 UMBRA-GUEST
 ```
 
-La rete guest è utilizzata da:
+La rete guest viene utilizzata da visitatori e consulenti.
 
-- clienti;
-- consulenti;
-- visitatori.
+Le informazioni di accesso sono disponibili in reception.
 
-Le credenziali della guest vengono cambiate periodicamente.
+La password viene modificata periodicamente, ma non è stato specificato con quale frequenza.
 
-La password viene comunicata verbalmente o mostrata alla reception.
+Non sono state fornite informazioni sulla segmentazione tra le reti.
 
 ---
 
-# 16. Riunioni online
+# 16. Videoconferenze e calendario
 
-UmbraMarket utilizza regolarmente videoconferenze.
+L'azienda utilizza frequentemente videoconferenze.
 
-Gli inviti alle riunioni vengono condivisi via email.
+Gli inviti vengono inviati via calendario e talvolta inoltrati ad altre persone.
 
-Talvolta un dipendente inoltra un invito a un collega senza creare una nuova riunione.
+Le riunioni commerciali possono includere partecipanti esterni.
 
-Le riunioni commerciali possono includere soggetti esterni.
+Le sale vengono spesso indicate negli inviti con nomi brevi:
+
+```text
+Assisi
+Spello
+Gubbio
+```
+
+Gli stessi nomi compaiono sui cartelli fuori dalle porte.
 
 ---
 
 # 17. Email
 
-La posta elettronica è uno degli strumenti principali.
+L'email è uno dei principali canali di lavoro.
 
-Gli utenti ricevono messaggi da:
+Commerciale e amministrazione ricevono regolarmente messaggi da mittenti esterni.
 
-- clienti;
-- fornitori;
-- corrieri;
-- consulenti;
-- candidati;
-- software SaaS.
+Gli allegati più comuni sono PDF, documenti Office, immagini e occasionalmente archivi ZIP.
 
-Gli allegati più comuni sono:
+I commerciali ricevono anche:
 
-```text
-PDF
-DOCX
-XLSX
-ZIP
-immagini
-```
+- richieste di preventivo;
+- presentazioni;
+- listini;
+- inviti a eventi.
 
-Le comunicazioni urgenti vengono spesso gestite rapidamente.
+HR riceve CV e documenti di candidatura.
+
+L'amministrazione riceve fatture e comunicazioni relative ai fornitori.
 
 ---
 
-# 18. Fatture e pagamenti
+# 18. Pagamenti e fornitori
 
-L'amministrazione riceve fatture via email.
+Le modifiche ai dati di pagamento dei fornitori dovrebbero essere verificate.
 
-Le variazioni delle coordinate bancarie dei fornitori dovrebbero essere verificate.
+Non è stata descritta nel dettaglio la procedura.
 
-Per fornitori abituali, il personale tende però a riconoscere:
+Un'addetta amministrativa ha detto:
 
-- nome;
-- logo;
-- stile delle comunicazioni;
-- referente.
+> “Se è un fornitore nuovo controlliamo tutto. Per quelli con cui lavoriamo da anni sappiamo più o meno con chi stiamo parlando.”
+
+Uno dei principali fornitori logistici si chiama FastWay Logistics.
+
+Un altro fornitore si occupa delle stampanti.
 
 ---
 
-# 19. Help desk IT
+# 19. Supporto IT
 
-Le richieste IT arrivano attraverso:
+Il canale ufficiale è il ticketing.
 
-- sistema ticket;
-- email;
+Sono comunque comuni richieste via:
+
 - telefono;
-- messaggi diretti ai tecnici.
+- email;
+- chat interna;
+- richiesta diretta passando davanti all'ufficio IT.
 
-Quando una persona non riesce a lavorare, tende a cercare il metodo più rapido.
+L'IT Manager ha spiegato che per i problemi semplici «spesso risolviamo al volo».
 
-L'IT conosce personalmente molti dipendenti.
-
----
-
-# 20. Password e account
-
-L'azienda utilizza account individuali.
-
-Alcuni sistemi richiedono MFA.
-
-Altri sistemi legacy utilizzano soltanto username e password.
-
-I dipendenti hanno ricevuto indicazioni per non condividere password.
-
-Nel magazzino esistono però alcune postazioni operative utilizzate da più persone.
+Per reset e problemi di accesso esistono procedure interne, non fornite nel dettaglio durante la prima intervista.
 
 ---
 
-# 21. Nuovi assunti
+# 20. Account
 
-I nuovi dipendenti ricevono:
+Gli utenti hanno account personali.
 
+Alcuni servizi richiedono MFA.
+
+Un'applicazione più vecchia utilizzata dal magazzino usa ancora soltanto username e password.
+
+Non è stato chiarito se gli operatori della postazione Windows del magazzino utilizzino account individuali o una sessione già aperta.
+
+---
+
+# 21. Nuovi dipendenti
+
+Durante l'onboarding vengono consegnati:
+
+- badge;
 - laptop;
 - account;
-- badge;
-- breve onboarding;
-- documentazione aziendale.
+- documentazione introduttiva.
 
-Nei primi giorni fanno spesso domande a colleghi e IT.
+La mail di benvenuto indica anche a chi rivolgersi per problemi amministrativi e informatici.
 
-Il personale tende ad aiutarli.
+Nei primi giorni i nuovi assunti vengono affiancati da un collega.
 
----
-
-# 22. Persone che lasciano l'azienda
-
-Quando un dipendente termina il rapporto:
-
-- HR comunica la cessazione;
-- IT disabilita gli account;
-- vengono restituiti dispositivi e badge.
-
-Le tempistiche possono dipendere dal coordinamento tra HR e IT.
+Il prossimo inserimento previsto è nel reparto commerciale.
 
 ---
 
-# 23. Fornitori IT
+# 22. Offboarding
 
-UmbraMarket utilizza alcuni fornitori esterni.
+Quando termina un rapporto di lavoro, HR comunica la data all'IT.
 
-Un tecnico esterno interviene occasionalmente su:
+L'IT disabilita gli account e raccoglie i dispositivi.
+
+Secondo HR il processo «di solito viene fatto nella stessa giornata».
+
+Non sono stati visionati ticket o log di casi precedenti.
+
+---
+
+# 23. Tecnici e manutentori
+
+Alcuni interventi vengono eseguiti da fornitori esterni.
+
+In particolare:
 
 - stampanti;
-- networking;
-- apparati del magazzino.
+- rete;
+- apparati del magazzino;
+- manutenzione generale.
 
-I tecnici ricorrenti sono spesso riconosciuti dal personale.
+I tecnici più frequenti vengono riconosciuti da diversi dipendenti.
+
+Per interventi meno comuni viene normalmente avvisato il referente interno.
 
 ---
 
-# 24. Impresa di pulizie
+# 24. Pulizie
 
-Una società esterna effettua le pulizie quando una parte del personale ha già lasciato l'ufficio.
+L'impresa di pulizie arriva nel tardo pomeriggio.
 
-Gli addetti possono accedere a:
+Gli addetti accedono a corridoi, sale riunioni, zona break e parte degli uffici.
 
-- corridoi;
-- uffici;
-- sale riunioni;
-- zona break.
+Alcune persone sono presenti in azienda mentre vengono effettuate le pulizie, altre hanno già lasciato la sede.
 
-Non devono utilizzare i computer.
+Gli addetti non devono usare apparecchiature aziendali.
 
 ---
 
 # 25. Corrieri
 
-Il magazzino riceve numerosi corrieri ogni giorno.
+Il magazzino riceve consegne quasi ogni giorno.
 
-Gli operatori conoscono alcuni autisti abituali.
+Alcuni autisti sono molto abituali.
 
-I corrieri possono avvicinarsi:
+Gli autisti arrivano soprattutto dalla zona carico/scarico.
 
-- all'ingresso magazzino;
-- alla zona carico;
-- ad alcune aree operative.
+In caso di consegna per gli uffici può essere coinvolta anche la reception.
 
----
-
-# 26. Candidati e colloqui
-
-I candidati vengono ricevuti in reception e accompagnati in una sala riunioni.
-
-Durante le giornate con molti colloqui possono essere presenti più visitatori contemporaneamente.
-
-I CV vengono ricevuti principalmente via email.
+Lunedì e giovedì sono generalmente le giornate con più consegne.
 
 ---
 
-# 27. Eventi e fiere
+# 26. Candidati
 
-Il reparto commerciale partecipa a fiere.
+I candidati vengono accolti dalla reception e accompagnati in una sala riunioni.
 
-Durante questi eventi:
+I colloqui vengono concentrati in alcune giornate.
 
-- vengono distribuiti biglietti da visita;
-- vengono raccolti contatti;
-- vengono mostrati laptop e tablet;
-- vengono utilizzate reti esterne;
-- vengono scambiate presentazioni.
+I CV arrivano soprattutto via email.
+
+Un calendario condiviso con HR contiene gli appuntamenti, ma non è stato mostrato durante la visita.
 
 ---
 
-# 28. Social media
+# 27. Fiere ed eventi
 
-UmbraMarket ha profili pubblici.
+Il commerciale partecipa regolarmente a eventi di settore.
 
-Vengono pubblicati:
+Durante le fiere vengono utilizzati laptop e tablet per mostrare cataloghi e presentazioni.
 
-- fotografie dell'ufficio;
-- eventi;
-- nuove assunzioni;
-- partecipazione a fiere;
+Vengono raccolti biglietti da visita e contatti.
+
+A volte una presentazione ricevuta da un partner viene copiata sul computer pochi minuti prima di essere mostrata.
+
+---
+
+# 28. Presenza online
+
+UmbraMarket utilizza LinkedIn e altri canali social.
+
+I post pubblici mostrano:
+
+- fiere;
+- prodotti;
 - nuove partnership;
-- lanci di prodotto.
+- fotografie di gruppo;
+- nuove assunzioni;
+- anniversari aziendali.
 
-Alcuni dipendenti indicano pubblicamente il proprio ruolo professionale.
+Molti dipendenti indicano il ruolo lavorativo nei propri profili professionali.
 
----
-
-# 29. Assenze e ferie
-
-Le assenze vengono gestite internamente tramite calendario e comunicazioni di reparto.
-
-Durante le ferie di una persona, altri colleghi possono gestire alcune sue attività.
-
-In certi casi viene impostato un messaggio automatico di assenza.
+Le fotografie dell'ufficio mostrano principalmente spazi comuni e sale riunioni.
 
 ---
 
-# 30. Orari ricorrenti
+# 29. Ferie e assenze
 
-Alcuni comportamenti sono abbastanza prevedibili:
+Le assenze vengono coordinate tramite calendario e comunicazioni interne.
+
+Quando qualcuno è in ferie, alcune attività vengono delegate.
+
+Gli utenti possono utilizzare messaggi automatici di assenza.
+
+Non tutti li configurano allo stesso modo.
+
+---
+
+# 30. Ritmi della giornata
+
+Dalle interviste emergono alcuni orari abbastanza ricorrenti:
 
 ```text
+07:45–08:30  arrivi magazzino e prime consegne
 08:30–09:00  ingresso uffici
-10:15–10:45  pausa caffè / sigaretta
-12:30–14:00  pausa pranzo
-17:30–18:30  uscita della maggioranza del personale
+10:15–10:45  pausa di metà mattina
+12:30–14:00  pausa pranzo a turni
+17:30–18:30  uscita della maggior parte degli uffici
 ```
 
-Il magazzino ha orari differenti.
+Il personale IT rimane talvolta più a lungo in caso di manutenzioni.
+
+Il mercoledì alle 09:30 si tiene una breve riunione commerciale.
 
 ---
 
-# 31. Eccezioni operative
+# 31. Urgenze
 
-Quando c'è urgenza, alcune procedure diventano più flessibili.
+Le situazioni che vengono citate più spesso come “urgenti” sono:
 
-Esempi:
+- spedizione bloccata;
+- cliente importante in attesa;
+- account che non permette di lavorare;
+- fattura o pagamento vicino alla scadenza;
+- materiale necessario per una riunione;
+- problema durante una fiera.
 
-- ordine cliente urgente;
-- problema con una spedizione;
-- blocco dell'account;
-- fattura vicina alla scadenza;
-- riunione importante;
-- visita inattesa di un fornitore.
+Un responsabile ha commentato:
 
-Le persone cercano normalmente di risolvere il problema velocemente.
+> “Quando c'è un cliente al telefono cerchiamo prima di sbloccare la situazione, poi sistemiamo la parte burocratica.”
 
 ---
 
-# 32. Informazioni tecniche già note dall'engagement
+# 32. Alcuni dettagli raccolti senza particolare contesto
 
-Il precedente brief autorizza l'analisi dei servizi locali:
+Le seguenti informazioni sono emerse durante conversazioni o osservazioni ma non sono state approfondite:
+
+- un progetto interno è chiamato “Orvieto”;
+- la sala Gubbio ha spesso problemi con l'adattatore HDMI;
+- FastWay Logistics effettua consegne frequenti;
+- una stampante viene manutenuta da un fornitore esterno;
+- il team commerciale ha una fiera prevista il mese prossimo;
+- il mercoledì mattina molti commerciali sono riuniti;
+- una parte del personale preferisce pranzare fuori;
+- la macchinetta del caffè accetta anche pagamento contactless;
+- un dipendente porta spesso una bici pieghevole in ufficio;
+- la reception conserva alcuni ombrelli dimenticati dai visitatori.
+
+Non è detto che questi dettagli abbiano valore per l'assessment.
+
+---
+
+# 33. Informazioni tecniche già fornite
+
+Il brief tecnico autorizza l'analisi di:
 
 ```text
 127.0.0.1:5005
@@ -666,52 +621,49 @@ Il precedente brief autorizza l'analisi dei servizi locali:
 127.0.0.1:9090
 ```
 
-Questo dossier **non sostituisce** la superficie tecnica.
-
-La completa.
-
-Pensate all'organizzazione come a un grafo:
-
-```text
-PERSONE ───── PROCESSI ───── TECNOLOGIA
-   │              │               │
-   ├── SPAZI      ├── FORNITORI   ├── ACCOUNT
-   │              │               │
-   └── ABITUDINI ─┴── DOCUMENTI ──┴── DATI
-```
+Il resto dello scope rimane quello definito nel client brief.
 
 ---
 
-# 33. Esercizio
+# Prima attività
 
-Scegliete almeno 10 osservazioni dal dossier.
+Non cercate ancora “l'attacco”.
+
+Selezionate **12 informazioni** che secondo voi meritano una domanda in più.
 
 Per ciascuna compilate:
 
-| Osservazione | Possibile ipotesi | Prerequisiti | Potenziale impatto | Vale la pena verificarla? |
-|---|---|---|---|---|
-| | | | | |
+| Informazione osservata | Fatto o dichiarazione? | Cosa vorrei sapere dopo? | Perché potrebbe contare? |
+|---|---|---|---|
+| | | | |
+| | | | |
 
-Non è necessario trovare un attacco per ogni comportamento.
+Almeno tre delle 12 informazioni devono essere dettagli che, dopo averci ragionato, considerate probabilmente poco utili.
 
-Sono risposte perfettamente valide:
+## Seconda attività
+
+Solo dopo la discussione in classe, scegliete **5 osservazioni** e trasformatele in ipotesi.
+
+Per ciascuna:
 
 ```text
-non vedo una strada realistica
-richiederebbe troppo tempo
-fuori scope
-rischio operativo eccessivo
-beneficio troppo basso
-mancano prerequisiti
-esiste un controllo compensativo
+OSSERVAZIONE:
+IPOTESI:
+COSA DEVE ESSERE VERO PERCHÉ FUNZIONI:
+COSA NON SAPPIAMO:
+COME POTREMMO VERIFICARLA IN UN ENGAGEMENT AUTORIZZATO:
+COSTO / RISCHIO:
+DECISIONE:
 ```
 
-## Regola fondamentale
+Le decisioni possibili includono anche:
 
-Il pensiero offensivo non significa:
-
-> "Come posso attaccare tutto?"
-
-Significa:
-
-> "Quali condizioni potrebbero trasformare un comportamento normale in una superficie di rischio, e quali di queste ipotesi meritano davvero una verifica?"
+```text
+TESTARE
+APPROFONDIRE
+BASSA PRIORITÀ
+TROPPO COSTOSO
+TROPPO INVASIVO
+FUORI SCOPE
+NON CI SONO EVIDENZE SUFFICIENTI
+```
