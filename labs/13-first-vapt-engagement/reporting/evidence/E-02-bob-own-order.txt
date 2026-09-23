@@ -1,0 +1,32 @@
+EVIDENCE ID: E-02
+PURPOSE: Establish object ownership for Bob
+ENVIRONMENT: UmbraMarket local training lab
+DATA: FICTIONAL
+
+REQUEST
+-------
+GET /api/orders/1002 HTTP/1.1
+Host: 127.0.0.1:5005
+Cookie: session=<redacted-bob-session>
+
+RESPONSE
+--------
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": 1002,
+  "user_id": 2,
+  "item": "Terni Chair",
+  "total": 189.0,
+  "shipping_address": "Via Roma 22, Terni"
+}
+
+INTERPRETATION
+--------------
+Order 1002 is accessible in Bob's authenticated context and is associated
+with user_id 2.
+
+THIS EVIDENCE DOES NOT DEMONSTRATE
+----------------------------------
+That Alice can access this object.
