@@ -239,6 +239,21 @@ VULNERABILITÀ DIMOSTRATA
 
 ---
 
+# Guida alla rilettura
+
+Il file lesson-recap.md è il documento da lasciare agli studenti dopo la lezione.
+
+Non è un walkthrough e non sostituisce il laboratorio. Ricostruisce il ragionamento completo:
+
+~~~text
+cliente → scope → discovery → attack surface → VA
+→ PT → evidenze → finding → remediation → retest → report
+~~~
+
+Può essere usato anche dal docente come traccia concettuale rapida, mentre instructor-runbook.md rimane la guida operativa per la conduzione in aula.
+
+---
+
 # Reporting finale
 
 La parte tecnica non termina con la PoC.
