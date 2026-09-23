@@ -3,6 +3,53 @@
 > **Solo docente — scenario fittizio.**  
 > Questo documento serve a guidare la discussione sul pensiero offensivo senza trasformare la lezione in una raccolta di trucchi. Le tecniche sono descritte a livello concettuale e vanno trattate come ipotesi da validare esclusivamente in ambienti autorizzati.
 
+# Come usare il dossier senza suggerire le risposte
+
+Il dossier studenti è volutamente scritto come materiale di discovery e **non** come catalogo di debolezze.
+
+Non introdurre il documento con:
+
+> "Cercate i punti attaccabili."
+
+Usare invece:
+
+> "Leggete queste informazioni come se arrivassero da interviste e osservazioni di un cliente. Decidete quali meritano una domanda in più."
+
+La progressione deve essere:
+
+```text
+DETTAGLIO
+   ↓
+È UN FATTO O UNA DICHIARAZIONE?
+   ↓
+MI MANCA QUALCOSA?
+   ↓
+PERCHÉ POTREBBE CONTARE?
+   ↓
+SOLO DOPO: IPOTESI DI ATTACCO
+```
+
+Non suggerire parole come *tailgating*, *phishing*, *USB drop*, *dumpster diving*, *BEC* o *credential attack* finché non sono gli studenti a formulare il concetto.
+
+Se uno studente propone immediatamente una tecnica, chiedere:
+
+```text
+Quale dettaglio del dossier ti ha portato lì?
+Quali passaggi intermedi stai assumendo?
+Quale di questi passaggi non hai ancora dimostrato?
+```
+
+Il documento contiene intenzionalmente:
+
+- indizi utili;
+- informazioni incomplete;
+- dettagli normali;
+- falsi lead;
+- controlli compensativi;
+- elementi che richiederebbero troppo sforzo.
+
+L'obiettivo non è premiare chi inventa più attacchi, ma chi **seleziona meglio le ipotesi**.
+
 # Obiettivo
 
 Gli studenti devono imparare che una superficie di attacco comprende:
