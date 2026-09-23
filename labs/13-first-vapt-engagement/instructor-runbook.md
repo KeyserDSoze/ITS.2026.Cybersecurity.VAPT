@@ -392,13 +392,103 @@ Overclaim exercise:
 
 ---
 
-# 03:30–04:00 — BUFFER / ESTENSIONE
+# 03:30–03:55 — Final VAPT Report Review
 
-Questa mezz'ora è deliberatamente libera.
+Questa parte è **core**, non opzionale.
 
-Scegli in base alla classe.
+Aprire:
 
-## Opzione A — seconda pista tecnica
+```text
+reporting/evidence/E-01-alice-own-order.txt
+reporting/evidence/E-02-bob-own-order.txt
+reporting/evidence/E-03-cross-user-order.txt
+```
+
+Prima domanda:
+
+> Perché servono tre evidenze? Non bastava la risposta 200?
+
+Far emergere:
+
+```text
+E-01 = baseline Alice
+E-02 = ownership Bob
+E-03 = violazione cross-user
+```
+
+Poi far scrivere ai gruppi il finding senza mostrare ancora il modello.
+
+Struttura minima:
+
+```text
+TITLE
+BUSINESS RULE
+PRECONDITIONS
+STEPS TO REPRODUCE
+EXPECTED
+OBSERVED
+EVIDENCE
+DEMONSTRATED IMPACT
+NOT DEMONSTRATED
+ROOT CAUSE
+REMEDIATION
+RETEST
+```
+
+Solo dopo aprire:
+
+`reporting/sample-client-report.md`
+
+Confrontare insieme:
+
+- Executive Summary;
+- Scope;
+- Rules of Engagement;
+- Methodology;
+- Limitations;
+- Findings Summary;
+- finding F-01 completo;
+- evidence references;
+- false positive dello scanner;
+- remediation roadmap;
+- retest plan.
+
+Domanda chiave:
+
+> Dove finisce l'evidenza e dove comincia l'interpretazione?
+
+Usare anche:
+
+`reporting/instructor-report-review.md`
+
+per la revisione frase per frase.
+
+---
+
+# 03:55–04:00 — Chiusura
+
+Scrivere:
+
+```text
+IL PENTEST NON FINISCE CON:
+"FUNZIONA"
+
+FINISCE CON:
+EVIDENZA
+→ CONCLUSIONE
+→ IMPATTO
+→ REMEDIATION
+→ RETEST
+→ COMUNICAZIONE AL CLIENTE
+```
+
+Se la classe ha ancora tempo, il materiale Admin/F-02 può essere usato come secondo finding; altrimenti resta per una sessione successiva.
+
+---
+
+# Estensioni se disponibili altri 20–30 minuti
+
+## A — Seconda pista tecnica
 
 Admin staging:
 
@@ -410,7 +500,7 @@ recon
 → authorization verticale
 ```
 
-## Opzione B — attack chain organizzativa
+## B — Attack chain organizzativa
 
 Far scegliere tre elementi da fonti diverse e costruire una chain concettuale.
 
@@ -421,22 +511,12 @@ CONTROL EFFECTIVE
 STOP
 ```
 
-## Opzione C — reporting
+## C — Executive vs Technical
 
-Un gruppo legge il finding.
+Far riscrivere lo stesso rischio in:
 
-La classe marca ogni frase:
-
-```text
-FACT
-INTERPRETATION
-HYPOTHESIS
-OVERCLAIM
-```
-
-## Opzione D — executive summary
-
-Massimo 100 parole.
+- massimo 180 parole tecniche;
+- massimo 100 parole executive.
 
 ---
 
@@ -460,7 +540,7 @@ Taglia nell'ordine:
 1. public footprint;
 2. decision board dettagliato;
 3. seconda pista Admin;
-4. executive summary.
+4. attack-chain extension.
 
 Non tagliare:
 
@@ -469,7 +549,9 @@ scope
 discovery
 VA triage
 BOLA validation
-stop condition
+evidence correlation
+finding
+final report review
 ```
 
 ---
@@ -487,10 +569,13 @@ ELENCO DI PORTE
 e:
 
 ```text
-il pentester non cerca di attaccare tutto;
-costruisce ipotesi,
-sceglie quelle che meritano verifica,
-considera controlli/costi/scope,
-raccoglie la prova minima
-e non afferma più di quanto abbia dimostrato.
+un VAPT professionale non termina
+quando una richiesta "funziona".
+
+Deve produrre una conclusione riproducibile,
+supportata da evidenze,
+con limiti dichiarati,
+impatto comprensibile,
+remediation applicabile
+e criterio di retest.
 ```
