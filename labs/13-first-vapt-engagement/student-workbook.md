@@ -1,28 +1,72 @@
 # Student Workbook — First VAPT Engagement
 
-## 1. Scope check
+## 1. Scope
 
-Scrivi in una frase cosa puoi testare e cosa non puoi testare.
+```text
+BUSINESS QUESTION:
+IN SCOPE:
+OUT OF SCOPE:
+STOP CONDITIONS:
+```
 
-## 2. Attack Surface Inventory
+## 2. Source / Evidence Board
+
+Prima di proporre attacchi, registra ciò che sai.
+
+| Source | Informazione | Tipo | Confidenza | Domanda successiva |
+|---|---|---|---|---|
+| | | OBSERVED / REPORTED / INFERRED | | |
+| | | | | |
+| | | | | |
+
+## 3. Discovery shortlist
+
+Scegli 12 osservazioni.
+
+| Osservazione | Perché potrebbe contare? | Cosa manca? | Utile / incerta / rumore |
+|---|---|---|---|
+| | | | |
+| | | | |
+
+Almeno tre devono risultare poco utili o non sufficientemente supportate.
+
+## 4. Hypothesis record
+
+Solo dopo il discovery checkpoint.
+
+```text
+OBSERVATION:
+HYPOTHESIS:
+PRECONDITIONS:
+CONTROL ALREADY KNOWN:
+WHAT WE DO NOT KNOW:
+POSSIBLE SAFE TEST:
+COST:
+OPERATIONAL RISK:
+SCOPE:
+DECISION:
+```
+
+Usa `assessment-decision-board.md` per scegliere cosa vale la pena verificare.
+
+## 5. Technical Attack Surface Inventory
 
 | Asset | Porta / path | Osservazione | OBSERVED / INFERRED | Prossima domanda |
 |---|---|---|---|---|
 | | | | | |
 | | | | | |
-| | | | | |
 
-## 3. Scanner triage
+## 6. Scanner triage
 
-| ID | Prima impressione | Verifica necessaria | Stato finale |
-|---|---|---|---|
-| S-001 | | | |
-| S-002 | | | |
-| S-003 | | | |
-| S-004 | | | |
-| S-005 | | | |
+| ID | Evidence dello scanner | Assunzione | Verifica necessaria | Stato finale |
+|---|---|---|---|---|
+| S-001 | | | | |
+| S-002 | | | | |
+| S-003 | | | | |
+| S-004 | | | | |
+| S-005 | | | | |
 
-Stati suggeriti:
+Stati:
 
 ```text
 UNVERIFIED
@@ -32,9 +76,7 @@ FALSE POSITIVE / NOT DEMONSTRATED
 NEEDS MORE EVIDENCE
 ```
 
-## 4. Manual validation record
-
-Per ogni pista che scegli di verificare:
+## 7. Manual Validation Record
 
 ```text
 FACT:
@@ -46,9 +88,7 @@ CONCLUSION:
 STOP CONDITION:
 ```
 
-## 5. Authorization test
-
-Confronta il comportamento di due utenti diversi.
+## 8. Authorization baseline
 
 ```text
 ALICE OWN OBJECT:
@@ -58,33 +98,36 @@ EXPECTED SECURITY CONTROL:
 OBSERVED RESULT:
 ```
 
-Non enumerare altri ID quando hai ottenuto una prova sufficiente.
+Non enumerare ulteriori ID dopo una prova sufficiente.
 
-## 6. Attack chain / decision path
+## 9. Decision Path / Attack Chain
 
-Disegna il tuo percorso, anche se alcune piste terminano:
+La chain può concludersi anche negativamente.
 
 ```text
 evidence
   ↓
 hypothesis
   ↓
+preconditions
+  ↓
 test
-  ├── no signal → stop / reprioritize
-  └── confirmed → impact → stop
+  ├── control works / no evidence → STOP
+  ├── too costly / out of scope  → STOP
+  └── confirmed                  → IMPACT → STOP
 ```
 
-## 7. Finding
+## 10. Finding
 
 ### Title
 
-### Asset
+### Asset / process
 
 ### Summary
 
 ### Preconditions
 
-### Steps to reproduce
+### Steps to reproduce / validation method
 
 ### Evidence
 
@@ -98,6 +141,6 @@ test
 
 ### Retest
 
-## 8. Executive summary
+## 11. Executive summary
 
 Massimo 100 parole. Nessun overclaim.
