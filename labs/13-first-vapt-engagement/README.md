@@ -2,32 +2,40 @@
 
 ## Obiettivo
 
-Questo laboratorio compatta in una sola sessione il percorso:
+Questo laboratorio simula un piccolo assessment end-to-end:
 
 ```text
-azienda → persone/processi/spazi → scope → recon → enumeration
-→ VA → triage → manual validation → controlled PT
-→ impact → remediation → reporting
+customer discovery
+→ attack surface
+→ prioritizzazione
+→ recon tecnico
+→ vulnerability assessment
+→ validazione manuale
+→ controlled PT
+→ impatto
+→ report
 ```
 
-Non è una CTF. Non esistono flag da trovare. Il risultato atteso è una conclusione professionale sostenuta da evidenze.
+Non è una CTF. Non esistono flag e non vince chi trova più vulnerabilità.
 
-L'obiettivo è ragionare sull'**intera superficie di attacco**, non soltanto sugli asset tecnici:
+L'obiettivo è imparare a decidere:
 
 ```text
-persone + processi + identità + informazioni
-+ spazi + fornitori + tecnologia + tempo
+cosa so
+cosa non so
+cosa merita una domanda
+cosa merita un test
+cosa non vale la pena testare
+quando ho evidenza sufficiente
 ```
 
 ## Scenario
 
-UmbraMarket sta preparando il rilascio di una nuova versione del portale B2B. Il cliente chiede una verifica rapida prima della pubblicazione.
+UmbraMarket sta preparando una nuova release del proprio portale B2B e chiede un assessment limitato.
 
-Lo stack è interamente locale e volutamente vulnerabile. Tutte le persone, le abitudini e i dati descritti nel dossier aziendale sono fittizi. Nessun sistema esterno è autorizzato.
+Tutto il materiale è fittizio. I target tecnici sono esclusivamente locali.
 
-## Avvio
-
-Dalla root della repository:
+## Stack tecnico
 
 ```bash
 cd labs/platform
@@ -35,7 +43,7 @@ docker compose up -d --build
 ./scripts/check.sh
 ```
 
-Target tecnici autorizzati:
+Target autorizzati:
 
 ```text
 127.0.0.1:5005   UmbraMarket Guided
@@ -43,114 +51,185 @@ Target tecnici autorizzati:
 127.0.0.1:9090   File service
 ```
 
-Juice Shop su porta 3000 non fa parte di questo engagement.
+La porta 3000 e qualsiasi altro host/servizio sono fuori scope.
 
-## Materiale per gli studenti
+---
 
-Aprire progressivamente:
+# Discovery pack
 
-1. `artifacts/00-client-brief.txt`;
-2. `artifacts/02-company-human-surface-dossier.md`;
-3. estrarre 12 fatti/dettagli e scrivere le domande che vorrebbero fare al cliente, **senza cercare ancora l'attacco**;
-4. dopo il confronto in aula, trasformare soltanto 5 osservazioni in ipotesi e scartarne almeno 2 motivate;
-5. eseguire recon/enumeration sul target locale;
-6. `artifacts/01-scanner-output.txt`;
-7. validare manualmente soltanto le piste ritenute utili;
-8. compilare `student-workbook.md`;
-9. consegnare un finding completo e una attack-surface analysis.
+Il materiale non va consegnato tutto insieme.
 
-Non tutte le abitudini descritte nel dossier devono portare a un attacco. Sono conclusioni valide anche:
+## Wave 0 — incarico
+
+`artifacts/00-client-brief.txt`
+
+Serve a capire obiettivo, scope e Rules of Engagement.
+
+## Wave 1 — capire l'azienda
 
 ```text
-NON ATTACCABILE CON LE EVIDENZE DISPONIBILI
-FUORI SCOPE
-TROPPO COSTOSO
-TROPPO INVASIVO
-BASSA PRIORITÀ
-SERVONO ALTRI PREREQUISITI
-ESISTE UN CONTROLLO COMPENSATIVO
+discovery/01-company-overview.md
+discovery/02-org-roles.md
 ```
 
-## Materiale docente
+Consegna:
 
-- `instructor-runbook.md` — scaletta completa della lezione;
-- `instructor-solution.md` — soluzione della parte tecnica;
-- `instructor-human-attack-surface.md` — guida per discutere persone, processi, spazi, terze parti e attack chain non tecniche.
+- estrarre fatti;
+- scrivere domande;
+- evitare ancora di proporre attacchi.
 
-## Regole
+## Wave 2 — informazioni meno pulite
+
+```text
+discovery/03-interview-notes.md
+discovery/04-site-observation.md
+```
+
+Qui compaiono:
+
+- dichiarazioni non verificate;
+- possibili contraddizioni;
+- abitudini;
+- dettagli irrilevanti;
+- informazioni che acquistano senso solo se correlate.
+
+Consegna:
+
+- distinguere OBSERVED / REPORTED / INFERRED;
+- aggiornare le domande;
+- iniziare a formulare ipotesi, senza trasformarle in finding.
+
+## Wave 3 — tempo, controlli e informazioni pubbliche
+
+```text
+discovery/05-operating-calendar.md
+discovery/06-controls-and-policy-excerpts.md
+discovery/07-public-footprint.md
+```
+
+Consegna:
+
+- individuare controlli che potrebbero spezzare una attack path;
+- individuare ipotesi che non sono verificabili nella finestra dell'engagement;
+- correlare più fonti.
+
+## Decisione
+
+Usare:
+
+`assessment-decision-board.md`
+
+Ogni gruppo ha 10 unità didattiche di assessment e deve scegliere cosa verificare.
+
+Un buon risultato può essere:
+
+```text
+TEST NOW
+ASK CLIENT
+TEST LATER
+LOW PRIORITY
+OUT OF SCOPE
+TOO INVASIVE
+INSUFFICIENT EVIDENCE
+STOP
+```
+
+---
+
+# Parte tecnica
+
+Dopo la discovery organizzativa:
+
+1. recon/enumeration dei target locali;
+2. web mapping;
+3. apertura di `artifacts/01-scanner-output.txt`;
+4. triage dei candidate findings;
+5. validazione manuale;
+6. PoC minima;
+7. finding e remediation.
+
+La parte VA sul sito è volutamente già predisposta. Non occorre aggiungere ulteriori scanner o vulnerabilità per completare il laboratorio.
+
+## Finding tecnico principale consigliato
+
+Il percorso didattico principale rimane la verifica di authorization sugli ordini. L'Admin staging può essere usato come seconda pista se il tempo lo consente.
+
+SQL injection e XSS presenti nella piattaforma non sono obiettivi obbligatori.
+
+---
+
+# Regole
 
 Consentito:
 
 - browser, DevTools, curl;
-- Nmap sul solo localhost e sulle sole porte in scope;
-- Burp Suite Community o OWASP ZAP;
-- autenticazione con account didattici;
-- modifica manuale di parametri e identificativi;
-- una PoC minima e reversibile;
-- threat modeling e tabletop discussion sulle superfici umane, fisiche e procedurali.
+- Nmap sulle sole porte autorizzate;
+- Burp Suite Community / OWASP ZAP;
+- account didattici;
+- modifiche manuali controllate a parametri/ID;
+- threat modeling e tabletop su processi umani/fisici;
+- PoC minima e reversibile.
 
 Non consentito:
 
 - brute force;
 - denial of service;
-- enumerazione massiva di ID;
-- cancellazione o modifica intenzionale di dati;
+- estrazione massiva;
 - persistence;
-- test verso host diversi da 127.0.0.1;
-- social engineering reale verso persone;
-- introduzione reale di supporti o dispositivi sconosciuti;
-- accesso fisico non autorizzato;
-- continuare dopo avere ottenuto evidenza sufficiente.
+- test verso persone reali;
+- social engineering reale;
+- dispositivi fisici malevoli;
+- accessi fisici non autorizzati;
+- test verso altri host;
+- continuare quando l'evidenza è già sufficiente.
 
-## Account
+## Account didattici
 
 ```text
 alice / Alice123!
 bob   / Bob123!
 ```
 
-L'account admin non viene consegnato agli studenti.
+---
 
-## Deliverable
+# Deliverable
 
-Ogni gruppo deve consegnare:
+Ogni gruppo produce:
 
-1. Attack Surface Inventory tecnico;
-2. 12 osservazioni dal dossier con relative domande di approfondimento;
-3. 5 ipotesi motivate, con almeno 2 decisioni di non procedere o bassa priorità;
-4. Human / Process / Physical Attack Surface Map;
-5. triage dei finding automatici;
-6. almeno un finding validato;
-7. una attack chain o decision path;
-8. remediation tecnica o procedurale;
-9. una mini executive summary di massimo 100 parole.
+1. Scope statement;
+2. Source/Evidence Board;
+3. almeno 12 osservazioni con relative domande;
+4. 5 ipotesi motivate;
+5. almeno 2 decisioni motivate di non procedere;
+6. Assessment Decision Board;
+7. Attack Surface Map;
+8. Attack Surface Inventory tecnico;
+9. triage VA;
+10. almeno un finding validato;
+11. una decision path / attack chain;
+12. remediation;
+13. executive summary ≤100 parole.
 
-## Domanda guida
-
-Per ogni passaggio:
-
-```text
-COSA VEDO?
-COSA SIGNIFICA?
-COSA STO IPOTIZZANDO?
-QUALI PREREQUISITI SERVONO?
-È NELLO SCOPE?
-VALE LA PENA VERIFICARLO?
-COME POSSO VERIFICARLO IN SICUREZZA?
-COSA HO DIMOSTRATO DAVVERO?
-POSSO FERMARMI?
-```
-
-## Principio del laboratorio
+## Principio
 
 ```text
+INTERESSANTE
+≠
+UTILE
+
 POSSIBILE
 ≠
 PLAUSIBILE
+
+PLAUSIBILE
 ≠
+AUTORIZZATO
+
 AUTORIZZATO
 ≠
 CONVENIENTE
+
+CANDIDATE FINDING
 ≠
-DIMOSTRATO
+VULNERABILITÀ DIMOSTRATA
 ```
