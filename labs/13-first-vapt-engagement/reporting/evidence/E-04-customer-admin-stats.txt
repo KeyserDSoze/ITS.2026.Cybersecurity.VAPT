@@ -1,0 +1,40 @@
+EVIDENCE ID: E-04
+PURPOSE: Validate customer access to an administrative API function
+ENVIRONMENT: UmbraMarket local training lab
+DATA: FICTIONAL
+OPTIONAL SECONDARY FINDING
+
+PRECONDITION
+------------
+Authenticated as Alice with role "customer".
+
+REQUEST
+-------
+GET /api/admin/stats HTTP/1.1
+Host: 127.0.0.1:5005
+Cookie: session=<redacted-alice-session>
+
+RESPONSE
+--------
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "users": 3,
+  "orders": 3,
+  "revenue": 367.9
+}
+
+EXPECTED CONTROL
+----------------
+A customer role should not be authorized to invoke an administrative function.
+
+CONCLUSION SUPPORTED
+--------------------
+The endpoint requires authentication but does not enforce the expected admin
+role.
+
+NOT DEMONSTRATED
+----------------
+No administrative modification, privileged account action or server compromise
+was attempted.
