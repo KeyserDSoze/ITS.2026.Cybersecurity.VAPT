@@ -1,0 +1,31 @@
+EVIDENCE ID: E-01
+PURPOSE: Establish authorized baseline for Alice
+ENVIRONMENT: UmbraMarket local training lab
+DATA: FICTIONAL
+
+REQUEST
+-------
+GET /api/orders/1001 HTTP/1.1
+Host: 127.0.0.1:5005
+Cookie: session=<redacted-alice-session>
+
+RESPONSE
+--------
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": 1001,
+  "user_id": 1,
+  "item": "Umbra Lamp",
+  "total": 49.9,
+  "shipping_address": "Via del Corso 10, Perugia"
+}
+
+INTERPRETATION
+--------------
+Alice can access an order assigned to Alice.
+
+THIS EVIDENCE DOES NOT DEMONSTRATE
+----------------------------------
+Any authorization failure.
