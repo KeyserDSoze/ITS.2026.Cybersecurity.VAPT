@@ -3,6 +3,37 @@
 > **Solo docente — scenario fittizio.**  
 > Questo documento serve a guidare la discussione sul pensiero offensivo senza trasformare la lezione in una raccolta di trucchi. Le tecniche sono descritte a livello concettuale e vanno trattate come ipotesi da validare esclusivamente in ambienti autorizzati.
 
+# Rilascio a ondate
+
+Non consegnare più il vecchio dossier unico. Usare:
+
+```text
+Wave 1
+01-company-overview.md
+02-org-roles.md
+
+Wave 2
+03-interview-notes.md
+04-site-observation.md
+
+Wave 3
+05-operating-calendar.md
+06-controls-and-policy-excerpts.md
+07-public-footprint.md
+```
+
+Tra una wave e la successiva gli studenti devono aggiornare il proprio modello.
+
+La domanda non è:
+
+> “Avete trovato un'altra vulnerabilità?”
+
+ma:
+
+> “Quale vostra convinzione è cambiata con le nuove informazioni?”
+
+Usare il budget di `assessment-decision-board.md` soltanto dopo Wave 3. Prima devono imparare a convivere con l'incertezza.
+
 # Come usare il dossier senza suggerire le risposte
 
 Il dossier studenti è volutamente scritto come materiale di discovery e **non** come catalogo di debolezze.
