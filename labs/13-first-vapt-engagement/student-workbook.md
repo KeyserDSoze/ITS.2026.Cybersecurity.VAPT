@@ -100,21 +100,52 @@ OBSERVED RESULT:
 
 Non enumerare ulteriori ID dopo una prova sufficiente.
 
-## 9. Decision Path / Attack Chain
+## 9. Attack Chain
 
-La chain può concludersi anche negativamente.
+Usa anche `attack-chain-canvas.md`.
+
+Non limitarti a elencare possibili attacchi. Costruisci almeno due chain complete.
+
+Per ogni passaggio marca lo stato:
+
+```text
+[O] OBSERVED
+[V] VALIDATED
+[A] ASSUMED FOR TABLETOP
+[N] NOT TESTED
+[X] STOPPED
+```
+
+Dopo ogni nodo rispondi:
+
+```text
+COSA HO OTTENUTO DAVVERO?
+PERCHÉ QUESTO RENDE POSSIBILE IL NODO SUCCESSIVO?
+QUALE CONTROLLO POTREBBE SPEZZARE LA CHAIN?
+```
+
+Requisiti minimi:
+
+- una chain organizzativa/human/process di almeno 5 nodi;
+- una chain tecnica o mista di almeno 4 nodi;
+- almeno una biforcazione;
+- almeno un controllo;
+- almeno uno stop;
+- distinzione tra maximum demonstrated impact e maximum hypothesized impact.
+
+Una chain può concludersi anche negativamente:
 
 ```text
 evidence
   ↓
 hypothesis
   ↓
-preconditions
+capability gained
   ↓
-test
-  ├── control works / no evidence → STOP
-  ├── too costly / out of scope  → STOP
-  └── confirmed                  → IMPACT → STOP
+next hypothesis
+  ├── control works              → STOP
+  ├── too costly / out of scope → STOP
+  └── validated                 → NEXT NODE
 ```
 
 ## 10. Finding
