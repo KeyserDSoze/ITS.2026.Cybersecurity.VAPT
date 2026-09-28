@@ -1,0 +1,28 @@
+EVIDENCE ID: H-02
+TYPE: SIMULATED-CONTROLLED
+PURPOSE: Test handling of unknown removable media
+DATA: FICTIONAL / BENIGN
+
+SAFETY
+------
+The training USB contained only a harmless text marker.
+No executable, macro, malware, exploit or autorun behavior was present.
+
+SIMULATED SEQUENCE
+------------------
+1. Device was discovered.
+2. Device was collected.
+3. Device was connected to the designated training workstation.
+4. Benign marker content was opened.
+
+SUPPORTED CONCLUSION
+--------------------
+The training participant trusted an unknown removable device enough to connect it.
+
+NOT SUPPORTED
+-------------
+- code execution;
+- endpoint compromise;
+- malware deployment;
+- persistence;
+- credential theft.
