@@ -136,6 +136,40 @@ STOP
 
 ---
 
+# Lezione unificata: Attack Surface & Attack Chain
+
+Per raccontare questa parte alla classe usare come documento principale:
+
+`attack-surface-and-chain-lesson.md`
+
+È il materiale studenti che unisce in un unico percorso:
+
+```text
+attack surface
+→ osservazione
+→ ipotesi
+→ controlli
+→ capability gained
+→ attack chain
+→ branching
+→ stop
+→ validated vs hypothesized
+→ collegamento al report
+```
+
+Può essere mostrato durante la spiegazione e lasciato agli studenti come materiale di ripasso.
+
+I file:
+
+```text
+instructor-human-attack-surface.md
+instructor-attack-chain-guide.md
+```
+
+rimangono invece materiale di supporto per il docente.
+
+---
+
 # Attack Chain exercise
 
 Dopo la discovery e prima di ridurre tutto a singoli finding, usare:
