@@ -1,0 +1,25 @@
+EVIDENCE ID: C-01
+TYPE: CONTROL-EFFECTIVE
+PURPOSE: Validate whether the tested guest-network path could reach a selected internal training resource
+DATA: FICTIONAL
+
+HYPOTHESIS
+----------
+Guest network may provide reachability to an internal resource.
+
+EXPECTED SECURITY CONTROL
+-------------------------
+Network segmentation should prevent guest-to-internal reachability.
+
+OBSERVED RESULT
+---------------
+The selected internal training target was not reachable from the simulated guest context.
+
+SUPPORTED CONCLUSION
+--------------------
+The tested segmentation control interrupted this attack path.
+
+NOTE
+----
+This positive result applies only to the tested path and does not prove that every
+possible internal destination is segmented correctly.
