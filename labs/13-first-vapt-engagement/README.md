@@ -136,6 +136,50 @@ STOP
 
 ---
 
+# Attack Chain exercise
+
+Dopo la discovery e prima di ridurre tutto a singoli finding, usare:
+
+`attack-chain-canvas.md`
+
+L'obiettivo non è produrre una lista di tecniche ma costruire una o più sequenze:
+
+```text
+starting condition
+→ capability gained
+→ new attack surface
+→ next hypothesis
+→ control
+→ result
+→ next decision
+```
+
+Per le parti non eseguibili nel laboratorio si usa lo stato:
+
+```text
+[A] ASSUMED FOR TABLETOP
+```
+
+Gli studenti devono separare sempre:
+
+```text
+OBSERVED
+VALIDATED
+ASSUMED
+NOT TESTED
+STOPPED
+```
+
+Materiale docente:
+
+`instructor-attack-chain-guide.md`
+
+La domanda centrale dell'esercizio è:
+
+> Se questo passaggio funzionasse, che cosa avrei ottenuto realmente e perché questo rende possibile il passaggio successivo?
+
+---
+
 # Parte tecnica
 
 Dopo la discovery organizzativa:
@@ -206,7 +250,7 @@ Ogni gruppo produce:
 8. Attack Surface Inventory tecnico;
 9. triage VA;
 10. almeno un finding validato;
-11. una decision path / attack chain;
+11. due attack chain complete usando `attack-chain-canvas.md`, con branch, controlli, stop e distinzione validated/assumed;
 12. remediation;
 13. Evidence Pack numerato;
 14. VAPT Final Report usando `reporting/final-report-template.md`;
