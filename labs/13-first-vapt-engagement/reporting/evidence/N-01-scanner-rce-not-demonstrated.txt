@@ -1,0 +1,26 @@
+EVIDENCE ID: N-01
+TYPE: NOT-DEMONSTRATED
+PURPOSE: Document manual review of scanner-reported possible RCE
+DATA: FICTIONAL
+
+SCANNER BASIS
+-------------
+Product/version fingerprinting suggested a possible remote-code-execution issue.
+
+MANUAL REVIEW
+-------------
+The review did not establish:
+- confirmed vulnerable build;
+- required configuration;
+- vulnerable feature;
+- exploit primitive;
+- code execution;
+- demonstrated impact.
+
+FINAL STATUS
+------------
+NOT DEMONSTRATED
+
+REPORTING DECISION
+------------------
+Do not report as a confirmed vulnerability.
