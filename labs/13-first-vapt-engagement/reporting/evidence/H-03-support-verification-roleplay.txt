@@ -1,0 +1,34 @@
+EVIDENCE ID: H-03
+TYPE: SIMULATED-CONTROLLED
+PURPOSE: Evaluate identity-verification strength in a fictional support recovery flow
+DATA: FICTIONAL
+
+SAFETY
+------
+No real employee was contacted.
+No real account was reset.
+No real personal data or credentials were used.
+
+SCENARIO
+--------
+A role-play request used only contextual information available inside the training
+discovery pack.
+
+OBSERVED RESULT
+---------------
+The simulated support workflow accepted contextual organizational knowledge as
+sufficient to advance further than intended before an independent verification
+factor was required.
+
+SUPPORTED CONCLUSION
+--------------------
+The simulated recovery workflow relied too heavily on familiarity/context and
+not enough on mandatory independent identity verification.
+
+NOT SUPPORTED
+-------------
+- real account takeover;
+- real password reset;
+- MFA bypass;
+- production help-desk compromise;
+- real social-engineering success.
