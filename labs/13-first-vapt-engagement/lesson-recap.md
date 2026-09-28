@@ -839,3 +839,95 @@ evidenza
 ~~~
 
 e solo dopo confrontalo con il report di esempio.
+
+
+---
+
+# Appendice — Ragionare per Attack Chain
+
+Una lista di possibili attacchi è soltanto il primo livello.
+
+Il ragionamento più utile è:
+
+~~~text
+se STEP 1 funziona
+      ↓
+che cosa ottengo?
+      ↓
+quale nuova superficie compare?
+      ↓
+quale STEP 2 diventa plausibile?
+      ↓
+quale controllo potrebbe fermarlo?
+      ↓
+se anche STEP 2 funziona...
+~~~
+
+Per esempio, dire:
+
+~~~text
+"riesco ad arrivare in reception"
+~~~
+
+non chiude la storia.
+
+La domanda successiva è:
+
+> Che cosa ho ottenuto realmente?
+
+Forse soltanto una posizione fisica diversa e la possibilità di osservare informazioni disponibili a un visitatore.
+
+Da lì potrebbero emergere nuove informazioni, e soltanto quelle nuove informazioni possono giustificare un passaggio successivo.
+
+Quindi evitare salti come:
+
+~~~text
+reception
+→ credenziali
+→ rete
+→ dominio compromesso
+~~~
+
+senza spiegare tutte le frecce.
+
+## Continuare la chain senza eseguire davvero il test
+
+Nel tabletop possiamo usare:
+
+~~~text
+[A] ASSUMED
+~~~
+
+Significa:
+
+> Supponiamo che questo passaggio abbia funzionato, soltanto per vedere che cosa diventerebbe possibile dopo.
+
+Questo permette di ragionare su una chain lunga senza affermare di averla realmente dimostrata.
+
+Gli stati utili sono:
+
+~~~text
+[O] OBSERVED
+[V] VALIDATED
+[A] ASSUMED
+[N] NOT TESTED
+[X] STOPPED
+~~~
+
+La distinzione è fondamentale anche nel report.
+
+~~~text
+VALIDATED ATTACK PATH
+≠
+HYPOTHESIZED ATTACK PATH
+~~~
+
+## La domanda che controlla ogni freccia
+
+Dopo ogni passaggio:
+
+> Che cosa rende valida questa freccia?
+
+Se non sappiamo rispondere, stiamo probabilmente saltando uno o più prerequisiti.
+
+Il file `attack-chain-canvas.md` contiene esempi e il modello completo da usare durante l'esercizio.
