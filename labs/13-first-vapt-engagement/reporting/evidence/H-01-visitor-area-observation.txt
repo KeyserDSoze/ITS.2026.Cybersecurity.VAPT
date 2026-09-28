@@ -1,0 +1,30 @@
+EVIDENCE ID: H-01
+TYPE: SIMULATED-CONTROLLED
+PURPOSE: Visitor-area information exposure assessment
+DATA: FICTIONAL
+
+SCENARIO
+--------
+A staged visitor was placed only in the area considered accessible to visitors.
+No restricted-area entry, deception of real staff or unauthorized device access
+was performed.
+
+OBSERVED IN THE TRAINING SCENARIO
+---------------------------------
+The visitor-accessible area exposed contextual information including:
+- meeting-room names;
+- a project reference;
+- supplier context;
+- normal visitor/reception process behavior.
+
+SUPPORTED CONCLUSION
+--------------------
+A visitor can obtain internal contextual information useful for threat modeling.
+
+NOT SUPPORTED
+-------------
+- credential theft;
+- workstation access;
+- restricted-area access;
+- network compromise;
+- real employee deception.
