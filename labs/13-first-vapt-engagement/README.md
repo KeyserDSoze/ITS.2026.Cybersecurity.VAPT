@@ -334,6 +334,33 @@ Può essere usato anche dal docente come traccia concettuale rapida, mentre inst
 
 # Reporting finale
 
+Per mostrare agli studenti un **deliverable cliente completo**, usare come documento principale:
+
+`reporting/full-client-vapt-report.md`
+
+Questo report include:
+
+- Executive Summary;
+- scope e Rules of Engagement;
+- metodologia;
+- limitations;
+- attack-surface summary;
+- attack chain tecniche e organizzative;
+- finding tecnici validati;
+- finding human/process simulati;
+- controllo efficace documentato;
+- scanner false positive / not demonstrated;
+- evidence register;
+- remediation roadmap;
+- retest plan;
+- distinzione fra impatto dimostrato e ipotizzato.
+
+Le evidenze di supporto sono in:
+
+`reporting/evidence/`
+
+
+
 La parte tecnica non termina con la PoC.
 
 Materiale:
