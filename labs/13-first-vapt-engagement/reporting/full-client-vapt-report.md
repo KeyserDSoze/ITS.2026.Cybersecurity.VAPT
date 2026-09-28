@@ -243,6 +243,19 @@ The discovery phase identified the following categories.
 
 # 9. Attack Chain Summary
 
+Legenda usata nelle chain:
+
+~~~text
+[O] OBSERVED
+[V] LAB-VALIDATED
+[S] SIMULATED-CONTROLLED
+[A] ASSUMED / TABLETOP
+[N] NOT TESTED
+[X] STOPPED / CONTROL EFFECTIVE
+~~~
+
+
+
 ## AC-01 — Customer Authorization Chain
 
 ~~~text
