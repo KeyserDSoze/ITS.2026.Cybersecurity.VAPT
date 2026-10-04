@@ -51,7 +51,7 @@ Le priorità di remediation sono: autorizzazione server-side per oggetti e funzi
 | ID | Finding | Severity | Stato | Evidenza primaria |
 |---|---|---:|---|---|
 | F-01 | Customer può leggere l'ordine di un altro customer | High | CONFIRMED | E-01, E-02, E-03 |
-| F-02 | Customer può invocare una funzione amministrativa | High | CONFIRMED | E-04 |
+| F-02 | Customer può invocare una funzione amministrativa | Medium | CONFIRMED | E-04 |
 | F-03 | SQL Injection nella ricerca prodotti | High | CONFIRMED IN TRAINING TARGET | E-06 |
 | F-04 | Reflected Cross-Site Scripting nel greeting | Medium | CONFIRMED IN TRAINING TARGET | E-07 |
 | F-05 | Staging espone informazioni e percorsi applicativi | Low | CONFIRMED | E-05 |
@@ -544,7 +544,7 @@ FAIL: qualunque dato dell'ordine Bob viene ancora restituito ad Alice.
 
 ## Severity
 
-**High**
+**Medium**
 
 ## Category
 
