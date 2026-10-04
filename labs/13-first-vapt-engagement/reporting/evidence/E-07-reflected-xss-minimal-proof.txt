@@ -1,0 +1,49 @@
+EVIDENCE ID: E-07
+PURPOSE: Minimal validation of reflected script-capable markup in greeting flow
+ENVIRONMENT: UmbraMarket local training lab
+DATA: FICTIONAL
+EVIDENCE TYPE: TRAINING REFERENCE CAPTURE
+STOP CONDITION: Benign browser execution only
+
+BASELINE
+--------
+GET /greet?name=Alice HTTP/1.1
+Host: 127.0.0.1:5005
+
+Expected functional output contains:
+Ciao, Alice!
+
+CONTROLLED TEST
+---------------
+Use the browser or Burp Repeater/browser flow with the name parameter set to:
+
+<script>alert(1)</script>
+
+Equivalent curl request construction:
+curl -G --data-urlencode "name=<script>alert(1)</script>" http://127.0.0.1:5005/greet
+
+OBSERVED SECURITY EFFECT
+------------------------
+The value is reflected into the HTML response as active markup rather than
+being encoded as text. In a browser, the benign alert proof executes.
+
+VALIDATION STATEMENT
+--------------------
+Attacker-controlled input is interpreted in the page's HTML/script context.
+
+STOP
+----
+The proof stops at a local alert. No credential collection, external callback,
+session replay, persistence, or victim targeting is required.
+
+CONCLUSION SUPPORTED
+--------------------
+The greeting flow is vulnerable to reflected cross-site scripting.
+
+NOT DEMONSTRATED
+----------------
+- theft of an authenticated session;
+- compromise of another user;
+- persistence;
+- administrative access;
+- server compromise.
