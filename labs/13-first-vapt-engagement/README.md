@@ -338,6 +338,10 @@ Per mostrare agli studenti un **deliverable cliente completo**, usare come docum
 
 `reporting/full-client-vapt-report.md`
 
+Per il **golden report tecnico** con evidence pack, riproduzione Browser/Burp/curl, attack chain applicative, remediation e retest usare, dopo la prima bozza prodotta dagli studenti:
+
+`reporting/technical-final-vapt-report.md`
+
 Questo report include:
 
 - Executive Summary;

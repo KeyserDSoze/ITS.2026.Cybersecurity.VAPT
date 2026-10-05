@@ -1,0 +1,62 @@
+EVIDENCE ID: E-05
+PURPOSE: Correlate staging content discovery with administrative API discovery
+ENVIRONMENT: UmbraMarket local training lab
+DATA: FICTIONAL
+EVIDENCE TYPE: LAB-REPRODUCIBLE / STATIC CONTENT
+
+REQUEST 1
+---------
+GET /robots.txt HTTP/1.1
+Host: 127.0.0.1:8080
+
+OBSERVED CONTENT
+----------------
+User-agent: *
+Disallow: /backup/
+Disallow: /draft/
+
+REQUEST 2
+---------
+GET /backup/appsettings.old HTTP/1.1
+Host: 127.0.0.1:8080
+
+OBSERVED CONTENT
+----------------
+environment=staging
+api_base=http://app.umbramarket.test:5005/api
+log_level=debug
+feature_admin_v2=false
+
+REQUEST 3
+---------
+GET /assets/app.js HTTP/1.1
+Host: 127.0.0.1:8080
+
+RELEVANT OBSERVED CONTENT
+-------------------------
+apiBase: "http://127.0.0.1:5005/api"
+statsEndpoint: "/admin/stats"
+environment: "staging"
+
+VALIDATION STATEMENT
+--------------------
+Publicly served staging artifacts disclose deployment context and an
+administrative API path. This evidence supports information disclosure and
+provides the discovery step used before E-04.
+
+CONCLUSION SUPPORTED
+--------------------
+The staging service exposes implementation information that reduces the work
+needed to identify a privileged application function.
+
+NOT DEMONSTRATED
+----------------
+- authentication bypass;
+- privileged modification;
+- credential disclosure;
+- server compromise.
+
+CORRELATION
+-----------
+E-05 discovers /api/admin/stats.
+E-04 validates that a customer role can invoke that function.

@@ -1,0 +1,47 @@
+EVIDENCE ID: E-06
+PURPOSE: Minimal validation of SQL query manipulation in product search
+ENVIRONMENT: UmbraMarket local training lab
+DATA: FICTIONAL
+EVIDENCE TYPE: TRAINING REFERENCE CAPTURE
+STOP CONDITION: Demonstrate query manipulation without extracting unrelated tables
+
+BASELINE
+--------
+GET /search?q=Umbra HTTP/1.1
+Host: 127.0.0.1:5005
+
+The normal search returns only products matching the supplied term.
+
+CONTROLLED TEST INPUT
+---------------------
+q=%' OR 1=1 -- 
+
+Equivalent curl reproduction:
+curl -G --data-urlencode "q=%' OR 1=1 -- " http://127.0.0.1:5005/search
+
+OBSERVED SECURITY EFFECT
+------------------------
+The result set is no longer constrained by the intended product-name search
+condition and the page returns all four seeded training products.
+
+VALIDATION STATEMENT
+--------------------
+Changing only the q parameter changes the SQL predicate semantics. This is
+sufficient to demonstrate SQL injection in the training search flow.
+
+STOP
+----
+No UNION-based extraction, credential extraction, schema enumeration, file
+access, write operation, or destructive database action is required.
+
+CONCLUSION SUPPORTED
+--------------------
+Untrusted search input reaches a SQL statement without parameterization.
+
+NOT DEMONSTRATED
+----------------
+- extraction of the users table;
+- authentication bypass;
+- database write access;
+- operating-system command execution;
+- server compromise.
